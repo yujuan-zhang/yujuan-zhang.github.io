@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8E53;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+    <filter id="shadowStrong" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-opacity="0.2"/>
+    </filter>
+    <path id="arc1" d="M 500 270 A 230 230 0 0 1 730 500" fill="none"/>
+    <path id="arc2" d="M 730 500 A 230 230 0 0 1 500 730" fill="none"/>
+    <path id="arc3" d="M 500 730 A 230 230 0 0 1 270 500" fill="none"/>
+    <path id="arc4" d="M 270 500 A 230 230 0 0 1 500 270" fill="none"/>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="1000" fill="#f8fafc"/>
+
+  <!-- Outer decorative ring -->
+  <circle cx="500" cy="500" r="420" fill="none" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5"/>
+
+  <!-- Ring 1: Windows Software (Top-Right) -->
+  <path d="M 500 270 A 230 230 0 0 1 730 500" stroke="url(#grad1)" stroke-width="50" fill="none" stroke-linecap="round" filter="url(#shadowStrong)"/>
+
+  <!-- Ring 2: Computer & Server (Bottom-Right) -->
+  <path d="M 730 500 A 230 230 0 0 1 500 730" stroke="url(#grad2)" stroke-width="50" fill="none" stroke-linecap="round" filter="url(#shadowStrong)"/>
+
+  <!-- Ring 3: Programming (Bottom-Left) -->
+  <path d="M 500 730 A 230 230 0 0 1 270 500" stroke="url(#grad3)" stroke-width="50" fill="none" stroke-linecap="round" filter="url(#shadowStrong)"/>
+
+  <!-- Ring 4: Machine Learning (Top-Left) -->
+  <path d="M 270 500 A 230 230 0 0 1 500 270" stroke="url(#grad4)" stroke-width="50" fill="none" stroke-linecap="round" filter="url(#shadowStrong)"/>
+
+  <!-- Text on Rings -->
+  <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" letter-spacing="1">
+    <textPath href="#arc1" startOffset="50%" text-anchor="middle">Windows Software</textPath>
+  </text>
+  <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" letter-spacing="1">
+    <textPath href="#arc2" startOffset="50%" text-anchor="middle">Computer &amp; Server</textPath>
+  </text>
+  <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" letter-spacing="1">
+    <textPath href="#arc3" startOffset="50%" text-anchor="middle">Programming</textPath>
+  </text>
+  <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" letter-spacing="1">
+    <textPath href="#arc4" startOffset="50%" text-anchor="middle">Machine Learning</textPath>
+  </text>
+
+  <!-- Center circle -->
+  <circle cx="500" cy="500" r="140" fill="#1e293b" filter="url(#shadowStrong)"/>
+  <circle cx="500" cy="500" r="130" fill="#2c3e50"/>
+  <text x="500" y="480" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18" font-weight="bold">BioinfoZero2Hero</text>
+  <text x="500" y="505" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="12">The ABCs of</text>
+  <text x="500" y="522" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="12">Bioinformatics</text>
+
+  <!-- ==================== Ring 1: Windows Software (Top-Right, 4 items) ==================== -->
+  <g>
+    <circle cx="800" cy="300" r="38" fill="white" stroke="#FF6B6B" stroke-width="3" filter="url(#shadow)"/>
+    <text x="800" y="297" text-anchor="middle" fill="#c0392b" font-family="Arial, sans-serif" font-size="11" font-weight="bold">EndNote</text>
+    <text x="800" y="311" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Reference</text>
+  </g>
+  <g>
+    <circle cx="880" cy="400" r="38" fill="white" stroke="#FF6B6B" stroke-width="3" filter="url(#shadow)"/>
+    <text x="880" y="397" text-anchor="middle" fill="#c0392b" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Literature</text>
+    <text x="880" y="411" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Search</text>
+  </g>
+  <g>
+    <circle cx="900" cy="510" r="38" fill="white" stroke="#FF6B6B" stroke-width="3" filter="url(#shadow)"/>
+    <text x="900" y="507" text-anchor="middle" fill="#c0392b" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Google</text>
+    <text x="900" y="521" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Scholar</text>
+  </g>
+  <g>
+    <circle cx="850" cy="620" r="38" fill="white" stroke="#FF6B6B" stroke-width="3" filter="url(#shadow)"/>
+    <text x="850" y="623" text-anchor="middle" fill="#c0392b" font-family="Arial, sans-serif" font-size="11" font-weight="bold">MEGA</text>
+  </g>
+
+  <!-- ==================== Ring 2: Computer & Server (Bottom-Right, 5 items) ==================== -->
+  <g>
+    <circle cx="780" cy="730" r="38" fill="white" stroke="#4ECDC4" stroke-width="3" filter="url(#shadow)"/>
+    <text x="780" y="727" text-anchor="middle" fill="#16a085" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Hardware</text>
+    <text x="780" y="741" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Basics</text>
+  </g>
+  <g>
+    <circle cx="680" cy="820" r="38" fill="white" stroke="#4ECDC4" stroke-width="3" filter="url(#shadow)"/>
+    <text x="680" y="823" text-anchor="middle" fill="#16a085" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Linux</text>
+  </g>
+  <g>
+    <circle cx="560" cy="880" r="38" fill="white" stroke="#4ECDC4" stroke-width="3" filter="url(#shadow)"/>
+    <text x="560" y="883" text-anchor="middle" fill="#16a085" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Shell</text>
+  </g>
+  <g>
+    <circle cx="440" cy="880" r="38" fill="white" stroke="#4ECDC4" stroke-width="3" filter="url(#shadow)"/>
+    <text x="440" y="883" text-anchor="middle" fill="#16a085" font-family="Arial, sans-serif" font-size="11" font-weight="bold">SSH</text>
+  </g>
+  <g>
+    <circle cx="320" cy="820" r="38" fill="white" stroke="#4ECDC4" stroke-width="3" filter="url(#shadow)"/>
+    <text x="320" y="823" text-anchor="middle" fill="#16a085" font-family="Arial, sans-serif" font-size="11" font-weight="bold">FTP</text>
+  </g>
+
+  <!-- ==================== Ring 3: Programming Languages (Bottom-Left, 5 items) ==================== -->
+  <g>
+    <circle cx="220" cy="730" r="38" fill="white" stroke="#667eea" stroke-width="3" filter="url(#shadow)"/>
+    <text x="220" y="727" text-anchor="middle" fill="#5b2c6f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">R</text>
+    <text x="220" y="741" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Programming</text>
+  </g>
+  <g>
+    <circle cx="150" cy="620" r="38" fill="white" stroke="#667eea" stroke-width="3" filter="url(#shadow)"/>
+    <text x="150" y="617" text-anchor="middle" fill="#5b2c6f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Shiny</text>
+    <text x="150" y="631" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Apps</text>
+  </g>
+  <g>
+    <circle cx="100" cy="510" r="38" fill="white" stroke="#667eea" stroke-width="3" filter="url(#shadow)"/>
+    <text x="100" y="507" text-anchor="middle" fill="#5b2c6f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">R</text>
+    <text x="100" y="521" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Packages</text>
+  </g>
+  <g>
+    <circle cx="120" cy="400" r="38" fill="white" stroke="#667eea" stroke-width="3" filter="url(#shadow)"/>
+    <text x="120" y="397" text-anchor="middle" fill="#5b2c6f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Python</text>
+    <text x="120" y="411" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Basics</text>
+  </g>
+  <g>
+    <circle cx="200" cy="300" r="38" fill="white" stroke="#667eea" stroke-width="3" filter="url(#shadow)"/>
+    <text x="200" y="297" text-anchor="middle" fill="#5b2c6f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Python</text>
+    <text x="200" y="311" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="8">Animated</text>
+  </g>
+
+  <!-- ==================== Ring 4: Machine Learning (Top-Left, 10 items in arc) ==================== -->
+  <g>
+    <circle cx="300" cy="180" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="300" y="177" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Python</text>
+    <text x="300" y="190" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="7">Data Science</text>
+  </g>
+  <g>
+    <circle cx="390" cy="120" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="390" y="123" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Pandas</text>
+  </g>
+  <g>
+    <circle cx="490" cy="90" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="490" y="93" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Numpy</text>
+  </g>
+  <g>
+    <circle cx="590" cy="90" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="590" y="87" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Matplotlib</text>
+  </g>
+  <g>
+    <circle cx="690" cy="120" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="690" y="117" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Scikit</text>
+    <text x="690" y="130" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="7">-learn</text>
+  </g>
+  <g>
+    <circle cx="780" cy="180" r="35" fill="white" stroke="#f093fb" stroke-width="3" filter="url(#shadow)"/>
+    <text x="780" y="183" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="10" font-weight="bold">PyTorch</text>
+  </g>
+  <g>
+    <circle cx="440" cy="40" r="30" fill="white" stroke="#f093fb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="440" y="43" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="9" font-weight="bold">GitHub</text>
+  </g>
+  <g>
+    <circle cx="540" cy="35" r="30" fill="white" stroke="#f093fb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="540" y="38" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Docker</text>
+  </g>
+  <g>
+    <circle cx="640" cy="40" r="30" fill="white" stroke="#f093fb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="640" y="37" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="8" font-weight="bold">Datacamp</text>
+  </g>
+  <g>
+    <circle cx="740" cy="70" r="30" fill="white" stroke="#f093fb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="740" y="73" text-anchor="middle" fill="#922b5e" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Kaggle</text>
+  </g>
+
+</svg>

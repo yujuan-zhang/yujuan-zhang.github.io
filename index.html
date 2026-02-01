@@ -83,7 +83,7 @@ src: url(data:font/ttf;base64,AAEAAAAQAQAABAAAR0RFRr3btDQAARHQAAACJkdQT1MTJt/0AA
 
 .distill-site-nav {
 color: rgba(255, 255, 255, 0.8);
-background-color: #0F2E3D;
+background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
 font-size: 15px;
 font-weight: 300;
 }
@@ -1945,13 +1945,13 @@ d-appendix {
 --text-color: rgba(255, 255, 255, 0.8);
 --text-size: 15px;
 --hover-color: white;
---bkgd-color: #0F2E3D;
+--bkgd-color: #1e40af;
 }
 .distill-site-footer {
 --text-color: rgba(255, 255, 255, 0.8);
 --text-size: 15px;
 --hover-color: white;
---bkgd-color: #0F2E3D;
+--bkgd-color: #1e40af;
 }
 
 
@@ -2151,6 +2151,52 @@ grid-column-gap: 20px;
 .nav-dropdown-content a:hover {
 background-color: #047C91;
 color: black;
+}
+
+/* 让导航栏按钮更醒目 */
+.distill-site-header .nav-right > a {
+  padding: 10px 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.distill-site-header .nav-right > a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 让图标更醒目 */
+.distill-site-header .nav-right > a .fa {
+  font-size: 1.4em;
+  transition: all 0.3s ease;
+}
+
+.distill-site-header .nav-right > a:hover .fa {
+  color: #60a5fa;
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+  transform: scale(1.1);
+}
+
+/* GitHub 图标特殊样式 */
+.distill-site-header .nav-right > a .fa-github {
+  color: #ffffff;
+}
+
+.distill-site-header .nav-right > a:hover .fa-github {
+  color: #60a5fa;
+}
+
+/* ResearchGate 图标特殊样式 */
+.distill-site-header .nav-right > a .fa-researchgate {
+  color: #ffffff;
+}
+
+.distill-site-header .nav-right > a:hover .fa-researchgate {
+  color: #00d4aa;
+  text-shadow: 0 0 10px rgba(0, 212, 170, 0.6);
 }</style>
           <style type="text/css">
 
@@ -2398,7 +2444,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
           <div class="my-5" id="content">
             <div id="biography" class="section level2">
             <h2>Biography</h2>
-            <p>Hi! I am Yujuan Zhang 👨‍🔬, a bioinformatician and BioAI scientist, working as a professor in Chongqing Normal University, China.</p>
+            <p>Hi! I am Yujuan Zhang 👩‍🔬, a bioinformatician and BioAI scientist, working as a professor in Chongqing Normal University, China.</p>
             </div>
             <div id="education" class="section level2">
             <h2>Education</h2>
@@ -2435,15 +2481,14 @@ document.addEventListener('DOMContentLoaded', function(e) {
             <div id="teaching" class="section level2">
             <h2>Teaching</h2>
             <ul>
-            <li><p>Bachelar: <a href="./course/bioinformatics"><strong>Bioinformatics</strong></a>,
-            <a href="file/Introduction-to-Bioinformatics-3.htm"><strong>Molecular
-            Biology</strong></a> (SFCO), <strong>Scientific
-            Writing</strong>, <a href="http://course.cloudwe.tech/node/106"><strong>R
-            Programming</strong></a> </p></li>
-            <li><p>Master: <strong>Advanced Bioinformatics</strong> (<a href="./course/ABI/ABI-Project-01">P1</a>), <strong>Food
-            Information &amp; Internet Technology</strong></p></li>
-            <li><p>Doctor: <strong>Advanced Bioinformatics</strong>
-            (Biology)</p></li>
+            <li><p>Bachelor: <a href="./course/Bioinfo-Zero2Hero/index.html"><strong>Bioinformatics: From Zero to Hero</strong></a>,
+            <strong>English for Biology</strong>,
+            <a href="./course/bioinformatics/index.html"><strong>Bioinformatics</strong></a></p></li>
+            <li><p>Master: <a href="./course/ABI/index.html"><strong>Advanced Bioinformatics</strong></a>, <strong>R Language:
+            Statistical computing and graphics</strong>, <strong>Comparative
+            Genomics, Proteomics and Genomics</strong></p></li>
+            <li><p>Doctor: <a href="file/Introduction-to-Bioinformatics-3.htm"><strong>Frontiers of Life Science
+            Research</strong></a></p></li>
             </ul>
             </div>
           </div>
@@ -2497,7 +2542,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
             <div class="p pt-4 px-5">
               <div id="biography" class="section level2">
               <h2>Biography</h2>
-              <p>Hi! I am Yujuan Zhang 👨‍🔬, a bioinformatician and BioAI scientist, working as a
+              <p>Hi! I am Yujuan Zhang 👩‍🔬, a bioinformatician and BioAI scientist, working as a
               professor in Chongqing Normal University, China.</p>
               </div>
               <div id="education" class="section level2">
@@ -2535,17 +2580,14 @@ document.addEventListener('DOMContentLoaded', function(e) {
               <div id="teaching" class="section level2">
               <h2>Teaching</h2>
               <ul>
-              <li><p>Bachelar: <a href="./course/bioinformatics"><strong>Bioinformatics</strong></a>,
-              <a href="file/Introduction-to-Bioinformatics-3.htm"><strong>Molecular
-              Biology</strong></a> (SFCO), <strong>Scientific
-              Writing</strong>, <a href="http://course.cloudwe.tech/node/106"><strong>R
-              Programming</strong></a> (CQMU)</p></li>
-              <li><p>Master: <strong>Advanced Bioinformatics</strong>
-              (<a href="./course/ABI/ABI-Project-01">P1</a>),
-              <strong>Food Information &amp; Internet
-              Technology</strong></p></li>
-              <li><p>Doctor: <strong>Advanced Bioinformatics</strong>
-              (Biology)</p></li>
+              <li><p>Bachelor: <a href="./course/bioinformatics/index.html"><strong>Bioinformatics</strong></a>,
+              <strong>English for Biology</strong>,
+              <a href="./course/Bioinfo-Zero2Hero/index.html"><strong>Bioinformatics: From Zero to Hero</strong></a></p></li>
+              <li><p>Master: <a href="./course/ABI/index.html"><strong>Advanced Bioinformatics</strong></a>, <strong>R Language:
+              Statistical computing and graphics</strong>, <strong>Comparative
+              Genomics, Proteomics and Genomics</strong></p></li>
+              <li><p>Doctor: <a href="file/Introduction-to-Bioinformatics-3.htm"><strong>Frontiers of Life Science
+              Research</strong></a></p></li>
               </ul>
               </div>
             </div>

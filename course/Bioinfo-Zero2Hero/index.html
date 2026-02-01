@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bioinformatics: From Zero to Hero</title>
+  <meta name="description" content="The ABCs of Bioinformatics for starters and New Lab Members" />
+
+  <meta property="og:title" content="Bioinformatics: From Zero to Hero" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="An onboarding knowledgebase designed to help starter of bioinformatics build essential skills" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --light-bg: #f8f9fa;
+      --border-color: #dee2e6;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.8;
+      color: #333;
+      background-color: #fff;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Roboto Slab', serif;
+      color: var(--secondary-color);
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      color: white;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero-section .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      border-left: 4px solid var(--primary-color);
+      padding-left: 15px;
+      margin: 40px 0 25px;
+    }
+
+    .module-section {
+      background-color: var(--light-bg);
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .module-icon {
+      font-size: 2rem;
+      margin-right: 15px;
+      color: var(--primary-color);
+    }
+
+    .course-table {
+      width: 100%;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .course-table thead {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .course-table th {
+      padding: 15px 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .course-table td {
+      padding: 12px 10px;
+      text-align: center;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .course-table tbody tr:hover {
+      background-color: #f1f8ff;
+    }
+
+    .course-table td:nth-child(2) {
+      text-align: left;
+    }
+
+    .video-link img {
+      width: 60px;
+      height: auto;
+      transition: transform 0.2s;
+    }
+
+    .video-link:hover img {
+      transform: scale(1.1);
+    }
+
+    .resource-img {
+      width: 60px;
+      height: auto;
+    }
+
+    .author-section {
+      background: var(--light-bg);
+      padding: 30px;
+      border-radius: 10px;
+      margin: 30px 0;
+    }
+
+    .badge-link {
+      margin-right: 10px;
+    }
+
+    .badge-link img {
+      height: 22px;
+    }
+
+    .footer {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .footer a {
+      color: #3498db;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    .back-link:hover {
+      color: white;
+      opacity: 1;
+    }
+
+    .back-link i {
+      margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 1.8rem;
+      }
+
+      .course-table {
+        font-size: 0.85rem;
+      }
+
+      .video-link img, .resource-img {
+        width: 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <a href="../../index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Homepage
+      </a>
+      <h1><i class="fas fa-rocket"></i> Bioinformatics: From Zero to Hero</h1>
+      <p class="subtitle">The ABCs of Bioinformatics for Starters and New Lab Members</p>
+      <p style="margin-top: 15px;">
+        <a href="http://perso.crans.org/besson/LICENSE.html" target="_blank">
+          <img src="https://img.shields.io/badge/License-GPLv3-red.svg" alt="GPLv3 license">
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="max-width: 1100px; padding: 40px 20px;">
+
+    <!-- Introduction -->
+    <div class="text-center mb-5">
+      <p class="lead">
+        <strong>Bioinfo-Zero2Hero</strong> is an onboarding knowledgebase designed to help starters of bioinformatics build essential skills, understand common workflows, and quickly integrate into ongoing research projects.
+      </p>
+    </div>
+
+    <!-- Course Overview -->
+    <div class="alert alert-info" role="alert">
+      <i class="fas fa-info-circle"></i> <strong>Note:</strong> This course provides a comprehensive learning path for bioinformatics beginners, organized into <strong>4 modules</strong> with <strong>24 courses</strong>.
+    </div>
+
+    <!-- Module 1: Windows Software Series -->
+    <div class="module-section">
+      <div class="module-header">
+        <span class="module-icon"><i class="fas fa-box"></i></span>
+        <h2 class="mb-0">Windows Software Series</h2>
+      </div>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Course</th>
+            <th>Video</th>
+            <th>Resource</th>
+            <th>Date</th>
+            <th>Instructor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td>EndNote Quick Start Guide</td>
+            <td><a href="https://www.bilibili.com/video/BV1uJ8fzzE8m/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/endnote.png" alt="EndNote" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td>Comprehensive Literature Search and Tracking</td>
+            <td><a href="https://www.bilibili.com/video/BV1x44y1D7e7/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/review.png" alt="Review" class="resource-img"></td>
+            <td>Jan. 28th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>Google Scholar: Step-by-Step Guide</td>
+            <td><a href="https://www.bilibili.com/video/BV1qo4y197TN/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/google-scholar.png" alt="Google Scholar" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>04</td>
+            <td>MEGA: Phylogenetic Analysis</td>
+            <td><a href="https://www.bilibili.com/video/BV111421X7pT/?spm_id_from=333.337.search-card.all.click" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/mega.png" alt="MEGA" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Module 2: Computer & Server Series -->
+    <div class="module-section">
+      <div class="module-header">
+        <span class="module-icon"><i class="fas fa-desktop"></i></span>
+        <h2 class="mb-0">Computer & Server Series</h2>
+      </div>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Course</th>
+            <th>Video</th>
+            <th>Resource</th>
+            <th>Date</th>
+            <th>Instructor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Introduction to Computer Hardware</td>
+            <td><a href="https://www.bilibili.com/video/BV1ez1CYNEEt/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/computer-hardware.png" alt="Computer Hardware" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Linux for Beginners</td>
+            <td><a href="https://www.bilibili.com/video/BV1Da4y137PH/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/ubuntu.png" alt="Ubuntu" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Shell Scripting for Beginners</td>
+            <td><a href="https://www.bilibili.com/video/BV17m411U7cC/?spm_id_from=333.337.search-card.all.click" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/ubuntu.png" alt="Ubuntu" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>SSH Command Tutorial</td>
+            <td><a href="https://www.bilibili.com/video/BV1cL411w7RB/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/ssh.png" alt="SSH" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>FTP Tools Tutorial</td>
+            <td><a href="https://www.bilibili.com/video/BV1xv411k7Lj/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/filezila.png" alt="FileZilla" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Module 3: Programming Languages Series -->
+    <div class="module-section">
+      <div class="module-header">
+        <span class="module-icon"><i class="fas fa-laptop-code"></i></span>
+        <h2 class="mb-0">Programming Languages Series</h2>
+      </div>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Course</th>
+            <th>Video</th>
+            <th>Resource</th>
+            <th>Date</th>
+            <th>Instructor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>R Programming for Beginners</td>
+            <td><a href="https://www.bilibili.com/video/BV19x411X7C6/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/R-programming.jpg" alt="R Programming" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>R Shiny Tutorial</td>
+            <td><a href="https://www.bilibili.com/video/BV1xv411k7Lj/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/shiny.png" alt="R Shiny" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Building R Packages</td>
+            <td><a href="https://www.bilibili.com/video/BV1XW4y1s7qK/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/datapkg.png" alt="Data Package" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Python Programming for Beginners</td>
+            <td><a href="https://www.bilibili.com/video/BV1zzjJzLE9z/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/python.jpg" alt="Python" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Python Programming (Animated Version)</td>
+            <td><a href="https://www.bilibili.com/video/BV1VHM7zrE56/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/python.jpg" alt="Python" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Module 4: Data Science Series -->
+    <div class="module-section">
+      <div class="module-header">
+        <span class="module-icon"><i class="fas fa-chart-line"></i></span>
+        <h2 class="mb-0">Data Science Series</h2>
+      </div>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Course</th>
+            <th>Video</th>
+            <th>Resource</th>
+            <th>Date</th>
+            <th>Instructor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Python for Data Science</td>
+            <td><a href="https://www.youtube.com/watch?v=ghEy-0xTCuU" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/python.jpg" alt="Python" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Pandas: Handling Tables in Python</td>
+            <td><a href="https://www.youtube.com/watch?v=w_4jpdYMBf4" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/Pandas.png" alt="Pandas" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Numpy: Powerful Numerical Computations</td>
+            <td><a href="https://www.youtube.com/watch?v=gnKbAAVUzro&list=PLCC34OHNcOtpalASMlX2HHdsLNipyyhbK" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/Numpy.png" alt="Numpy" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Matplotlib: Data Visualization in Python</td>
+            <td><a href="https://www.youtube.com/watch?v=UO98lJQ3QGI&list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/matplotlib.png" alt="Matplotlib" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Module 5: Machine Learning Series -->
+    <div class="module-section">
+      <div class="module-header">
+        <span class="module-icon"><i class="fas fa-robot"></i></span>
+        <h2 class="mb-0">Machine Learning Series</h2>
+      </div>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Course</th>
+            <th>Video</th>
+            <th>Resource</th>
+            <th>Date</th>
+            <th>Instructor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5</td>
+            <td>Scikit-learn: Machine Learning Library for Python</td>
+            <td><a href="https://www.youtube.com/watch?v=SjOfbbfI2qY&list=PLcQVY5V2UY4LNmObS0gqNVyNdVfXnHwu8" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/Scikit_learn.svg" alt="Scikit-learn" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>PyTorch: Getting Started with Deep Learning</td>
+            <td><a href="https://www.youtube.com/watch?v=EMXfZB8FVUA&list=PLqnslRFeH2UrcDBWF5mfPGpqQDSta6VK4" target="_blank" class="video-link"><img src="img/youtube.png" alt="YouTube"></a></td>
+            <td><img src="img/pytorch.png" alt="PyTorch" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>GitHub: Collaborative Development Tutorial</td>
+            <td><a href="https://www.bilibili.com/video/BV1o7411U7j6/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/github_desktop.png" alt="GitHub Desktop" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Docker Quick Start Guide</td>
+            <td><a href="https://www.bilibili.com/video/BV11L411g7U1/" target="_blank" class="video-link"><img src="img/bilibili.png" alt="Bilibili"></a></td>
+            <td><img src="img/docker.png" alt="Docker" class="resource-img"></td>
+            <td>Jan. 28th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Datacamp: Learn Data and AI</td>
+            <td><a href="https://www.datacamp.com/" target="_blank" class="video-link"><img src="img/youtube.png" alt="Datacamp"></a></td>
+            <td><img src="img/datacamp.png" alt="Datacamp" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Kaggle: Your Machine Learning and Data Science Community</td>
+            <td><a href="https://www.kaggle.com/" target="_blank" class="video-link"><img src="img/youtube.png" alt="Kaggle"></a></td>
+            <td><img src="img/kaggle.png" alt="Kaggle" class="resource-img"></td>
+            <td>Jan. 20th, 2026</td>
+            <td>Yujuan Zhang</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Author Section -->
+    <div class="author-section">
+      <h3><i class="fas fa-user-graduate"></i> Authors and Maintainers</h3>
+      <p><strong>Yujuan Zhang</strong><sup>1,&#8224;</sup></p>
+      <p><sup>1</sup> College of Life Sciences, Chongqing Normal University, Chongqing 401331, China</p>
+      <p><sup>&#8224;</sup> Correspondence: <a href="mailto:yujuan.zhang418@gmail.com">yujuan.zhang418@gmail.com</a></p>
+      <p style="margin-top: 15px;">
+        <a href="https://yujuan-zhang.github.io" target="_blank" class="badge-link">
+          <img src="https://img.shields.io/badge/say-thanks-ff69b4.svg" alt="Say Thanks">
+        </a>
+        <a href="https://yujuan-zhang.github.io" target="_blank" class="badge-link">
+          <img src="https://img.shields.io/badge/follow%20me%20on-WeChat-green.svg" alt="WeChat">
+        </a>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="container">
+      <p><i>Happy Learning! If you find this helpful, please give it a star!</i></p>
+      <p style="margin-top: 15px;">
+        <a href="../../index.html"><i class="fas fa-home"></i> Back to Homepage</a>
+      </p>
+      <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9rem;">
+        &copy; 2026 Yujuan Zhang. All rights reserved.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
