@@ -1,0 +1,53 @@
+---
+title: "Yujuan Zhang, PhD"
+image: images/yujuan.png
+about:
+  template: trestles
+  image-shape: round
+  links:
+    - text: iPlatform1
+      href: https://luadtx.stoichioomics.com
+    - text: GScholar
+      icon: mortarboard-fill
+      href: https://scholar.google.com/citations?user=CdA1HhMAAAAJ&hl=en
+    - text: GitHub
+      icon: github
+      href: https://github.com/yujuan-zhang
+    - text: iPlatform2
+      href: https://singlecell-ai.streamlit.app/
+    - text: Email
+      icon: envelope
+      href: mailto:yujuan.zhang418@gmail.com
+---
+
+## Biography
+
+Hi! I am Yujuan Zhang 👩‍🔬, a bioinformatician and BioAI scientist, with 15+ years of research experience in this field.
+
+## Education
+
+**Ph.D. in Bioinformatics** | [Chinese Academy of Science](https://www.cas.cn/) | Sep. 2004 - Jun. 2010
+
+**B.S. in Life Science** | [Shaanxi Normal University](https://www.nwsuaf.edu.cn) | Sep. 2000 - Jul. 2004
+
+## Experience (Bioinformatics & Computational Biology)
+
+**Professor** | [Chongqing Normal University](https://www.cqnu.edu.cn) | Dec 2017 - Dec 2025
+
+**Associate Professor** | [Chongqing Normal University](https://www.cqnu.edu.cn) | Dec 2012 - Nov 2017
+
+**Assistant Professor** | [Chongqing Normal University](https://www.cqnu.edu.cn) | July 2010 - Nov 2012
+
+## Research
+
+- NGS, Omics and Machine Learning
+- Developing bioinformatics database & software
+- Precision medicine, protein prediction and drug discovery
+
+## Teaching
+
+**Bachelor:** [Bioinformatics: From Zero to Hero](./course/Bioinfo-Zero2Hero/index.html), English for Biology, [Bioinformatics](./course/bioinformatics/index.html)
+
+**Master:** [Advanced Bioinformatics](./course/ABI/index.html), R Language: Statistical computing and graphics, Comparative Genomics, Proteomics and Genomics
+
+**Doctor:** [Frontiers of Life Science Research](./file/Introduction-to-Bioinformatics-3.htm)

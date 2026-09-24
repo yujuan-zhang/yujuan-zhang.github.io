@@ -5,3 +5,10 @@
 
 .DS_Store
 **/.DS_Store
+
+# Quarto build output/cache -- rendered separately (quarto publish gh-pages),
+# not committed alongside the .qmd sources.
+/_site/
+/.quarto/
+
+**/*.quarto_ipynb

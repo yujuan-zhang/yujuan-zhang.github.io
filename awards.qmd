@@ -1,0 +1,39 @@
+---
+title: "Awards"
+subtitle: "Honor, Professional Service and Grants"
+---
+
+## Honor and Awards
+
+- **First Prize**, National Business Science and Technology Progress Award; China Federation of Commerce; Dec 2022.
+- **Silver Award (University Track)**, Ascend AI Innovation Competition 2024 Chongqing Regional Finals; Project: U-Net-based intelligent single-cell detection framework; Awarding body: China AI Industry Development Alliance; Oct 2024; Role: First Supervisor.
+- **Bronze Award (Application Track)**, Ascend AI Innovation Competition 2023 Chongqing Regional Finals; Project: Applications of BERT language models in biological sequences and gene expression profiles; Awarding body: China AI Industry Development Alliance; Oct 2023; Role: First Supervisor.
+- **Third Prize**, Chongqing Scientific and Technological Awards; Jun 2015.
+- **Zhuli Yuehua Scholarship**; Graduate School of the Chinese Academy of Sciences; May 2010.
+- **First Prize**, Scientific Paper Award; Yunnan Province; Jan 2010.
+- **Outstanding Article Award**; State Key Laboratory of Genetic Resources and Evolution; Jun 2009.
+- **First-Class Scholarship**; Shaanxi Normal University; Jan 2003.
+- **Third Prize**, National English Contest for College Students; Jul 2003.
+
+## Professional Service
+
+- **Session Chair**, World Conference on Biomedicine and Artificial Intelligence (WBAI), 2024-2025.
+- **Outstanding Young Scientist Award**, World Conference on Biomedicine and Artificial Intelligence (WBAI), 2024.
+- **Leading Woman in Science and Technology Innovation**, Shapingba District, Chongqing, 2023.
+- **Member**, Genomics Professional Committee, Entomological Society of China, 2022-2027.
+- **Editorial Board Member**, Interdisciplinary Sciences: Computational Life Sciences, 2024-2026.
+- **Executive Council Member**, Chongqing Society of Bioinformatics.
+- **Panel Reviewer/Expert**, National Natural Science Foundation of China (NSFC).
+
+## Grants
+
+- **2022 Natural Science Foundation Project of Chongqing** (CSTB2022NSCQ-MSX0650), Stoichioomic study of the adaptive evolution mechanism of biomolecular in altered stomach environment and application. China, PI.
+- **2020 Open Project of National Key Laboratory of Microbiology** (MML-202005), Research of adaptive evolution of sulfur bacteria based on stoichioomics, China, PI.
+- **2018 National Natural Science Foundation of China** (Grant No. 3187090549), A study of cellular compartments and construction of integrated analysis platform based on stoichiogenomics, China, PI.
+- **2018 Natural Science Foundation Project of Chongqing** (CSTC2018jcyjA2487), China, PI.
+- **2016 Science and Technology Project of Chongqing Municipal Education Commission** (No. KJ1600304), China, PI.
+- **2013 Natural Science Foundation Project of Chongqing** (CSTC2013JCYJA00013), China, PI.
+- **2013 Science and Technology Project of Chongqing Municipal Education Commission** (No. KJ130629), China, PI.
+- **2012 National Natural Science Foundation of China** (Grant No. 31200947), Protein transport system of secondary plastids (chloroplasts) in two diatoms species and its evolution research, China, PI.
+- **2011 Open Project of State Key Laboratory of Genetic Resources and Evolution**, Kunming Institute of Zoology, Chinese Academy of Science (Grant No. GREKF11-09), Comparative genomic analysis of protein transport in secondary plastids (chloroplasts), China, PI.
+- **2010 Doctoral Start Fund in Chongqing Normal University** (Grant No. 11XLB001), China, PI.

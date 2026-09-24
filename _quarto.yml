@@ -1,0 +1,45 @@
+project:
+  type: website
+  output-dir: _site
+  # course/ and file/ are pre-existing, self-contained course sites/materials
+  # (not part of this migration) -- restrict rendering to just this site's
+  # own pages so Quarto doesn't try to interpret their own (non-Quarto)
+  # front matter. They're still copied through as static resources.
+  render:
+    - "*.qmd"
+    - "blog/**/*.qmd"
+
+website:
+  title: "Yujuan Zhang, PhD"
+  site-url: "https://yujuan-zhang.github.io"
+  description: "Bioinformatician and BioAI scientist"
+  favicon: images/favicon/favicon.ico
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: awards.qmd
+        text: Awards
+      - href: projects.qmd
+        text: Projects
+      - href: talks_pubs.qmd
+        text: Publications
+      - href: blog.qmd
+        text: Blog
+    right:
+      - icon: github
+        href: https://github.com/yujuan-zhang
+      - icon: mortarboard-fill
+        href: https://scholar.google.com/citations?user=CdA1HhMAAAAJ&hl=en
+        aria-label: Google Scholar
+      - icon: envelope
+        href: mailto:yujuan.zhang418@gmail.com
+
+format:
+  html:
+    theme: [cosmo, styles.scss]
+    toc: true
+    grid:
+      sidebar-width: 250px
+      body-width: 900px
+      margin-width: 250px
