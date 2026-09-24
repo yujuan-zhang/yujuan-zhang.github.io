@@ -1,0 +1,20 @@
+# Applies to every post under blog/ -- comments enabled site-wide for the
+# blog only (not Home/Awards/Projects/Publications).
+#
+# ONE-TIME SETUP NEEDED before this actually works (can't be done from
+# here -- it's account-level GitHub actions):
+#   1. On github.com/yujuan-zhang/yujuan-zhang.github.io -> Settings ->
+#      General -> Features -> enable "Discussions"
+#   2. Go to https://giscus.app, enter that repo, follow its steps (it
+#      checks the repo is public + giscus app installed + Discussions on)
+#   3. giscus.app generates a snippet containing real values for
+#      repo-id and category-id -- copy those two into this file below,
+#      replacing the REPLACE_ME placeholders
+comments:
+  giscus:
+    repo: yujuan-zhang/yujuan-zhang.github.io
+    repo-id: "REPLACE_ME"
+    category: "General"
+    category-id: "REPLACE_ME"
+    reactions-enabled: true
+    loading: lazy
