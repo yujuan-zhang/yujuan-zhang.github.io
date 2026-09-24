@@ -1,5 +1,6 @@
 ---
 title: "Yujuan Zhang, PhD"
+page-layout: full
 image: images/yujuan.png
 about:
   template: trestles

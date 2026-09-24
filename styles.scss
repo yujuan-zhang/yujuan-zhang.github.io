@@ -1,4 +1,54 @@
 /*-- scss:defaults --*/
 $primary: #2c5f8a;
+// Borrowed from radicards.com's own computed styles (measured, not
+// eyeballed): body text a soft gray rather than the theme's default flat
+// #343a40 everywhere, headings a bit darker for hierarchy between the two.
+$body-color: #555555;
+$headings-color: #2a2a2a;
+// radicards.com pairs a serif body with sans-serif headings -- same idea
+// here (their H1 used a novelty display font, "Acme", which doesn't suit
+// an academic site, so headings stay on the theme's existing sans-serif
+// rather than copying that literally).
+$font-family-base: Georgia, "Times New Roman", serif;
+// Bootstrap's $headings-font-family falls back to $font-family-base when
+// unset, which would drag headings into serif too -- pin them back to the
+// theme's original sans-serif stack explicitly.
+$headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 /*-- scss:rules --*/
+
+// Shrink + fix the About-page (trestles template) avatar. Quarto writes an
+// inline `height: 20em; width: 20em;` on this <img>, which forces the
+// (non-square, 554x775) source photo into a square box and stretches it --
+// !important is required here since it's the only way to beat an inline
+// style. height:auto lets it scale proportionally off width instead of
+// being forced into a fixed square.
+.quarto-about-trestles .about-entity {
+  // Default is 42% of the page width -- way more than a 130px avatar +
+  // link buttons need. 250px is tuned from pixel-measurements of the
+  // user's own real browser screenshot (not a headless-Chromium render,
+  // which rendered fonts/positions differently enough to matter) so this
+  // column's right edge lines up with the navbar "Home" link's right
+  // edge. Will drift at other viewport widths since the page's own left
+  // margin is itself viewport-responsive; revisit if it looks off on a
+  // notably different window size.
+  flex: 0 0 250px !important;
+  // Centered within this (now narrower) column -- trestles' own default,
+  // left as-is rather than overridden.
+}
+.about-entity .about-image {
+  width: 130px !important;
+  height: auto !important;
+  max-width: 130px !important;
+  object-fit: cover;
+}
+
+// Headings were noticeably larger than radicards.com's (measured: our H1
+// 34px vs their 28px; our H2 28px was as big as their H1). Scaled down and
+// kept proportional to each other rather than matching their sizes
+// exactly (they had no real H3 to measure against).
+#quarto-content {
+  h1.title { font-size: 1.75rem; }   // 28px
+  h2 { font-size: 1.3125rem; }       // 21px
+  h3 { font-size: 1.125rem; }        // 18px
+}

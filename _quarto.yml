@@ -40,6 +40,10 @@ format:
     theme: [cosmo, styles.scss]
     toc: true
     grid:
-      sidebar-width: 250px
+      # No left sidebar is configured anywhere on this site (navigation is
+      # all in the top navbar) -- sidebar-width previously reserved an
+      # empty 250px gutter on the left of every page for a sidebar that
+      # was never there, which is what was actually reading as "too much
+      # left whitespace" on the about page.
       body-width: 900px
       margin-width: 250px
