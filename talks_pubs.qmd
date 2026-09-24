@@ -5,8 +5,17 @@ subtitle: "Books, Patents and Publications"
 
 ## Books and chapters
 
-* **Yu-Juan Zhang**, Boqi Li, Baoli Qiu. ***Applications of Artificial Intelligence in Life Sciences***. Science Press, 2026. (In press).
-* **Zhang YJ**; Wen JF, Proteobacteria and the endosymbiotic origin of mitochondrion in "Proteobacteria: Phylogeny, Metabolic Diversity and Ecological Effects", ***Nova Science Publishers***, 2011.
+::: {layout="[30, 70]"}
+![](images/img_books/ai-in-life-sciences.jpg)
+
+**Yu-Juan Zhang**, Boqi Li, Baoli Qiu. ***Applications of Artificial Intelligence in Life Sciences***. [Science Press](https://mp.weixin.qq.com/s/atovpgj7_FrgTnmsPKxSQA), 2026.
+:::
+
+::: {layout="[8, 92]"}
+![](images/img_books/proteobacteria.jpg)
+
+**Zhang YJ**; Wen JF, Proteobacteria and the endosymbiotic origin of mitochondrion in "Proteobacteria: Phylogeny, Metabolic Diversity and Ecological Effects", ***Nova Science Publishers***, 2011.
+:::
 
 ---
 
