@@ -76,6 +76,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
 
 </head>
@@ -205,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
 
 </main> <!-- /main -->
 <script>
-// Rebuilds the title-block metadata (date, reading time, comment count,
+// Rebuilds the title-block metadata (date, reading time, view count,
 // categories) as a single plain-text line, matching the reference layout
 // at https://divingintogeneticsandgenomics.com. Quarto's own title
 // template renders these as separate elements (badge-style categories,
@@ -254,11 +255,11 @@ ul.task-list li input[type="checkbox"] {
   if (dateText) addPart(textPart("Last updated on " + dateText));
   if (readingText) addPart(textPart(readingText));
 
-  // Placeholder until (if) a real count arrives via giscus's postMessage
-  // metadata below -- never a made-up number.
-  var commentSpan = textPart("0 Comments");
-  commentSpan.id = "post-comment-count";
-  addPart(commentSpan);
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
 
   if (cats.length) {
     var catPart = document.createElement("span");
@@ -350,22 +351,31 @@ ul.task-list li input[type="checkbox"] {
   if (titleMeta) titleMeta.style.display = "none";
   if (readingEl) readingEl.style.display = "none";
 
-  // Ask giscus's loader (appended earlier in the page by Quarto's own
-  // comments integration) to emit a postMessage with the discussion's
-  // real comment count once its iframe loads, instead of hand-coding a
-  // number that would go stale.
-  var giscusScript = document.querySelector(
-    'script[src="https://giscus.app/client.js"]'
-  );
-  if (giscusScript) giscusScript.dataset.emitMetadata = "1";
-
-  window.addEventListener("message", function (event) {
-    if (event.origin !== "https://giscus.app") return;
-    if (!event.data || !event.data.giscus) return;
-    var discussion = event.data.giscus.discussion;
-    var n = discussion ? discussion.totalCommentCount : 0;
-    commentSpan.textContent = n + (n === 1 ? " Comment" : " Comments");
-  });
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (data) {
+      if (!data || typeof data.count !== "string") {
+        viewSpan.textContent = "0 views";
+        return;
+      }
+      var n = parseInt(data.count.replace(/,/g, ""), 10);
+      viewSpan.textContent = data.count + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      viewSpan.textContent = "0 views";
+    });
 })();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
