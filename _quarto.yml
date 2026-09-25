@@ -48,3 +48,10 @@ format:
       # left whitespace" on the about page.
       body-width: 900px
       margin-width: 250px
+    # GoatCounter (privacy-friendly, free analytics) site-wide, not just
+    # blog/. blog/_post-meta.html separately reads this same site's public
+    # per-page counter endpoint to show a live view count under each post's
+    # title.
+    include-in-header:
+      text: |
+        <script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
