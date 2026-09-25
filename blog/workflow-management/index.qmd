@@ -5,23 +5,15 @@ categories: [bioinformatics, deep-learning, workflow]
 description: "Bioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently -- and what that says about a good workflow framework."
 ---
 
-<!--
-Three illustrations from the source PDF (octopus juggling tools, a crown/
-castle "one ring" scene, a terminal+wrench character) aren't included yet
--- only the PDF's extracted text was available, not the embedded image
-files themselves. Send them over the same way as the cover images for the
-other posts and they can be dropped in at the marked spots below.
--->
-
 ## Worlds Apart in Workflow Management
 
 In bioinformatics, analyzing a single sample often involves a dozen or even several dozen independent command-line tools developed by different laboratories: `BWA` for alignment, `samtools` for sorting, `GATK` for variant calling, and `FastQC` for quality control, for example. Written in languages ranging from C and C++ to Python and Perl, these tools also work with a variety of file formats, including FASTQ, SAM/BAM, and VCF. For large analyses that must be reproducible, workflow engines such as [Nextflow](https://www.nextflow.io/) and [Snakemake](https://snakemake.readthedocs.io/) often bring these separate tools together through scripts and containers (Docker or Singularity). One reason is that bioinformatics software is developed and maintained by research groups large and small all over the world.
 
-<!-- illustration: octopus juggling bioinformatics tool icons -->
+![](octopus.png){fig-alt="An octopus character juggling bioinformatics tool icons in each of its arms."}
 
 ::: {.logo-row}
 ![](nextflow-logo.png)
-![](snakemake-logo.svg)
+![](snakemake-logo.png)
 :::
 
 By contrast, the model-training stage of deep learning is usually more cohesive. Frameworks such as `PyTorch` and `TensorFlow` provide a relatively unified programming environment: data loading, the forward pass, loss computation, backpropagation, and optimizer updates can all happen in the same codebase. There is no need to write an intermediate file and invoke a separate external program at every step. One reason is that `PyTorch` and `TensorFlow` are developed and maintained by large companies such as Meta and Google.
@@ -50,7 +42,7 @@ Although deep learning does not always need a workflow engine to connect a colle
 
 ## One Workflow to Rule Them All?
 
-<!-- illustration: crown atop a small stacked "castle" of building blocks -->
+![](one-ring.png){fig-alt="A crown atop a small stacked castle of building blocks."}
 
 ::: {.callout-note appearance="simple"}
 To be fair, standards start with good intentions. Each promises to bring order to a fragmented field. It is a little like the ambition behind Tolkien's One Ring: one ring to rule them all. Yet every new standard can become another little kingdom, complete with its own rules and followers. Each would like developers to enter its orbit, but reality is less accommodating. When one standard disappoints, another appears. The race to standardize can end in a proliferation of standards. Workflow languages alone now include Snakemake, Nextflow, CWL, and WDL.
@@ -58,16 +50,11 @@ To be fair, standards start with good intentions. Each promises to bring order t
 
 Here is the kind of task-dependency graph a workflow engine like Snakemake builds and runs -- two samples, each moving through alignment, sorting, and indexing independently:
 
-```{mermaid}
-%%| fig-cap: "A task-dependency graph in the style of the official Snakemake tutorial."
-flowchart TD
-    A1["bwa_map<br/>sample: A"] --> B1["samtools_sort"] --> C1["samtools_index"]
-    A2["bwa_map<br/>sample: B"] --> B2["samtools_sort"] --> C2["samtools_index"]
-```
+![](dag-figure.png){fig-alt="A task-dependency graph: two parallel chains, bwa_map to samtools_sort to samtools_index, for sample A and sample B."}
 
 ## Back to Basics
 
-<!-- illustration: terminal character with a wrench -->
+![](terminal-wrench.png){fig-alt="A terminal-window character fixing a cable connection with a wrench."}
 
 What is the most basic language for invoking bioinformatics tools? The shell on Linux and other Unix-like systems -- most often Bash.
 
