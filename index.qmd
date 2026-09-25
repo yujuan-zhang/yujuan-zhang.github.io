@@ -6,15 +6,15 @@ about:
   template: trestles
   image-shape: round
   links:
-    - text: iPlatform1
-      href: https://luadtx.stoichioomics.com
-    - text: GScholar
-      icon: mortarboard-fill
-      href: https://scholar.google.com/citations?user=CdA1HhMAAAAJ&hl=en
     - text: GitHub
       icon: github
       href: https://github.com/yujuan-zhang
-    - text: iPlatform2
+    - text: GScholar
+      icon: mortarboard-fill
+      href: https://scholar.google.com/citations?user=CdA1HhMAAAAJ&hl=en
+    - text: Cancer Genomics
+      href: https://luadtx.stoichioomics.com
+    - text: Single-cell Annotation
       href: https://singlecell-ai.streamlit.app/
     - text: Email
       icon: envelope

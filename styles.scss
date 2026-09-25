@@ -52,3 +52,31 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
   h2 { font-size: 1.3125rem; }       // 21px
   h3 { font-size: 1.125rem; }        // 18px
 }
+
+// "X min read" -- inserted by blog/_reading-time.lua as the first block
+// of every blog post body, right under the title/subtitle/date Quarto
+// renders from metadata.
+.reading-time {
+  font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: -0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+// Side-by-side project logos in a post (e.g. Nextflow + Snakemake) --
+// without this, wildly different source aspect ratios (one very wide and
+// short, one closer to square) make a plain layout-ncol grid look
+// lopsided. Caps both to the same height and vertically centers them so
+// they read as a matched pair regardless of their native proportions.
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  margin: 1.5rem 0;
+  img {
+    height: 70px;
+    width: auto;
+  }
+}

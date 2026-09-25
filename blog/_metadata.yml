@@ -1,7 +1,9 @@
-# Applies to every post under blog/ -- comments enabled site-wide for the
-# blog only (not Home/Awards/Projects/Publications). Values below are from
-# giscus.app after enabling Discussions + installing the giscus GitHub App
-# on yujuan-zhang/yujuan-zhang.github.io.
+# Applies to every post under blog/ -- comments + reading time enabled
+# site-wide for the blog only (not Home/Awards/Projects/Publications).
+# Comments values are from giscus.app after enabling Discussions +
+# installing the giscus GitHub App on yujuan-zhang/yujuan-zhang.github.io.
+filters:
+  - _reading-time.lua
 comments:
   giscus:
     repo: yujuan-zhang/yujuan-zhang.github.io
