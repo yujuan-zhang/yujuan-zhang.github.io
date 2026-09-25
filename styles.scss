@@ -75,6 +75,42 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
   margin-right: 0.35em;
 }
 
+// Share-icon row -- the second line under the title, right below
+// .post-meta-line. Links are built client-side in blog/_post-meta.html
+// from the page's real URL/title so they work identically on localhost
+// and the published site.
+.post-share-row {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0 0 1.5rem 0;
+}
+.post-share-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #aebfd1;
+  color: #fff !important;
+  font-size: 0.95rem;
+  text-decoration: none;
+  // Reset for the copy-link <button> among these -- everything else here
+  // is an <a>.
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.post-share-icon:hover {
+  background: $primary;
+  transform: translateY(-2px);
+  color: #fff !important;
+}
+.post-share-icon.post-share-copied {
+  background: #3a9d5d;
+}
+
 // Decorative post illustrations (octopus, one-ring, terminal-wrench) came
 // out of the source PDF at full-bleed page width (1536x1024), which reads
 // as oversized once dropped into a 900px-wide blog column. Capped, centered,
@@ -82,12 +118,47 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
 // accent between paragraphs rather than dominating the page.
 .illustration {
   display: block;
-  max-width: 200px;
+  max-width: 320px;
   width: 100%;
   height: auto;
-  margin: 1.5rem auto;
-  border-radius: 14px;
+  margin: 1.75rem auto;
+  border-radius: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+// "Blog" is the entry point new visitors should notice first, so it gets
+// a badge treatment instead of a plain nav-link -- a warm gradient pill
+// (chosen to pop against the navy navbar) with a lightning-bolt icon
+// (added via `icon: lightning-charge-fill` in _quarto.yml's navbar
+// config) and a slow pulse so it reads as "look here" without being a
+// distracting flashing banner. Targeted by href rather than a custom
+// class since Quarto's navbar template doesn't expose one per-item.
+.navbar-nav .nav-link[href$="blog.html"] {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #ffc94d, #ff8c42);
+  color: #2a1a00 !important;
+  font-weight: 700;
+  padding: 0.3rem 0.85rem !important;
+  border-radius: 999px;
+  margin: 0 0.15rem;
+  box-shadow: 0 2px 8px rgba(255, 140, 66, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  animation: blog-nav-pulse 2.5s ease-in-out infinite;
+}
+.navbar-nav .nav-link[href$="blog.html"] i.bi {
+  color: #2a1a00;
+  margin-right: 0.35em;
+}
+.navbar-nav .nav-link[href$="blog.html"]:hover {
+  color: #2a1a00 !important;
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 3px 14px rgba(255, 140, 66, 0.75);
+  animation-play-state: paused;
+}
+@keyframes blog-nav-pulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(255, 140, 66, 0.5); }
+  50% { box-shadow: 0 2px 16px rgba(255, 140, 66, 0.9); }
 }
 
 // Side-by-side project logos in a post (e.g. Nextflow + Snakemake) --

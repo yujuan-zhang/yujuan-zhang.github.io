@@ -26,6 +26,7 @@ website:
         text: Publications
       - href: blog.qmd
         text: Blog
+        icon: lightning-charge-fill
     right:
       - icon: github
         href: https://github.com/yujuan-zhang
