@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-09-25">
+<meta name="description" content="Bioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.">
 
-<title>Projects – Yujuan Zhang, PhD</title>
+<title>Workflow Management in Bioinformatics and Deep Learning – Yujuan Zhang, PhD</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,24 +31,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/favicon/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b5a75d3d28ad88d7f0947acee73e3ce9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b5a75d3d28ad88d7f0947acee73e3ce9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -85,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Yujuan Zhang, PhD</span>
     </a>
   </div>
@@ -96,23 +101,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./awards.html"> 
+    <a class="nav-link" href="../../awards.html"> 
 <span class="menu-text">Awards</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./projects.html" aria-current="page"> 
+    <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./talks_pubs.html"> 
+    <a class="nav-link" href="../../talks_pubs.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -148,9 +153,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bioai" id="toc-bioai" class="nav-link active" data-scroll-target="#bioai">BioAI</a></li>
-  <li><a href="#biosynthesis-bioai" id="toc-biosynthesis-bioai" class="nav-link" data-scroll-target="#biosynthesis-bioai">BioSynthesis + BioAI</a></li>
-  <li><a href="#kaggle-competitions" id="toc-kaggle-competitions" class="nav-link" data-scroll-target="#kaggle-competitions">Kaggle Competitions</a></li>
+  <li><a href="#worlds-apart-in-workflow-management" id="toc-worlds-apart-in-workflow-management" class="nav-link active" data-scroll-target="#worlds-apart-in-workflow-management">Worlds Apart in Workflow Management</a>
+  <ul class="collapse">
+  <li><a href="#what-does-standardization-look-like-in-deep-learning" id="toc-what-does-standardization-look-like-in-deep-learning" class="nav-link" data-scroll-target="#what-does-standardization-look-like-in-deep-learning">What Does Standardization Look Like in Deep Learning?</a></li>
+  </ul></li>
+  <li><a href="#one-workflow-to-rule-them-all" id="toc-one-workflow-to-rule-them-all" class="nav-link" data-scroll-target="#one-workflow-to-rule-them-all">One Workflow to Rule Them All?</a></li>
+  <li><a href="#back-to-basics" id="toc-back-to-basics" class="nav-link" data-scroll-target="#back-to-basics">Back to Basics</a></li>
   </ul>
 </nav>
     </div>
@@ -159,15 +167,30 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
-<p class="subtitle lead">BioAI + Biosynthesis + Kaggle</p>
-</div>
+<h1 class="title">Workflow Management in Bioinformatics and Deep Learning</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">deep-learning</div>
+    <div class="quarto-category">workflow</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Bioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 25, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -177,35 +200,84 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="bioai" class="level2">
-<h2 class="anchored" data-anchor-id="bioai">BioAI</h2>
-<p><strong>Interpretable Protein LLMs for Ubiquitination Prediction</strong> Built an ESM2-centered pipeline linking representation extraction, dimensionality reduction, and prediction. Developed interpretable models using embedding-based interpretation and attention-based analysis; contributed to code, data processing, and manuscripts.</p>
-<p><img src="images/img_projects/BioAI-1.png" class="img-fluid"></p>
-<p><strong>Graph AI for Predicting Drug-Disease Links (Drug Repositioning)</strong> Built a multi-view heterogeneous GNN to integrate noisy similarity networks and meta-paths for drug-disease association prediction. Improved robustness via contrastive learning; led implementation, benchmarking, and manuscript preparation.</p>
-<p><img src="images/img_projects/BioAI-2.png" class="img-fluid"></p>
-<p><strong>Multi-Omics for Cancer Biomarker Discovery</strong> Performed integrative analysis of WGS, RNA-seq, antibody-based protein profiling, and clinical metadata to support biomarker discovery and cross-cohort assessment. Contributed across data preprocessing, QC, statistical analysis, and result interpretation.</p>
-<p><img src="images/img_projects/BioAI-3.png" class="img-fluid"></p>
-<p><strong>Integrative Multi-Omics in the Non-model Malaria Vector (<em>Anopheles sinensis</em>)</strong> Generated a de novo genome assembly and analyzed gene families associated with hematophagy and disease transmission. Integrated transcriptome, microRNA, metagenome, and resequencing data from pyrethroid-susceptible/resistant populations to infer resistance mechanisms (variants, selection, regulation, temporal expression); contributed end-to-end.</p>
-<p><img src="images/img_projects/BioAI-4.png" class="img-fluid"></p>
-</section>
-<section id="biosynthesis-bioai" class="level2">
-<h2 class="anchored" data-anchor-id="biosynthesis-bioai">BioSynthesis + BioAI</h2>
-<p><strong>Screening, Optimization, and Rational Design of Key Enzymes in Microbial Biosynthesis of Capsaicinoids</strong> Applied AI-driven approaches for enzyme screening and optimization in capsaicinoid biosynthesis pathways.</p>
-<p><img src="images/img_projects/Biosynthesis-1.png" class="img-fluid"></p>
-<p><strong>Identification, Optimization, and Rational Design of Functional Components from Pangolin Scales and Porcine Hooves</strong> Utilized computational methods to identify and optimize bioactive components for pharmaceutical applications.</p>
-<p><img src="images/img_projects/Biosynthesis-2.png" class="img-fluid"></p>
-</section>
-<section id="kaggle-competitions" class="level2">
-<h2 class="anchored" data-anchor-id="kaggle-competitions">Kaggle Competitions</h2>
-<p>My Kaggle Profile: <a href="https://www.kaggle.com/yujuanzhangai" class="uri">https://www.kaggle.com/yujuanzhangai</a></p>
+<div class="reading-time">
+5 min read
+</div>
+<!--
+Three illustrations from the source PDF (octopus juggling tools, a crown/
+castle "one ring" scene, a terminal+wrench character) aren't included yet
+-- only the PDF's extracted text was available, not the embedded image
+files themselves. Send them over the same way as the cover images for the
+other posts and they can be dropped in at the marked spots below.
+-->
+<section id="worlds-apart-in-workflow-management" class="level2">
+<h2 class="anchored" data-anchor-id="worlds-apart-in-workflow-management">Worlds Apart in Workflow Management</h2>
+<p>In bioinformatics, analyzing a single sample often involves a dozen or even several dozen independent command-line tools developed by different laboratories: <code>BWA</code> for alignment, <code>samtools</code> for sorting, <code>GATK</code> for variant calling, and <code>FastQC</code> for quality control, for example. Written in languages ranging from C and C++ to Python and Perl, these tools also work with a variety of file formats, including FASTQ, SAM/BAM, and VCF. For large analyses that must be reproducible, workflow engines such as <a href="https://www.nextflow.io/">Nextflow</a> and <a href="https://snakemake.readthedocs.io/">Snakemake</a> often bring these separate tools together through scripts and containers (Docker or Singularity). One reason is that bioinformatics software is developed and maintained by research groups large and small all over the world.</p>
+<!-- illustration: octopus juggling bioinformatics tool icons -->
+<div class="logo-row">
+<p><img src="nextflow-logo.png" class="img-fluid"> <img src="snakemake-logo.svg" class="img-fluid"></p>
+</div>
+<p>By contrast, the model-training stage of deep learning is usually more cohesive. Frameworks such as <code>PyTorch</code> and <code>TensorFlow</code> provide a relatively unified programming environment: data loading, the forward pass, loss computation, backpropagation, and optimizer updates can all happen in the same codebase. There is no need to write an intermediate file and invoke a separate external program at every step. One reason is that <code>PyTorch</code> and <code>TensorFlow</code> are developed and maintained by large companies such as Meta and Google.</p>
+<p><strong>End-to-end programmability</strong>: Data loading (<code>DataLoader</code>), the model’s forward pass (<code>Forward</code>), loss computation (<code>Loss</code>), backpropagation (<code>Backward</code>), and optimizer updates (<code>Optimizer</code>) can flow through a single Python script or framework object, without repeatedly writing intermediate files and calling standalone external binaries.</p>
+<p><strong>A more cohesive model-training workflow</strong>: Bioinformatics pipelines can branch into hundreds or thousands of tool combinations depending on the sequencing platform, reference genome version, and analytical goal (RNA-seq versus ChIP-seq). Deep-learning code, meanwhile, is highly modular: changing a model architecture or loss function may take only a few lines of Python, without requiring Nextflow to orchestrate separate applications.</p>
+<section id="what-does-standardization-look-like-in-deep-learning" class="level3">
+<h3 class="anchored" data-anchor-id="what-does-standardization-look-like-in-deep-learning">What Does Standardization Look Like in Deep Learning?</h3>
+<p>Although deep learning does not always need a workflow engine to connect a collection of standalone tools, it faces its own challenges in experiment management, hyperparameter search, model deployment, and pipeline reproducibility. Different layers of standardization have therefore emerged:</p>
+<p><strong>Lifecycle and experiment tracking</strong> <em>(in the spirit of <a href="https://nf-co.re/">nf-core</a>)</em></p>
 <ul>
-<li><strong>Diabetes Prediction Challenge</strong> - Playground Series - Season 5, Episode 12 (Playground · 4206 Teams)</li>
-<li><strong>CAFA 6 Protein Function Prediction</strong> - Predict the biological function of a protein (Research · 2190 Teams)</li>
-<li><strong>Stanford RNA 3D Folding</strong> - Solve RNA structure prediction, one of biology’s remaining grand challenges (Featured · Code Competition · 1516 Teams)</li>
-<li><strong>Binary Prediction of Poisonous Mushrooms</strong> - Playground Series - Season 4, Episode 8 (Playground · 2422 Teams)</li>
-<li><strong>ISIC 2024 - Skin Cancer Detection with 3D-TBP</strong> - Identify cancers among skin lesions cropped from 3D total body photographs (Research · Code Competition · 2739 Teams)</li>
-<li><strong>NeurIPS 2024 - Predict New Medicines with BELKA</strong> - Predict small molecule-protein interactions for drug discovery (Research · Code Competition)</li>
+<li><strong>MLflow</strong>: Manages the machine-learning lifecycle by recording training parameters, code versions, evaluation metrics, and model weights so that experiments can be reproduced.</li>
+<li><strong>Weights &amp; Biases (W&amp;B)</strong>: A widely used tool in industry and academia for visualizing and tracking experiments, and for comparing performance across training runs.</li>
 </ul>
+<p><strong>Production-scale pipeline orchestration</strong> <em>(the closest parallel to a workflow engine)</em></p>
+<ul>
+<li><strong>Kubeflow</strong>: A Kubernetes-based machine-learning toolkit that can orchestrate data preprocessing, distributed training, model validation, and deployment as a directed acyclic graph (DAG).</li>
+<li><strong>TFX (TensorFlow Extended)</strong>: A production-grade ML platform developed by Google for standardized pipelines covering large-scale data validation, training, and inference.</li>
+</ul>
+<p><strong>Easy reuse and reproducibility</strong> <em>(a research-side analogue to nf-core)</em></p>
+<ul>
+<li><strong>Hugging Face <a href="https://huggingface.co/docs/transformers">Transformers</a> / <a href="https://github.com/huggingface/pytorch-image-models">Timm</a></strong>: In areas such as computer vision and natural language processing, these libraries serve as collections of standard building blocks. Instead of writing every training loop and low-level operation from scratch, you can use packaged models and datasets to assemble a complete workflow.</li>
+</ul>
+</section>
+</section>
+<section id="one-workflow-to-rule-them-all" class="level2">
+<h2 class="anchored" data-anchor-id="one-workflow-to-rule-them-all">One Workflow to Rule Them All?</h2>
+<!-- illustration: crown atop a small stacked "castle" of building blocks -->
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>To be fair, standards start with good intentions. Each promises to bring order to a fragmented field. It is a little like the ambition behind Tolkien’s One Ring: one ring to rule them all. Yet every new standard can become another little kingdom, complete with its own rules and followers. Each would like developers to enter its orbit, but reality is less accommodating. When one standard disappoints, another appears. The race to standardize can end in a proliferation of standards. Workflow languages alone now include Snakemake, Nextflow, CWL, and WDL.</p>
+</div>
+</div>
+</div>
+<p>Here is the kind of task-dependency graph a workflow engine like Snakemake builds and runs – two samples, each moving through alignment, sorting, and indexing independently:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A1["bwa_map&lt;br/&gt;sample: A"] --&gt; B1["samtools_sort"] --&gt; C1["samtools_index"]
+    A2["bwa_map&lt;br/&gt;sample: B"] --&gt; B2["samtools_sort"] --&gt; C2["samtools_index"]
+</pre>
+</div>
+<p></p><figcaption> A task-dependency graph in the style of the official Snakemake tutorial.</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="back-to-basics" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-basics">Back to Basics</h2>
+<!-- illustration: terminal character with a wrench -->
+<p>What is the most basic language for invoking bioinformatics tools? The shell on Linux and other Unix-like systems – most often Bash.</p>
+<p>Why? Because we commonly use the shell to call bioinformatics software on a server. Whatever framework sits above it, an analysis ultimately comes down to concrete tasks: which files go in, which commands run, which parameters are used, and which results come out. That points to two principles for building bioinformatics workflows:</p>
+<ol type="1">
+<li>For a small, one-off analysis, a shell script may be all you need.</li>
+<li>As the workflow grows more complex, Python can handle the logic, or Nextflow or Snakemake can manage the tasks. In either case, the commands each task actually runs and the logs it produces should be easy to inspect.</li>
+</ol>
+<p>These principles also help us judge a workflow framework. A good one manages complexity while keeping what actually runs transparent.</p>
 
 
 </section>
@@ -611,6 +683,35 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
 
 

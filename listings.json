@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/workflow-management/index.html",
       "/blog/my-story/index.html"
     ]
   }
