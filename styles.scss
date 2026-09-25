@@ -53,35 +53,26 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
   h3 { font-size: 1.125rem; }        // 18px
 }
 
-// The "Published" caption above the date -- redundant next to the
-// category tags + reading time row, so it's hidden; the date itself
-// (.quarto-title-meta-contents) is left showing.
-.quarto-title-meta-heading {
-  display: none;
-}
-.quarto-categories {
+// Single-line post metadata (date, reading time, comment count,
+// categories), matching divingintogeneticsandgenomics.com's layout.
+// blog/_post-meta.html builds this element from Quarto's own title-block
+// pieces (which live in separate, non-reorderable DOM subtrees) and hides
+// the originals -- see that file for why this can't be done in CSS alone.
+.post-meta-line {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-}
-
-// "X min read" -- inserted by blog/_reading-time.lua as the first block
-// of every blog post body. blog/_reading-time-move.html then re-parents
-// it into .quarto-categories (site JS can't reorder across the title
-// header's fixed HTML template otherwise), so it reads on the same line
-// as the category tags rather than as its own line further down.
-.reading-time {
+  gap: 0.45em;
+  color: #888;
   font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.85rem;
-  color: #888;
-  margin-top: -0.5rem;
-  margin-bottom: 1.25rem;
+  margin: 0.5rem 0 1.25rem 0;
 }
-.reading-time.reading-time-inline {
-  margin: 0;
-  align-self: center;
-  font-size: 0.65em;
-  text-transform: uppercase;
+.post-meta-dot {
   opacity: 0.6;
-  color: inherit;
+}
+.post-meta-folder-icon {
+  margin-right: 0.35em;
 }
 
 // Decorative post illustrations (octopus, one-ring, terminal-wrench) came
@@ -91,11 +82,11 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
 // accent between paragraphs rather than dominating the page.
 .illustration {
   display: block;
-  max-width: 320px;
+  max-width: 200px;
   width: 100%;
   height: auto;
-  margin: 1.75rem auto;
-  border-radius: 16px;
+  margin: 1.5rem auto;
+  border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 

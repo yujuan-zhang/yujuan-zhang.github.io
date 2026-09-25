@@ -6,7 +6,7 @@ filters:
   - _reading-time.lua
 format:
   html:
-    include-after-body: _reading-time-move.html
+    include-after-body: _post-meta.html
 comments:
   giscus:
     repo: yujuan-zhang/yujuan-zhang.github.io
