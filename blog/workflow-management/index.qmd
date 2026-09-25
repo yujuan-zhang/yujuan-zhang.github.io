@@ -9,7 +9,7 @@ description: "Bioinformatics stitches together a dozen independent tools per sam
 
 In bioinformatics, analyzing a single sample often involves a dozen or even several dozen independent command-line tools developed by different laboratories: `BWA` for alignment, `samtools` for sorting, `GATK` for variant calling, and `FastQC` for quality control, for example. Written in languages ranging from C and C++ to Python and Perl, these tools also work with a variety of file formats, including FASTQ, SAM/BAM, and VCF. For large analyses that must be reproducible, workflow engines such as [Nextflow](https://www.nextflow.io/) and [Snakemake](https://snakemake.readthedocs.io/) often bring these separate tools together through scripts and containers (Docker or Singularity). One reason is that bioinformatics software is developed and maintained by research groups large and small all over the world.
 
-![](octopus.png){fig-alt="An octopus character juggling bioinformatics tool icons in each of its arms."}
+![](octopus.png){.illustration fig-alt="An octopus character juggling bioinformatics tool icons in each of its arms."}
 
 ::: {.logo-row}
 ![](nextflow-logo.png)
@@ -42,7 +42,7 @@ Although deep learning does not always need a workflow engine to connect a colle
 
 ## One Workflow to Rule Them All?
 
-![](one-ring.png){fig-alt="A crown atop a small stacked castle of building blocks."}
+![](one-ring.png){.illustration fig-alt="A crown atop a small stacked castle of building blocks."}
 
 ::: {.callout-note appearance="simple"}
 To be fair, standards start with good intentions. Each promises to bring order to a fragmented field. It is a little like the ambition behind Tolkien's One Ring: one ring to rule them all. Yet every new standard can become another little kingdom, complete with its own rules and followers. Each would like developers to enter its orbit, but reality is less accommodating. When one standard disappoints, another appears. The race to standardize can end in a proliferation of standards. Workflow languages alone now include Snakemake, Nextflow, CWL, and WDL.
@@ -54,7 +54,7 @@ Here is the kind of task-dependency graph a workflow engine like Snakemake build
 
 ## Back to Basics
 
-![](terminal-wrench.png){fig-alt="A terminal-window character fixing a cable connection with a wrench."}
+![](terminal-wrench.png){.illustration fig-alt="A terminal-window character fixing a cable connection with a wrench."}
 
 What is the most basic language for invoking bioinformatics tools? The shell on Linux and other Unix-like systems -- most often Bash.
 
