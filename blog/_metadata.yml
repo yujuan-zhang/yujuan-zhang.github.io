@@ -4,6 +4,9 @@
 # installing the giscus GitHub App on yujuan-zhang/yujuan-zhang.github.io.
 filters:
   - _reading-time.lua
+format:
+  html:
+    include-after-body: _reading-time-move.html
 comments:
   giscus:
     repo: yujuan-zhang/yujuan-zhang.github.io

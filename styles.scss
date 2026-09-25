@@ -53,15 +53,35 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
   h3 { font-size: 1.125rem; }        // 18px
 }
 
+// The "Published" caption above the date -- redundant next to the
+// category tags + reading time row, so it's hidden; the date itself
+// (.quarto-title-meta-contents) is left showing.
+.quarto-title-meta-heading {
+  display: none;
+}
+.quarto-categories {
+  align-items: center;
+}
+
 // "X min read" -- inserted by blog/_reading-time.lua as the first block
-// of every blog post body, right under the title/subtitle/date Quarto
-// renders from metadata.
+// of every blog post body. blog/_reading-time-move.html then re-parents
+// it into .quarto-categories (site JS can't reorder across the title
+// header's fixed HTML template otherwise), so it reads on the same line
+// as the category tags rather than as its own line further down.
 .reading-time {
   font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.85rem;
   color: #888;
   margin-top: -0.5rem;
   margin-bottom: 1.25rem;
+}
+.reading-time.reading-time-inline {
+  margin: 0;
+  align-self: center;
+  font-size: 0.65em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  color: inherit;
 }
 
 // Side-by-side project logos in a post (e.g. Nextflow + Snakemake) --
