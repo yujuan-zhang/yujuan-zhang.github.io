@@ -76,9 +76,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -203,19 +200,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="reading-time">
 5 min read
 </div>
-<!--
-Three illustrations from the source PDF (octopus juggling tools, a crown/
-castle "one ring" scene, a terminal+wrench character) aren't included yet
--- only the PDF's extracted text was available, not the embedded image
-files themselves. Send them over the same way as the cover images for the
-other posts and they can be dropped in at the marked spots below.
--->
 <section id="worlds-apart-in-workflow-management" class="level2">
 <h2 class="anchored" data-anchor-id="worlds-apart-in-workflow-management">Worlds Apart in Workflow Management</h2>
 <p>In bioinformatics, analyzing a single sample often involves a dozen or even several dozen independent command-line tools developed by different laboratories: <code>BWA</code> for alignment, <code>samtools</code> for sorting, <code>GATK</code> for variant calling, and <code>FastQC</code> for quality control, for example. Written in languages ranging from C and C++ to Python and Perl, these tools also work with a variety of file formats, including FASTQ, SAM/BAM, and VCF. For large analyses that must be reproducible, workflow engines such as <a href="https://www.nextflow.io/">Nextflow</a> and <a href="https://snakemake.readthedocs.io/">Snakemake</a> often bring these separate tools together through scripts and containers (Docker or Singularity). One reason is that bioinformatics software is developed and maintained by research groups large and small all over the world.</p>
-<!-- illustration: octopus juggling bioinformatics tool icons -->
+<p><img src="octopus.png" class="img-fluid" alt="An octopus character juggling bioinformatics tool icons in each of its arms."></p>
 <div class="logo-row">
-<p><img src="nextflow-logo.png" class="img-fluid"> <img src="snakemake-logo.svg" class="img-fluid"></p>
+<p><img src="nextflow-logo.png" class="img-fluid"> <img src="snakemake-logo.png" class="img-fluid"></p>
 </div>
 <p>By contrast, the model-training stage of deep learning is usually more cohesive. Frameworks such as <code>PyTorch</code> and <code>TensorFlow</code> provide a relatively unified programming environment: data loading, the forward pass, loss computation, backpropagation, and optimizer updates can all happen in the same codebase. There is no need to write an intermediate file and invoke a separate external program at every step. One reason is that <code>PyTorch</code> and <code>TensorFlow</code> are developed and maintained by large companies such as Meta and Google.</p>
 <p><strong>End-to-end programmability</strong>: Data loading (<code>DataLoader</code>), the model’s forward pass (<code>Forward</code>), loss computation (<code>Loss</code>), backpropagation (<code>Backward</code>), and optimizer updates (<code>Optimizer</code>) can flow through a single Python script or framework object, without repeatedly writing intermediate files and calling standalone external binaries.</p>
@@ -241,7 +231,7 @@ other posts and they can be dropped in at the marked spots below.
 </section>
 <section id="one-workflow-to-rule-them-all" class="level2">
 <h2 class="anchored" data-anchor-id="one-workflow-to-rule-them-all">One Workflow to Rule Them All?</h2>
-<!-- illustration: crown atop a small stacked "castle" of building blocks -->
+<p><img src="one-ring.png" class="img-fluid" alt="A crown atop a small stacked castle of building blocks."></p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -253,24 +243,11 @@ other posts and they can be dropped in at the marked spots below.
 </div>
 </div>
 <p>Here is the kind of task-dependency graph a workflow engine like Snakemake builds and runs – two samples, each moving through alignment, sorting, and indexing independently:</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A1["bwa_map&lt;br/&gt;sample: A"] --&gt; B1["samtools_sort"] --&gt; C1["samtools_index"]
-    A2["bwa_map&lt;br/&gt;sample: B"] --&gt; B2["samtools_sort"] --&gt; C2["samtools_index"]
-</pre>
-</div>
-<p></p><figcaption> A task-dependency graph in the style of the official Snakemake tutorial.</figcaption> </figure><p></p>
-</div>
-</div>
-</div>
+<p><img src="dag-figure.png" class="img-fluid" alt="A task-dependency graph: two parallel chains, bwa_map to samtools_sort to samtools_index, for sample A and sample B."></p>
 </section>
 <section id="back-to-basics" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-basics">Back to Basics</h2>
-<!-- illustration: terminal character with a wrench -->
+<p><img src="terminal-wrench.png" class="img-fluid" alt="A terminal-window character fixing a cable connection with a wrench."></p>
 <p>What is the most basic language for invoking bioinformatics tools? The shell on Linux and other Unix-like systems – most often Bash.</p>
 <p>Why? Because we commonly use the shell to call bioinformatics software on a server. Whatever framework sits above it, an analysis ultimately comes down to concrete tasks: which files go in, which commands run, which parameters are used, and which results come out. That points to two principles for building bioinformatics workflows:</p>
 <ol type="1">
