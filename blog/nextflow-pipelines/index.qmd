@@ -12,6 +12,8 @@ Running an RNA-seq pipeline once is no longer the hard part. The real test is ru
 
 That is why Nextflow is becoming an essential skill alongside R and Python. A pipeline that works only on your laptop is a fragile experiment. A workflow that others can run and reproduce is research they can build on.
 
+Achieving reproducible workflows through **Docker**, **Singularity**, and **Conda**.
+
 Imagine being able to answer "yes" to all three questions:
 
 - Can I process 500 RNA-seq samples with the same workflow?
