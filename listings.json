@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/nextflow-pipelines/index.html",
       "/blog/workflow-management/index.html",
       "/blog/my-story/index.html"
     ]
