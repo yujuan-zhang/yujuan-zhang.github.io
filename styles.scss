@@ -53,6 +53,38 @@ $headings-font-family: "Source Sans Pro", -apple-system, "system-ui", "Segoe UI"
   h3 { font-size: 1.125rem; }        // 18px
 }
 
+// Blog listing card titles share the same h3 rule above (18px), sized
+// for an in-body subheading -- too quiet for the one thing a list of
+// posts most needs to make scannable. Bumped up and darkened
+// independently of ordinary h3s. Selector needs to match #quarto-content
+// h3's specificity (id + element) above, or that rule wins instead.
+#quarto-content h3.listing-title {
+  font-size: 1.375rem;   // 22px
+  font-weight: 700;
+}
+.listing-title a {
+  color: $headings-color;
+  text-decoration: none;
+}
+.listing-title a:hover {
+  color: $primary;
+  text-decoration: underline;
+}
+
+// Blog listing thumbnails come from whichever image a post happens to
+// use -- a wide infographic, a near-square character illustration, a
+// 16:9 cover photo -- so they arrive in whatever aspect ratio that
+// source image has. Bootstrap's own .thumbnail img already sets
+// object-fit: cover, but never constrains a height for it to crop
+// against, so each thumbnail just renders at its own native ratio and
+// the row of cards ends up mismatched in height. Fixing every thumbnail
+// to one ratio here lets cover actually crop them to match.
+.thumbnail img {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  border-radius: 8px;
+}
+
 // Single-line post metadata (date, reading time, comment count,
 // categories), matching divingintogeneticsandgenomics.com's layout.
 // blog/_post-meta.html builds this element from Quarto's own title-block
