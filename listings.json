@@ -2,10 +2,10 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/nf-core-customize/index.html",
-      "/blog/nextflow-pipelines/index.html",
-      "/blog/workflow-management/index.html",
-      "/blog/my-story/index.html"
+      "/blog/260928nf-core-customize/index.html",
+      "/blog/260925nextflow-pipelines/index.html",
+      "/blog/260925workflow-management/index.html",
+      "/blog/260924my-story/index.html"
     ]
   }
 ]
