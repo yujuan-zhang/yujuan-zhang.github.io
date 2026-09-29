@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Swapping a pipeline step</title>
+<desc id="desc">A researcher swaps the default scissors module for a custom wrench module in a pipeline, while two small robots react with surprise and spill their coffee.</desc>
+<rect width="960" height="540" fill="#fffaf0"/>
+<rect x="3" y="3" width="954" height="534" fill="none" stroke="#262b2c" stroke-width="4"/>
+
+<!-- pipeline track -->
+<g stroke="#262b2c" stroke-width="4" fill="none">
+  <path d="M120 300 H840"/>
+</g>
+
+<!-- step boxes -->
+<g font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">
+  <g>
+    <rect x="90" y="270" width="110" height="60" rx="10" fill="#cfe8e0" stroke="#262b2c" stroke-width="3"/>
+    <text x="145" y="305" fill="#262b2c">Input</text>
+  </g>
+  <g>
+    <rect x="290" y="270" width="110" height="60" rx="10" fill="#f2c95c" stroke="#262b2c" stroke-width="3"/>
+    <text x="345" y="305" fill="#262b2c">QC</text>
+  </g>
+  <!-- the swappable step -->
+  <g id="swapStep">
+    <rect x="490" y="255" width="130" height="90" rx="12" fill="#ffe3d8" stroke="#dc5936" stroke-width="4"/>
+    <text x="555" y="315" fill="#dc5936" font-size="14">this step</text>
+    <g id="oldTool" transform="translate(555,282)">
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.35;0.45;0.95;1" dur="3.2s" repeatCount="indefinite"/>
+      <g stroke="#262b2c" stroke-width="4" fill="none" stroke-linecap="round">
+        <circle cx="-8" cy="8" r="6" fill="#fffaf0"/>
+        <circle cx="8" cy="8" r="6" fill="#fffaf0"/>
+        <path d="M-8 8 L10 -10 M8 8 L-10 -10"/>
+      </g>
+    </g>
+    <g id="newTool" transform="translate(555,282)" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.35;0.5;0.95;1" dur="3.2s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="rotate" values="0 555 282;-25 555 282;10 555 282;0 555 282;0 555 282" keyTimes="0;0.5;0.62;0.7;1" dur="3.2s" additive="sum" repeatCount="indefinite"/>
+      <g stroke="#262b2c" stroke-width="4" fill="#5c9ef2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-14 -12 L-4 -12 L-4 -4 L14 14 L6 22 L-12 4 L-12 -4 Z"/>
+      </g>
+    </g>
+  </g>
+  <g>
+    <rect x="710" y="270" width="130" height="60" rx="10" fill="#cfe8e0" stroke="#262b2c" stroke-width="3"/>
+    <text x="775" y="305" fill="#262b2c">Output</text>
+  </g>
+</g>
+
+<!-- arrows -->
+<g stroke="#262b2c" stroke-width="4" fill="none" marker-end="url(#arrow)">
+  <path d="M200 300 H285"/>
+  <path d="M400 300 H485"/>
+  <path d="M620 300 H705"/>
+</g>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+    <path d="M0 0 L10 5 L0 10 Z" fill="#262b2c"/>
+  </marker>
+</defs>
+
+<!-- CUT / WHAT bubbles -->
+<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.36;0.46;0.56;1" dur="3.2s" repeatCount="indefinite"/>
+  <path d="M600 90 Q590 90 590 100 L590 150 Q590 160 600 160 L625 160 L615 185 L655 160 L790 160 Q800 160 800 150 L800 100 Q800 90 790 90 Z" fill="#fffaf0" stroke="#262b2c" stroke-width="4"/>
+  <text x="605" y="132" font-family="Arial, sans-serif" font-size="24" font-weight="800" fill="#dc5936">CUT! NEW PLAN!</text>
+</g>
+<g opacity="0">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.5;0.6;0.85;0.93;1" dur="3.2s" repeatCount="indefinite"/>
+  <path d="M470 90 Q460 90 460 100 L460 140 Q460 150 470 150 L484 150 L478 168 L505 150 L560 150 Q570 150 570 140 L570 100 Q570 90 560 90 Z" fill="#fffaf0" stroke="#262b2c" stroke-width="4"/>
+  <text x="480" y="127" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#ed6033">WHAT?!</text>
+</g>
+
+<!-- robot 1 -->
+<g id="robot1" transform="translate(150,380)">
+  <rect x="-28" y="-10" width="56" height="46" rx="8" fill="#b9c4c8" stroke="#262b2c" stroke-width="3"/>
+  <circle cx="0" cy="-30" r="20" fill="#dfe6e8" stroke="#262b2c" stroke-width="3"/>
+  <circle cx="-8" cy="-32" r="4" fill="#262b2c"/>
+  <circle cx="8" cy="-32" r="4" fill="#262b2c"/>
+  <path d="M-8 -20 Q0 -14 8 -20" stroke="#262b2c" stroke-width="3" fill="none"/>
+  <rect x="-3" y="-48" width="6" height="14" fill="#262b2c"/>
+  <circle cx="0" cy="-52" r="4" fill="#dc5936"/>
+  <!-- coffee cup -->
+  <g id="cup1" transform="translate(38,10)">
+    <animateTransform attributeName="transform" type="rotate" values="0 38 10;0 38 10;70 38 22;70 38 22;0 38 10" keyTimes="0;0.35;0.5;0.85;1" dur="3.2s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-8" y="-8" width="16" height="16" rx="2" fill="#fffaf0" stroke="#262b2c" stroke-width="2.5"/>
+    <path d="M8 -4 Q16 -4 16 2 Q16 8 8 8" stroke="#262b2c" stroke-width="2.5" fill="none"/>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.5;0.6;0.9;1" dur="3.2s" repeatCount="indefinite"/>
+    <path d="M42 24 Q48 34 44 44 Q40 34 46 24" fill="#a9754a"/>
+  </g>
+</g>
+
+<!-- robot 2 -->
+<g id="robot2" transform="translate(870,390)">
+  <rect x="-26" y="-8" width="52" height="42" rx="8" fill="#d8c9e8" stroke="#262b2c" stroke-width="3"/>
+  <circle cx="0" cy="-26" r="18" fill="#ece2f5" stroke="#262b2c" stroke-width="3"/>
+  <circle cx="-7" cy="-28" r="4" fill="#262b2c"/>
+  <circle cx="7" cy="-28" r="4" fill="#262b2c"/>
+  <path d="M-7 -16 Q0 -22 7 -16" stroke="#262b2c" stroke-width="3" fill="none"/>
+  <rect x="-3" y="-42" width="6" height="12" fill="#262b2c"/>
+  <circle cx="0" cy="-46" r="4" fill="#5c9ef2"/>
+</g>
+
+<text x="480" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#666" font-style="italic">Swap the tool in one step -- the rest of the pipeline keeps running.</text>
+</svg>
