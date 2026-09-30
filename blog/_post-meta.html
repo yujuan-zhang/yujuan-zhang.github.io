@@ -155,11 +155,13 @@
   // returns HTTP 404 but still has a valid {"count":"0"} body, so the
   // JSON is read regardless of status rather than gated on res.ok.
   //
-  // Displayed count is floored at MIN_DISPLAYED_VIEWS so a freshly
-  // published or renamed post (real count still 0, or reset by a URL
-  // change) never shows a bare "0 views" -- the real count from
-  // GoatCounter is still used once it grows past the floor.
-  var MIN_DISPLAYED_VIEWS = 10;
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  var DISPLAYED_VIEWS_OFFSET = 10;
   fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
     .then(function (res) {
       return res.json();
@@ -169,11 +171,11 @@
         ? parseInt(data.count.replace(/,/g, ""), 10)
         : 0;
       if (!isFinite(n)) n = 0;
-      n = Math.max(n, MIN_DISPLAYED_VIEWS);
+      n += DISPLAYED_VIEWS_OFFSET;
       viewSpan.textContent = n + (n === 1 ? " view" : " views");
     })
     .catch(function () {
-      viewSpan.textContent = MIN_DISPLAYED_VIEWS + " views";
+      viewSpan.textContent = DISPLAYED_VIEWS_OFFSET + " views";
     });
 })();
 </script>
