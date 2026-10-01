@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-09-30">
 
-<title>Nextflow: Local Server, Cluster, or Cloud computation? – Yujuan Zhang, PhD</title>
+<title>RNA-seq plots by R – Yujuan Zhang, PhD</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -146,25 +181,18 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#putting-it-all-together-nextflow.config" id="toc-putting-it-all-together-nextflow.config" class="nav-link active" data-scroll-target="#putting-it-all-together-nextflow.config">Putting It All Together: <code>nextflow.config</code></a></li>
-  <li><a href="#closing-section" id="toc-closing-section" class="nav-link" data-scroll-target="#closing-section">Closing Section</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Nextflow: Local Server, Cluster, or Cloud computation?</h1>
+<h1 class="title">RNA-seq plots by R</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">cloud computation</div>
-    <div class="quarto-category">bioinforatics</div>
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">r</div>
   </div>
   </div>
 
@@ -189,83 +217,23 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="reading-time">
-3 min read
+2 min read
 </div>
-<p><img src="blog5-aws.jpeg" class="img-fluid"></p>
-<p>Nextflow shines when it comes to resource management, natively supporting everything from your local machine and local HPC clusters to top-tier cloud platforms. You can easily tailor your compute environment to match your specific project scale. For <strong>small-scale tasks</strong>, a local setup does the trick. Just install Nextflow on your machine, configure your environment variables, and you’re good to go. For <strong>heavy workloads</strong>, scaling out to a compute cluster is the way to go. Nextflow seamlessly integrates with popular schedulers like Slurm, SGE, and LSF. All you need to do is specify the scheduler and its parameters in your configuration file. Tip: You can check out nf-core/configs, where the community has already shared production-ready setups for 158 institutional clusters. If you want to tap into <strong>cloud computing</strong> for its limitless scalability and elastic provisioning, Nextflow has you covered. You can spin up VMs on AWS or GCP, install Nextflow, and configure your cloud credentials and resource types. Here is a quick walkthrough of how it works on <strong>AWS</strong>: <strong>• Step 1</strong>: Launch an EC2 instance via the AWS Console and install Nextflow. <strong>• Step 2</strong>: Create an S3 bucket to handle your input datasets and pipeline outputs. <strong>• Step 3</strong>: Drop your AWS credentials (Access Key &amp; Secret Key), preferred EC2 instance types, and S3 bucket details into your Nextflow config. <strong>• Step 4</strong>: Fire up your pipeline. Nextflow will automatically spin up compute resources on AWS, dispatch tasks across instances, and dump the final results straight back into your S3 bucket once finished.</p>
-<p>Currently, Nextflow’s official community plugins only support native integration with <strong>AWS</strong> and <strong>GCP</strong>, which is a bit of a bummer for users based in China. On top of that, for biotech companies unfamiliar with cloud resource management, handling the initial setup and day-to-day DevOps for Nextflow can be a real headache. <strong>But look at the bright side—the payoffs for enterprises are massive</strong>. It completely takes the burden off your IT operations team, keeping them out of the weeds of complex infrastructure management. More importantly, it dramatically shrinks the turnaround time from “raw sequencing data” to “actionable insights.” By offloading the heavy lifting of infrastructure, your core scientific teams can focus entirely on what they do best: biological innovation and breakthroughs, driving true cost-efficiency in a highly competitive market.</p>
-<hr>
-<section id="putting-it-all-together-nextflow.config" class="level3">
-<h3 class="anchored" data-anchor-id="putting-it-all-together-nextflow.config">Putting It All Together: <code>nextflow.config</code></h3>
-<p>To switch between infrastructures, you don’t need to rewrite a single line of your pipeline logic. Nextflow allows you to define different environments using <code>profiles</code> in your central config file:</p>
-<pre class="nextflow"><code>// 1. Global Parameter Defaults
-params {
-    input  = "./data/*.fastq.gz"
-    outdir = "./results"
-}
-
-// 2. Environment Profiles (Local, Cluster, AWS)
-profiles {
-
-    // Scenario 1: Local Server (For lightweight testing and debugging)
-    local_server {
-        process {
-            executor = 'local'
-            cpus     = 2
-            memory   = '8 GB'
-        }
-        docker.enabled = true
-    }
-
-    // Scenario 2: HPC Cluster (For large-scale tasks on existing institutional hardware)
-    hpc_cluster {
-        process {
-            executor = 'slurm' // Can be changed to sge, lsf, etc.
-            queue    = 'compute'
-            cpus     = 8
-            memory   = '32 GB'
-            time     = '12h'
-        }
-        singularity.enabled    = true
-        singularity.autoMounts = true
-    }
-
-    // Scenario 3: AWS Cloud (For massive, elastic, and serverless workflows)
-    aws_cloud {
-        process {
-            executor  = 'awsbatch'
-            queue     = 'nextflow-job-queue'
-            container = 'biocontainers/samtools:v1.17_cv1'
-        }
-        
-        aws {
-            region = 'us-east-1'
-            batch {
-                cliPath = '/home/ec2-user/miniconda/bin/aws'
-            }
-        }
-        
-        // Point data inputs directly to AWS S3
-        params {
-            input  = 's3://my-biotech-bucket/raw-data/*.fastq.gz'
-            outdir = 's3://my-biotech-bucket/results/'
-        }
-        
-        docker.enabled = true
-    }
-}</code></pre>
-</section>
-<section id="closing-section" class="level2">
-<h2 class="anchored" data-anchor-id="closing-section">Closing Section</h2>
-<p>Now, triggering your workflow across different environments is as simple as adding a flag:</p>
-<ul>
-<li><strong>Local testing:</strong> <code>nextflow run main.nf -profile local_server</code></li>
-<li><strong>HPC deployment:</strong> <code>nextflow run main.nf -profile hpc_cluster</code></li>
-<li><strong>AWS cloud scaling:</strong> <code>nextflow run main.nf -profile aws_cloud</code></li>
-</ul>
+<p>Making the same five RNA-seq figures from scratch, every single project, for the hundredth time? Yeah, me too. So I finally sat down and turned the whole mess into one R script that spits out a publication-ready panel figure and doesn’t ask me a single follow-up question.</p>
+<p><img src="combined.png" class="img-fluid"></p>
+<p>Five panels, one dataset, no copy-pasted ggplot incantations: <strong>A</strong> PCA with group ellipses and batch shapes, <strong>B</strong> a sample correlation heatmap that clusters itself, <strong>C</strong> a volcano plot that actually labels the genes worth knowing about, <strong>D</strong> a two-module expression heatmap with side bar charts for flair, and <strong>E</strong> violin plots for the genes everyone’s going to ask about anyway. Patchwork glues them into one A–E composite so nobody has to eyeball five separate PNGs and pretend they form a coherent story.</p>
+<p>The example data is 800 simulated genes across 24 samples — two groups, two batches. Swap in your own <code>expression.csv</code>, <code>samples.csv</code>, and <code>differential_expression.csv</code> and the whole pipeline runs on real numbers instead.</p>
+<p>Running it is embarrassingly simple:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">'ggplot2'</span>, <span class="st">'ggrepel'</span>, <span class="st">'patchwork'</span>, <span class="st">'ragg'</span>, <span class="st">'svglite'</span>, <span class="st">'circlize'</span>),</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="st">'https://cloud.r-project.org'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'BiocManager'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">'ComplexHeatmap'</span>, <span class="at">ask =</span> <span class="cn">FALSE</span>, <span class="at">update =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'run.R'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That’s it. No notebook archaeology, no “wait, which chunk made the heatmap again.” Every plot function also works standalone if you just want one panel for a talk instead of the whole gallery.</p>
+<p>Code’s right here, help yourself: <a href="https://github.com/yujuan-zhang/r-rnaseq-plot-gallery">r-rnaseq-plot-gallery</a></p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script>
