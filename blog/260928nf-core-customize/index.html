@@ -505,6 +505,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   // instead of a bare "0 views" -- but, unlike a floor/max(), every
   // real visit still moves the displayed number, it just starts
   // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
   var DISPLAYED_VIEWS_OFFSET = 10;
   fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
     .then(function (res) {
@@ -519,7 +526,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       viewSpan.textContent = n + (n === 1 ? " view" : " views");
     })
     .catch(function () {
-      viewSpan.textContent = DISPLAYED_VIEWS_OFFSET + " views";
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
     });
 })();
 </script>
