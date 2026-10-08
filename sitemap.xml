@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://yujuan-zhang.github.io/blog/261007scrnaseq/index-chinese.html</loc>
+    <lastmod>2026-10-08T01:37:17.907Z</lastmod>
+  </url>
+  <url>
     <loc>https://yujuan-zhang.github.io/talks_pubs.html</loc>
     <lastmod>2026-09-24T22:11:24.790Z</lastmod>
   </url>
@@ -22,7 +26,7 @@
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/blog.html</loc>
-    <lastmod>2026-09-24T22:11:16.441Z</lastmod>
+    <lastmod>2026-10-08T01:32:17.331Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/awards.html</loc>
@@ -47,5 +51,9 @@
   <url>
     <loc>https://yujuan-zhang.github.io/projects.html</loc>
     <lastmod>2026-09-24T22:11:24.759Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/261007scrnaseq/index.html</loc>
+    <lastmod>2026-10-08T01:37:17.907Z</lastmod>
   </url>
 </urlset>

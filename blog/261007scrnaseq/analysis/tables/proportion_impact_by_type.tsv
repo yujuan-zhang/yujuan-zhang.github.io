@@ -1,0 +1,11 @@
+cell_type	cell set	clustering seed	count matrix
+pDC	0.004	0.0	0.0
+Platelet	0.156	0.0	0.0
+cDC	0.155	0.491	0.491
+FCGR3A Mono	0.07	10.483	9.582
+Low quality (no markers)	0.147	0.0	0.0
+CD8 T	0.097	0.0	6.306
+NK	0.063	0.0	6.47
+B	0.092	0.0	0.0
+CD4 T	0.151	0.0	0.164
+CD14 Mono	0.16	10.483	9.091

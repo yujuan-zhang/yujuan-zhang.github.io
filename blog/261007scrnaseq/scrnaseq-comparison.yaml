@@ -1,0 +1,577 @@
+# Upload this file to CloudFormation. No AWS resources are created by downloading it.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Single EC2 nf-core/scrnaseq 4.2.0: PBMC 1k v3 Cell Ranger vs Simpleaf/QCatch. Upload to retained S3,
+  then terminate on verified success or stop on failure. Paid resources.'
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: Experiment settings
+      Parameters:
+      - RunMode
+      - SaveAlignments
+      - SuccessAction
+      - DiskGiB
+      - MaxRuntimeHours
+    - Label:
+        default: Operating system
+      Parameters:
+      - UbuntuAmi
+      - AvailabilityZone
+Parameters:
+  RunMode:
+    Type: String
+    Default: tests-only
+    AllowedValues:
+    - tests-only
+    - full
+    Description: Start with tests-only. Create a new full stack after checking both tests.
+  SaveAlignments:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Description: Full runs only. true keeps Cell Ranger BAM and Simpleaf af_map (about 5-10 GB more in S3) for read-level follow-up.
+  SuccessAction:
+    Type: String
+    Default: terminate
+    AllowedValues:
+    - terminate
+    - stop
+    Description: After a verified upload, terminate (disk deleted, no further EC2/EBS cost) or stop. Failures always stop.
+  DiskGiB:
+    Type: Number
+    Default: 250
+    MinValue: 200
+    MaxValue: 1000
+    Description: Encrypted gp3 root disk; also holds /data, all input and work. Estimated peak use 110-150 GB.
+  MaxRuntimeHours:
+    Type: Number
+    Default: 24
+    AllowedValues:
+    - 4
+    - 8
+    - 12
+    - 24
+    - 48
+    Description: Hard stop from bootstrap start; may interrupt work/upload. Reboot resets timer.
+  AvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1a
+    Description: Must offer r6i.4xlarge (in this account us-east-1e does not).
+  UbuntuAmi:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id
+    Description: Canonical Ubuntu 22.04 x86_64 public SSM AMI parameter
+Resources:
+  Network:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.42.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+  Gateway:
+    Type: AWS::EC2::InternetGateway
+  GatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: Network
+      InternetGatewayId:
+        Ref: Gateway
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: Network
+      CidrBlock: 10.42.1.0/24
+      AvailabilityZone:
+        Ref: AvailabilityZone
+      MapPublicIpOnLaunch: true
+  Routes:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: Network
+  InternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachment
+    Properties:
+      RouteTableId:
+        Ref: Routes
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: Gateway
+  SubnetRoutes:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PublicSubnet
+      RouteTableId:
+        Ref: Routes
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: No inbound access; use SSM Session Manager
+      VpcId:
+        Ref: Network
+      SecurityGroupEgress:
+      - IpProtocol: '-1'
+        CidrIp: 0.0.0.0/0
+  ResultsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: ResultsBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Deny
+          Principal: '*'
+          Action: s3:*
+          Resource:
+          - Fn::GetAtt:
+            - ResultsBucket
+            - Arn
+          - Fn::Sub: ${ResultsBucket.Arn}/*
+          Condition:
+            Bool:
+              aws:SecureTransport: 'false'
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: ec2.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+      - PolicyName: ExperimentOutputAndSignal
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            Resource:
+              Fn::GetAtt:
+              - ResultsBucket
+              - Arn
+          - Effect: Allow
+            Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:AbortMultipartUpload
+            Resource:
+              Fn::Sub: ${ResultsBucket.Arn}/*
+          - Effect: Allow
+            Action:
+            - cloudformation:SignalResource
+            Resource:
+              Ref: AWS::StackId
+          # Self-termination after a verified upload; limited to instances CloudFormation tagged with this stack.
+          - Effect: Allow
+            Action:
+            - ec2:TerminateInstances
+            Resource:
+              Fn::Sub: arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*
+            Condition:
+              StringEquals:
+                aws:ResourceTag/aws:cloudformation:stack-id:
+                  Ref: AWS::StackId
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+      - Ref: Role
+  Compute:
+    Type: AWS::EC2::Instance
+    DependsOn:
+    - InternetRoute
+    - SubnetRoutes
+    - BucketPolicy
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT45M
+    Properties:
+      ImageId:
+        Ref: UbuntuAmi
+      InstanceType: r6i.4xlarge
+      IamInstanceProfile:
+        Ref: InstanceProfile
+      SubnetId:
+        Ref: PublicSubnet
+      SecurityGroupIds:
+      - Ref: SecurityGroup
+      MetadataOptions:
+        HttpEndpoint: enabled
+        HttpTokens: required
+        HttpPutResponseHopLimit: 1
+      InstanceInitiatedShutdownBehavior: stop
+      BlockDeviceMappings:
+      - DeviceName: /dev/sda1
+        Ebs:
+          VolumeSize:
+            Ref: DiskGiB
+          VolumeType: gp3
+          Encrypted: true
+          DeleteOnTermination: true
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-scrnaseq
+      UserData:
+        Fn::Base64:
+          Fn::Sub: |
+            #!/bin/bash
+            set -Eeuo pipefail
+            exec > >(tee -a /var/log/scrna-bootstrap.log) 2>&1
+            export DEBIAN_FRONTEND=noninteractive
+            mkdir -p /data/scrna
+            cat > /etc/systemd/system/scrna-deadline.service <<'UNIT'
+            [Unit]
+            Description=Stop EC2 at experiment time limit
+            [Service]
+            Type=oneshot
+            ExecStart=/sbin/shutdown -h now
+            UNIT
+            cat > /etc/systemd/system/scrna-deadline.timer <<'UNIT'
+            [Unit]
+            Description=Maximum experiment duration (including installation)
+            [Timer]
+            OnActiveSec=${MaxRuntimeHours}h
+            AccuracySec=30s
+            Unit=scrna-deadline.service
+            [Install]
+            WantedBy=timers.target
+            UNIT
+            systemctl daemon-reload
+            systemctl enable --now scrna-deadline.timer
+            bootstrap_fail() {
+              rc=$?
+              trap - ERR
+              if command -v aws >/dev/null; then
+                aws s3 cp /var/log/scrna-bootstrap.log s3://${ResultsBucket}/bootstrap/bootstrap.log --region ${AWS::Region} || true
+                aws cloudformation signal-resource --stack-name '${AWS::StackName}' --logical-resource-id Compute --unique-id bootstrap --status FAILURE --region ${AWS::Region} || true
+              fi
+              shutdown -h now
+              exit "$rc"
+            }
+            trap bootstrap_fail ERR
+            apt-get update
+            apt-get install -y openjdk-17-jre-headless docker.io awscli curl git python3 python3-yaml unzip ca-certificates snapd
+            systemctl enable --now docker
+            if [ ! -x /snap/amazon-ssm-agent/current/amazon-ssm-agent ]; then
+              snap install amazon-ssm-agent --classic
+            fi
+            systemctl enable --now snap.amazon-ssm-agent.amazon-ssm-agent.service
+            usermod -aG docker ubuntu
+            # Pin the Nextflow launcher. Java, Docker and OS security packages use Ubuntu repositories.
+            curl --fail --location --retry 4 --retry-delay 5 --connect-timeout 30 --max-time 900 \
+              https://github.com/nextflow-io/nextflow/releases/download/v25.10.4/nextflow -o /usr/local/bin/nextflow
+            chmod 755 /usr/local/bin/nextflow
+            chown -R ubuntu:ubuntu /data/scrna
+            cat > /data/scrna/run.sh <<'RUNNER'
+            #!/bin/bash
+            set -Eeuo pipefail
+            umask 022
+            cd /data/scrna
+            export AWS_DEFAULT_REGION='${AWS::Region}'
+            export NXF_HOME=/data/scrna/nextflow-home
+            export NXF_VER=25.10.4
+            export NXF_TEMP=/data/scrna/tmp
+            export TMPDIR=/data/scrna/tmp
+            export NXF_OPTS='-Xms512m -Xmx4g'
+            export NXF_ANSI_LOG=false
+            mkdir -p tmp input reference results metadata task-logs work
+            exec > >(tee -a metadata/runner.log) 2>&1
+            RUN_ID=$(date -u +%Y%m%dT%H%M%SZ)
+            DEST="s3://${ResultsBucket}/runs/$RUN_ID"
+            printf '%s\n' "$DEST" > metadata/s3-path.txt
+            PHASE=starting
+            export PHASE DEST RUN_ID
+            status() {
+              export RUN_STATE="$1" RUN_EXIT="$2"
+              python3 - <<'PY'
+            import json, os, datetime
+            from pathlib import Path
+            Path('metadata/status.json').write_text(json.dumps({
+             'state': os.environ['RUN_STATE'], 'phase': os.environ['PHASE'],
+             'exit_code': int(os.environ['RUN_EXIT']), 'run_id': os.environ['RUN_ID'],
+             's3_path': os.environ['DEST'],
+             'instance_action': os.environ.get('INSTANCE_ACTION', ''),
+             'updated_utc': datetime.datetime.now(datetime.timezone.utc).isoformat()
+            }, indent=2))
+            PY
+            }
+            upload() {
+              # Published matrices/reports, plus lightweight task logs. Work itself is NOT backed up.
+              # The test Cell Ranger mkref (mouse chr19 index) is not needed for the comparison.
+              aws s3 sync results "$DEST/results/" --exclude 'test-cellranger/cellranger/mkref/*' --only-show-errors || return 1
+              aws s3 sync task-logs "$DEST/task-logs/" --only-show-errors || return 1
+              aws s3 sync metadata "$DEST/metadata/" --only-show-errors || return 1
+            }
+            verify_upload() {
+              # A dry-run sync lists nothing when S3 already matches the local results and task logs.
+              # metadata is skipped: runner.log keeps growing while this script runs.
+              pending=$(
+                aws s3 sync results "$DEST/results/" --exclude 'test-cellranger/cellranger/mkref/*' --dryrun &&
+                aws s3 sync task-logs "$DEST/task-logs/" --dryrun
+              ) || return 1
+              [ -z "$pending" ] || { printf 'Not yet in S3:\n%s\n' "$pending"; return 1; }
+            }
+            disk_log() { printf '%s %s\n' "$(date -u +%FT%TZ)" "$(df -B1G --output=used /data | tail -1)" >> metadata/disk-used-gib.log; }
+            # Sample disk use every minute so the real peak can be reported.
+            ( while sleep 60; do disk_log; done ) &
+            checkpoint() { status RUNNING 0; disk_log; upload; }
+            finish() {
+              code=$?
+              trap - EXIT
+              set +e
+              docker images --digests --no-trunc > metadata/docker-images.txt 2>&1
+              # Copy execution records without copying FASTQs, BAMs or reference indices.
+              python3 - <<'PY'
+            import shutil
+            from pathlib import Path
+            for base in (Path('work'),):
+             for pattern in ('.command.*', '.exitcode'):
+              for p in base.rglob(pattern):
+               if not p.is_file() or p.name not in {'.command.sh','.command.run','.command.err','.command.out','.command.log','.exitcode'}:
+                continue
+               dest = Path('task-logs') / p.relative_to(base)
+               dest.parent.mkdir(parents=True, exist_ok=True)
+               shutil.copy2(p, dest)
+            for p in Path('.').glob('.nextflow.log*'):
+             if p.is_file(): shutil.copy2(p, Path('metadata') / p.name)
+            PY
+              state=FAILED
+              [ "$code" -eq 0 ] && state=COMPLETED
+              export INSTANCE_ACTION=stop
+              if [ "$code" -eq 0 ] && [ '${SuccessAction}' = terminate ]; then INSTANCE_ACTION=terminate; fi
+              status "$state" "$code"
+              if ! upload || ! verify_upload; then
+                INSTANCE_ACTION=stop
+                status UPLOAD_FAILED 1
+                aws s3 cp metadata/status.json "$DEST/metadata/status.json" --only-show-errors || true
+                code=1
+              fi
+              [ "$code" -eq 0 ] && touch SUCCESS
+              echo "Run finished: exit=$code; results=$DEST; instance_action=$INSTANCE_ACTION"
+              aws s3 cp metadata/runner.log "$DEST/metadata/runner.log" --only-show-errors || true
+              if [ "$INSTANCE_ACTION" = terminate ]; then
+                # Verified success: terminate so the instance and its disk stop billing. S3 is kept.
+                token=$(curl -sf -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 300') &&
+                iid=$(curl -sf -H "X-aws-ec2-metadata-token: $token" http://169.254.169.254/latest/meta-data/instance-id) &&
+                aws ec2 terminate-instances --instance-ids "$iid" --output text && exit "$code"
+                echo 'Termination request failed; stopping instead.'
+                INSTANCE_ACTION=stop
+                status "$state" "$code"
+                aws s3 cp metadata/status.json "$DEST/metadata/status.json" --only-show-errors || true
+              fi
+              # Failure, or SuccessAction=stop: an OS stop keeps the disk for inspection (EBS still billed).
+              sudo /sbin/shutdown -h +1
+              exit "$code"
+            }
+            trap finish EXIT
+            checkpoint
+            PHASE=environment
+            nextflow -version | tee metadata/nextflow-version.txt
+            docker version > metadata/docker-version.txt
+            java -version 2> metadata/java-version.txt
+            git clone --depth 1 --branch 4.2.0 https://github.com/nf-core/scrnaseq.git pipeline
+            git -C pipeline rev-parse HEAD > metadata/pipeline-commit.txt
+            test "$(cat metadata/pipeline-commit.txt)" = 3fc17b4f971a89e47c88337de71d0e777ffad8cc
+            cat > metadata/local.config <<'CFG'
+            process {
+                executor = 'local'
+                cpus = 2
+                memory = '8.GB'
+                time = '12.h'
+                maxForks = 1
+                resourceLimits = [cpus: 12, memory: '112.GB', time: '12.h']
+                withLabel: process_high {
+                    cpus = 12
+                    memory = '96.GB'
+                }
+                withLabel: process_high_memory {
+                    cpus = 12
+                    memory = '112.GB'
+                }
+                withName: '.*CELLRANGER_COUNT' {
+                    cpus = 12
+                    memory = '96.GB'
+                    time = '12.h'
+                }
+                withName: '.*SIMPLEAF_INDEX' {
+                    cpus = 12
+                    memory = '96.GB'
+                    time = '12.h'
+                }
+            }
+            // Serialize tasks to leave RAM for Nextflow, Docker and the operating system.
+            executor.queueSize = 1
+            CFG
+            # An empty --custom_config_base is parsed as boolean true (-> "true/nfcore_custom.config").
+            # Point it at empty local files instead, so no institutional config is downloaded.
+            # iGenomes is unused; its default s3:// base fails schema validation with the instance role (403).
+            mkdir -p empty-configs/pipeline
+            : > empty-configs/nfcore_custom.config
+            : > empty-configs/pipeline/scrnaseq.config
+            NF_FIXED=(--custom_config_base /data/scrna/empty-configs --igenomes_ignore true --igenomes_base /data/scrna/empty-configs)
+            run_nf() {
+              printf '%q ' nextflow "$@" "${!NF_FIXED[@]}" >> metadata/commands.log
+              printf '\n' >> metadata/commands.log
+              nextflow "$@" "${!NF_FIXED[@]}"
+            }
+            PHASE=test_cellranger
+            run_nf run ./pipeline -profile test,docker -c metadata/local.config \
+              --aligner cellranger --outdir results/test-cellranger \
+              --skip_cellbender true --save_align_intermeds false \
+              -work-dir work/test-cellranger -with-report metadata/test-cellranger-report.html \
+              -with-trace metadata/test-cellranger-trace.tsv
+            checkpoint
+            PHASE=test_simpleaf
+            run_nf run ./pipeline -profile test,docker -c metadata/local.config \
+              --aligner simpleaf --outdir results/test-simpleaf \
+              --skip_cellbender true --save_align_intermeds false \
+              -work-dir work/test-simpleaf -with-report metadata/test-simpleaf-report.html \
+              -with-trace metadata/test-simpleaf-trace.tsv
+            checkpoint
+            if [ '${RunMode}' = tests-only ]; then
+              PHASE=tests_complete
+              exit 0
+            fi
+            PHASE=data_download
+            download() {
+              curl --fail --location --retry 4 --retry-delay 10 --connect-timeout 30 --max-time 14400 \
+                "$1" -o "$2"
+            }
+            download https://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v3/pbmc_1k_v3_fastqs.tar input/fastqs.tar
+            download https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2024-A.tar.gz reference/reference.tar.gz
+            echo 'a7b5b7ceefe10e435719edc1a8b8b2fa  reference/reference.tar.gz' | md5sum -c -
+            sha256sum input/fastqs.tar reference/reference.tar.gz > metadata/archive-sha256.txt
+            tar -xf input/fastqs.tar -C input
+            tar -xzf reference/reference.tar.gz -C reference
+            # Checksums are recorded above; the archives are no longer needed (frees about 16 GB).
+            rm -f input/fastqs.tar reference/reference.tar.gz
+            REF=/data/scrna/reference/refdata-gex-GRCh38-2024-A
+            test -f "$REF/fasta/genome.fa"
+            if [ ! -f "$REF/genes/genes.gtf" ]; then gzip -dk "$REF/genes/genes.gtf.gz"; fi
+            test -d "$REF/star"
+            sha256sum "$REF/fasta/genome.fa" "$REF/genes/genes.gtf" > metadata/reference-sha256.txt
+            find input -name '*.fastq.gz' -print0 | xargs -0 -r gzip -t
+            python3 - <<'PY'
+            import csv
+            from pathlib import Path
+            r1 = sorted(Path('/data/scrna/input').rglob('*_R1_*.fastq.gz'))
+            r2 = set(Path('/data/scrna/input').rglob('*_R2_*.fastq.gz'))
+            assert r1 and r2, 'No paired FASTQ files found'
+            pairs = [(p, p.with_name(p.name.replace('_R1_', '_R2_'))) for p in r1]
+            assert all(b in r2 for a,b in pairs), 'Missing R2 mate'
+            assert {b for a,b in pairs} == r2, 'Unpaired or duplicate R2'
+            with open('metadata/samplesheet.csv', 'w') as f:
+             writer = csv.writer(f)
+             writer.writerow(['sample','fastq_1','fastq_2','sample_type'])
+             writer.writerows([['PBMC1K',str(a),str(b),'gex'] for a,b in pairs])
+            print('FASTQ lane pairs:', len(pairs))
+            PY
+            cat > metadata/params-cellranger.yaml <<'PARAMS'
+            input: /data/scrna/metadata/samplesheet.csv
+            outdir: /data/scrna/results/cellranger
+            aligner: cellranger
+            protocol: 10XV3
+            cellranger_index: /data/scrna/reference/refdata-gex-GRCh38-2024-A
+            skip_cellbender: true
+            save_align_intermeds: ${SaveAlignments}
+            PARAMS
+            cat > metadata/params-simpleaf.yaml <<'PARAMS'
+            input: /data/scrna/metadata/samplesheet.csv
+            outdir: /data/scrna/results/simpleaf
+            aligner: simpleaf
+            protocol: 10XV3
+            fasta: /data/scrna/reference/refdata-gex-GRCh38-2024-A/fasta/genome.fa
+            gtf: /data/scrna/reference/refdata-gex-GRCh38-2024-A/genes/genes.gtf
+            simpleaf_umi_resolution: cr-like
+            skip_qcatch: false
+            remove_doublets: false
+            skip_cellbender: true
+            save_align_intermeds: ${SaveAlignments}
+            PARAMS
+            cp pipeline/nextflow.config metadata/pipeline-nextflow.config
+            cp pipeline/nextflow_schema.json metadata/nextflow_schema.json
+            # -c must precede the subcommand. A preview only, so a failure here must not stop the analysis.
+            nextflow -c metadata/local.config config ./pipeline -profile docker -flat > metadata/resolved.config 2> metadata/resolved.config.err ||
+              echo 'nextflow config preview failed; see metadata/resolved.config.err'
+            checkpoint
+            PHASE=cellranger
+            run_nf run ./pipeline -profile docker -c metadata/local.config \
+              -params-file metadata/params-cellranger.yaml -work-dir work/cellranger \
+              -with-report metadata/cellranger-report.html -with-trace metadata/cellranger-trace.tsv
+            checkpoint
+            PHASE=simpleaf
+            run_nf run ./pipeline -profile docker -c metadata/local.config \
+              -params-file metadata/params-simpleaf.yaml -work-dir work/simpleaf \
+              -with-report metadata/simpleaf-report.html -with-trace metadata/simpleaf-trace.tsv
+            checkpoint
+            PHASE=analysis_complete
+            RUNNER
+            chmod 755 /data/scrna/run.sh
+            chown -R ubuntu:ubuntu /data/scrna
+            cat > /etc/systemd/system/scrna-experiment.service <<'UNIT'
+            [Unit]
+            Description=Two-route nf-core single-cell experiment
+            After=network-online.target docker.service
+            Wants=network-online.target
+            Requires=docker.service
+            [Service]
+            Type=simple
+            User=ubuntu
+            SupplementaryGroups=docker
+            WorkingDirectory=/data/scrna
+            ExecStart=/data/scrna/run.sh
+            LimitNOFILE=65535
+            Restart=no
+            [Install]
+            WantedBy=multi-user.target
+            UNIT
+            systemctl daemon-reload
+            systemctl start scrna-experiment.service
+            aws cloudformation signal-resource --stack-name '${AWS::StackName}' --logical-resource-id Compute --unique-id bootstrap --status SUCCESS --region ${AWS::Region}
+            trap - ERR
+Outputs:
+  InstanceId:
+    Value:
+      Ref: Compute
+    Description: Stopped automatically on success/failure; restart only for inspection.
+  ResultsBucketName:
+    Value:
+      Ref: ResultsBucket
+    Description: Retained after stack deletion. Storage remains billable.
+  ResultsLocation:
+    Value:
+      Fn::Sub: s3://${ResultsBucket}/runs/
+    Description: Per-run metadata/status.json is the analytical status.
+  SessionManagerCommand:
+    Value:
+      Fn::Sub: aws ssm start-session --target ${Compute} --region ${AWS::Region}
+    Description: Requires AWS CLI plus Session Manager plugin; console Connect also works.

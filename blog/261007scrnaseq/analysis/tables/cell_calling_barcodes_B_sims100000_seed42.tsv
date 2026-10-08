@@ -1,0 +1,8 @@
+barcode	B
+AGTACTGGTATCGCGC	not tested (UMI below threshold or absent)
+CTTCAATTCGAGAGCA	not called (p=4.07e-03, padj=5.11e-03)
+GGGTCACTCAATCTCT	not called (p=2.87e-03, padj=3.73e-03)
+GTGTTAGAGACGGTCA	not called (p=3.48e-03, padj=4.42e-03)
+GTTCGCTTCGACATTG	not tested (UMI below threshold or absent)
+TACAACGAGGCCTGAA	not tested (UMI below threshold or absent)
+TTGATGGTCGCTAAAC	not called (p=2.13e-03, padj=2.81e-03)

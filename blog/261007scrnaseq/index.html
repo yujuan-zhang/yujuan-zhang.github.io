@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-07">
+
+<title>scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf – Yujuan Zhang, PhD</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cf06bf3c63dcc3f08f55f76a95a4da8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // Move the language link into the title block so it sits at the top right.
+  document.addEventListener("DOMContentLoaded", function () {
+    var s = document.querySelector(".lang-switch"), h = document.getElementById("title-block-header");
+    if (s && h) h.appendChild(s);
+  });
+</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yujuan Zhang, PhD</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../awards.html"> 
+<span class="menu-text">Awards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks_pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-lightning-charge-fill" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yujuan-zhang"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=CdA1HhMAAAAJ&amp;hl=en"> <i class="bi bi-mortarboard-fill" role="img" aria-label="Google Scholar">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:yujuan.zhang418@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-this-question" id="toc-why-this-question" class="nav-link active" data-scroll-target="#why-this-question">Why this question</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#which-barcodes-differ" id="toc-which-barcodes-differ" class="nav-link" data-scroll-target="#which-barcodes-differ">1. Which barcodes differ?</a></li>
+  <li><a href="#do-the-7-extra-barcodes-look-like-real-cells" id="toc-do-the-7-extra-barcodes-look-like-real-cells" class="nav-link" data-scroll-target="#do-the-7-extra-barcodes-look-like-real-cells">2. Do the 7 extra barcodes look like real cells?</a></li>
+  <li><a href="#different-cell-calling-algorithms-or-different-input-counts" id="toc-different-cell-calling-algorithms-or-different-input-counts" class="nav-link" data-scroll-target="#different-cell-calling-algorithms-or-different-input-counts">3. Different cell-calling algorithms, or different input counts?</a>
+  <ul class="collapse">
+  <li><a href="#three-barcodes-crossed-the-500-umi-threshold" id="toc-three-barcodes-crossed-the-500-umi-threshold" class="nav-link" data-scroll-target="#three-barcodes-crossed-the-500-umi-threshold">Three barcodes crossed the 500-UMI threshold</a></li>
+  <li><a href="#the-other-four-sit-near-the-statistical-threshold" id="toc-the-other-four-sit-near-the-statistical-threshold" class="nav-link" data-scroll-target="#the-other-four-sit-near-the-statistical-threshold">The other four sit near the statistical threshold</a></li>
+  </ul></li>
+  <li><a href="#finally-do-these-7-barcodes-matter" id="toc-finally-do-these-7-barcodes-matter" class="nav-link" data-scroll-target="#finally-do-these-7-barcodes-matter">Finally: do these 7 barcodes matter?</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">scrna-seq</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="reading-time">
+9 min read
+</div>
+<div class="lang-switch">
+<p><a href="../../blog/261007scrnaseq/index-chinese.html">Chinese</a></p>
+</div>
+<section id="why-this-question" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-question">Why this question</h2>
+<p>Nextflow orchestrates and records each analysis, and nf-core/scrnaseq offers several standardized routes for processing single-cell RNA-seq data. I wanted to know: <strong>given the same sequencing data, why do different routes retain slightly different sets of cells?</strong> Are the extra barcodes real cells, ambient RNA, or low-quality droplets? And do they change any biological conclusion?</p>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>The data are the public 10x <a href="https://www.10xgenomics.com/datasets/1-k-pbm-cs-from-a-healthy-donor-v-3-chemistry-3-standard-3-0-0">PBMC 1k v3</a> dataset, processed with <a href="https://nf-co.re/scrnaseq/4.2.0">nf-core/scrnaseq 4.2.0</a>. Both routes used the same FASTQ files and the GRCh38-2024-A reference: Cell Ranger used the prebuilt index, and Simpleaf built its own index from the FASTA/GTF in the same package.</p>
+<p>Versions: Cell Ranger 10.0.0, Simpleaf 0.19.5, QCatch 0.2.12. <strong>The comparison is Cell Ranger versus Simpleaf + QCatch: Simpleaf produces the counts, and QCatch performs the subsequent cell calling.</strong></p>
+<p>Upstream processing ran on an AWS r6i.4xlarge instance (16 vCPU, 128 GiB). A CloudFormation template installed the software, ran the analysis, uploaded the results, and then terminated the instance automatically. The successful run took 84 minutes end to end. The bill came to about $2.05 including three failed attempts; the successful run alone cost about $1.41. All downstream comparisons for this sample ran on a personal Mac with 8 GB of RAM.</p>
+</section>
+<section id="which-barcodes-differ" class="level2">
+<h2 class="anchored" data-anchor-id="which-barcodes-differ">1. Which barcodes differ?</h2>
+<p>I first compared three barcode sets: retained by both, by Cell Ranger only, and by Simpleaf + QCatch only.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read both filtered results and harmonize the barcode suffix</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>shared <span class="op">=</span> cr_cells <span class="op">&amp;</span> sa_cells</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cr_only <span class="op">=</span> cr_cells <span class="op">-</span> sa_cells</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sa_only <span class="op">=</span> sa_cells <span class="op">-</span> cr_cells</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(shared), <span class="bu">len</span>(cr_only), <span class="bu">len</span>(sa_only))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1221 0 7</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(shared) <span class="op">/</span> <span class="bu">len</span>(cr_cells <span class="op">|</span> sa_cells))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.9943: intersection / union</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All 7 barcodes sit in the transition zone between cells and background.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/01_knee_plots.png" class="img-fluid figure-img"></p>
+<figcaption>Barcode-rank plots with a zoom on the knee: green markers are the 7 barcodes retained only by Simpleaf + QCatch</figcaption>
+</figure>
+</div>
+<p><em>The x-axis is barcode rank by UMI count; the y-axis is UMI count. In the right panel, open circles are Cell Ranger and diamonds are Simpleaf; a line joins the two values for the same barcode. The 500-UMI line is the testing threshold of this implementation, not a fixed value for every EmptyDrops analysis.</em></p>
+<p>Measured as intersection over union, the two cell sets agree at <strong>99.4%</strong>. Among shared cells, the Spearman correlation of total UMIs per cell is 0.9997, and Simpleaf counts are about 5% higher on average. <strong>Overall agreement is very high, but small differences can decide whether a borderline barcode is kept.</strong></p>
+<p>Note also that the two “raw matrices” in the figure contain 329,735 and 72,612 barcodes. They were retained under different upstream rules, so they cannot be treated as the same universe of droplets.</p>
+</section>
+<section id="do-the-7-extra-barcodes-look-like-real-cells" class="level2">
+<h2 class="anchored" data-anchor-id="do-the-7-extra-barcodes-look-like-real-cells">2. Do the 7 extra barcodes look like real cells?</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Initial call</th>
+<th>UMI: CR → SA</th>
+<th>Genes detected</th>
+<th>Mitochondrial fraction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Platelet-like: PPBP, PF4</td>
+<td>455 → 508</td>
+<td>178</td>
+<td>6%</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Platelet-like: PPBP</td>
+<td>464 → 532</td>
+<td>172</td>
+<td>18%</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>cDC-like: FCER1A, CST3</td>
+<td>1,200 → 1,262</td>
+<td>753</td>
+<td>5%</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Monocyte/DC-like: LYZ, CST3</td>
+<td>1,309 → 1,366</td>
+<td>815</td>
+<td>7%</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>FCGR3A monocyte-like</td>
+<td>1,239 → 1,298</td>
+<td>802</td>
+<td>3%</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Low quality, no clear marker</td>
+<td>294 → 577</td>
+<td>121</td>
+<td>52%</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Low quality, no clear marker</td>
+<td>618 → 716</td>
+<td>67</td>
+<td>90%</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/03_marker_dotplot.png" class="img-fluid figure-img"></p>
+<figcaption>Marker expression in the shared cell populations and the 7 disputed barcodes</figcaption>
+</figure>
+</div>
+<p><em>Dot size is the fraction of cells with detected expression; color is relative expression. Each SA_only row is a single barcode, labeled with its initial call.</em></p>
+<p>Barcodes 1 and 6 carry platelet markers. <strong>Low UMI does not mean an empty droplet: platelets contain very little RNA to begin with.</strong> Barcodes 5 and 7 have very high mitochondrial fractions; they should be flagged as low-quality candidates rather than declared “dying”.</p>
+<p>Low sequencing depth depresses expression correlations, so I built depth-matched controls: cells of the same type downsampled to the same depth, and empty droplets simulated from the ambient RNA profile.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/03_depth_matched.png" class="img-fluid figure-img"></p>
+<figcaption>Depth-matched controls: downsampled real cells, ambient-RNA simulations, and the disputed barcodes</figcaption>
+</figure>
+</div>
+<p><em>The x-axis is correlation with ambient RNA; the y-axis is correlation with the candidate cell type. Blue: downsampled cells; gray: simulated empty droplets; green: disputed barcodes.</em></p>
+<p>Barcodes 1 and 6 sit closer to the platelet controls. Barcode 7 is far from the simulated empty droplets and barcode 5 falls between the two groups; neither result means the barcode passes quality control. For barcodes 2, 3 and 4 the two control groups barely separate: ambient RNA resembles the monocyte/DC expression profile, so correlation alone cannot decide whether they are cells.</p>
+</section>
+<section id="different-cell-calling-algorithms-or-different-input-counts" class="level2">
+<h2 class="anchored" data-anchor-id="different-cell-calling-algorithms-or-different-input-counts">3. Different cell-calling algorithms, or different input counts?</h2>
+<p>I re-called cells in both matrices with <strong>the same QCatch code and parameters</strong>, using the OrdMag + EmptyDrops framework.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Excerpt of QCatch internals; m is a CountMatrix, cc is the cell-calling module.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports, versions and matrix conversion are in analysis/; this is not a standalone script.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>initial <span class="op">=</span> cc.initial_filtering_OrdMag(m, <span class="st">"10X_3p_v3"</span>, <span class="va">None</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> cc.find_nonambient_barcodes(m, initial, <span class="st">"10X_3p_v3"</span>, <span class="va">None</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>called <span class="op">=</span> {b.decode() <span class="cf">for</span> b <span class="kw">in</span> initial} <span class="op">|</span> <span class="bu">set</span>(res.eval_bcs[res.is_nonambient])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The Cell Ranger matrix still yields 1,221 cells and the Simpleaf matrix still yields 1,228, each identical barcode for barcode to the original results. Changing the random seed and the number of simulations did not remove the disagreement either.</p>
+<p><strong>The same implementation still disagrees, so the next place to look is the input matrices.</strong> The input differences, however, include both the counts and the range of background barcodes, so the disagreement cannot be attributed to a single factor.</p>
+<section id="three-barcodes-crossed-the-500-umi-threshold" class="level3">
+<h3 class="anchored" data-anchor-id="three-barcodes-crossed-the-500-umi-threshold">Three barcodes crossed the 500-UMI threshold</h3>
+<p>Barcodes 1, 5 and 6 have fewer than 500 UMIs in the Cell Ranger matrix, so they never enter this step’s test against the ambient background; in the Simpleaf matrix they exceed the threshold. DHFR accounts for a substantial share of the extra counts.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Total UMI gain</th>
+<th>DHFR gain</th>
+<th>SA UMIs after removing DHFR and one chr8 lncRNA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>53</td>
+<td>19</td>
+<td>485</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>68</td>
+<td>29</td>
+<td>495</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>283</td>
+<td>236</td>
+<td>341</td>
+</tr>
+</tbody>
+</table>
+<p>After removing these two genes and re-calling cells, none of the three barcodes is retained. <strong>The counts of a few genes are enough to decide whether a barcode is tested at all.</strong></p>
+<p>The DHFR difference also appears in the shared cells: Simpleaf counts 45,624 UMIs (45,532 of them unspliced), whereas Cell Ranger counts 739. I then examined the DHFR region in the Cell Ranger BAM:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pysam</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># BAM_URL and BAI_URL are temporary access links to an existing BAM and its index.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pysam.AlignmentFile(BAM_URL, index_filename<span class="op">=</span>BAI_URL) <span class="im">as</span> bam:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    mapq <span class="op">=</span> Counter(r.mapping_quality</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="cf">for</span> r <span class="kw">in</span> bam.fetch(<span class="st">"chr5"</span>, <span class="dv">80626226</span>, <span class="dv">80655002</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapq)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Counter({1: 4718, 3: 2747, 255: 1519, 0: 4})</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>About 83% of the alignment records have MAPQ below 255. These records are concentrated in a single ~200 bp intronic window, with NH tags of 2–4: each read aligns to 2–4 locations in the genome.</p>
+<p><strong>A repeated sequence is the lead for the anomalous DHFR counts.</strong> The two routes use different reference targets and different alignment/assignment rules, which may send these reads to different places. I did not verify Simpleaf’s read-by-read assignment, so the mechanism remains an inference, and the chr8 lncRNA cannot be assumed to share the same cause by analogy.</p>
+<p>Note: Cell Ranger adjusts MAPQ according to gene assignment, so its behavior cannot be reduced to “counting only uniquely mapped genomic alignments”. MAPQ = 255 does not necessarily mean the original STAR alignment had a single location. See the <a href="https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/cr-outputs-bam">10x BAM tag documentation</a>.</p>
+</section>
+<section id="the-other-four-sit-near-the-statistical-threshold" class="level3">
+<h3 class="anchored" data-anchor-id="the-other-four-sit-near-the-statistical-threshold">The other four sit near the statistical threshold</h3>
+<p>Barcodes 2, 3 and 4 are all tested, but their adjusted p-values go from about 0.004 with Cell Ranger to about 0.0001 with Simpleaf, crossing this run’s 0.001 threshold. Barcode 7 is also near the threshold. I found no single clear source for these; for now the explanation stops at the statistical threshold rather than at the level of individual reads.</p>
+</section>
+</section>
+<section id="finally-do-these-7-barcodes-matter" class="level2">
+<h2 class="anchored" data-anchor-id="finally-do-these-7-barcodes-matter">Finally: do these 7 barcodes matter?</h2>
+<p><strong>For cell-type proportions: almost not at all.</strong> I held the counts, clustering and annotation fixed and changed only the cell set. The 7 extra barcodes fall into 4 groups: 2 platelets, 2 cDCs, 1 FCGR3A monocyte and 2 low-quality barcodes. Every other cell type keeps exactly the same number of cells; only the denominator grows from 1,221 to 1,228, diluting their proportions by at most 0.16 percentage points. After a common QC filter (≥ 200 genes, ≤ 20% mitochondrial), only 3 cells differ: 2 cDCs and 1 FCGR3A monocyte.</p>
+<p>How small is that change? As controls, I changed only the clustering random seed, or only the count matrix, within the same workflow:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/07_proportion_impact.png" class="img-fluid figure-img"></p>
+<figcaption>Largest change in each cell type’s proportion when only one factor changes</figcaption>
+</figure>
+</div>
+<p><em>Blue: only the cell set changes; orange: only the clustering random seed (0–4); green: only the count matrix (Cell Ranger or Simpleaf).</em></p>
+<p>The cell set shifts proportions by at most 0.16 percentage points, whereas the random seed or the count matrix shifts the monocyte and NK/CD8 T proportions by 6–10 percentage points. The latter two reflect my simple clustering/annotation approach and should not be generalized into a difference between the tools. <strong>The sensitivity of the annotation to analysis settings deserves more scrutiny than these 7 barcodes.</strong></p>
+<p><strong>For markers of small cell populations: some effect, but limited.</strong> The cDC population has only 16 cells, so 2 more is a 12.5% increase.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/07_cdc_markers.png" class="img-fluid figure-img"></p>
+<figcaption>Expression fraction and adjusted p-value of cDC markers</figcaption>
+</figure>
+</div>
+<p>The conclusions for CST3, FCER1A and CLEC10A are unchanged. CD1C weakens: its expression fraction drops from 63% to 56% and its adjusted p-value rises from 0.012 to 0.034, because the 2 added cells do not express CD1C. In addition, after QC both sides contain the same 15 platelets, yet PPBP’s marker rank moves from 13th to 1st because the top genes have nearly tied scores. <strong>When reading markers, look at expression fraction, effect size and statistical evidence, not rank alone.</strong></p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>From the same FASTQ files, Cell Ranger retains <strong>1,221 cells</strong> and Simpleaf + QCatch retains <strong>1,228</strong>, with the former entirely contained in the latter. I traced the <strong>7 extra barcodes</strong>: 3 crossed the UMI threshold because of extra counts, with a repeated sequence in a DHFR intron as an important lead; the other 4 sit near the statistical threshold. Changing only the cell set shifts cell-type proportions by at most <strong>0.16 percentage points</strong>. These 7 barcodes have little effect on overall cell-type proportions, but a few genes combined with fixed thresholds are enough to decide whether a barcode is kept. Both comparisons used a single PBMC sample; whether the two workflows agree this closely on other data remains to be tested.</p>
+</section>
+<section id="reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
+<ul>
+<li>AWS template: <a href="scrnaseq-comparison.yaml">scrnaseq-comparison.yaml</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+// Rebuilds the title-block metadata (date, reading time, view count,
+// categories) as a single plain-text line, matching the reference layout
+// at https://divingintogeneticsandgenomics.com. Quarto's own title
+// template renders these as separate elements (badge-style categories,
+// a "Published" block, and our own .reading-time div from
+// _reading-time.lua) that can't be reordered with CSS alone since they
+// aren't DOM siblings -- so this reads their text back out, builds one
+// line, and hides the originals.
+(function () {
+  var titleBlock = document.querySelector(".quarto-title");
+  if (!titleBlock) return;
+
+  var dateEl = document.querySelector(".quarto-title-meta-contents .date");
+  var readingEl = document.querySelector(".reading-time");
+  var catsEl = document.querySelector(".quarto-categories");
+
+  var dateText = dateEl ? dateEl.textContent.trim() : "";
+  var readingText = readingEl ? readingEl.textContent.trim() : "";
+  var cats = catsEl
+    ? Array.prototype.map.call(
+        catsEl.querySelectorAll(".quarto-category"),
+        function (c) {
+          return c.textContent.trim();
+        }
+      )
+    : [];
+
+  var meta = document.createElement("div");
+  meta.className = "post-meta-line";
+
+  function addPart(node) {
+    if (meta.childElementCount > 0) {
+      var dot = document.createElement("span");
+      dot.className = "post-meta-dot";
+      dot.textContent = "·";
+      meta.appendChild(dot);
+    }
+    meta.appendChild(node);
+  }
+
+  function textPart(text) {
+    var span = document.createElement("span");
+    span.textContent = text;
+    return span;
+  }
+
+  if (dateText) addPart(textPart("Last updated on " + dateText));
+  if (readingText) addPart(textPart(readingText));
+
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
+
+  if (cats.length) {
+    var catPart = document.createElement("span");
+    var icon = document.createElement("i");
+    icon.className = "bi bi-folder2 post-meta-folder-icon";
+    catPart.appendChild(icon);
+    catPart.appendChild(document.createTextNode(cats.join(", ")));
+    addPart(catPart);
+  }
+
+  titleBlock.insertAdjacentElement("afterend", meta);
+
+  // Share row -- the actual second line under the title, right below the
+  // metadata line. Built from the live page URL/title (works the same on
+  // localhost and the published site) rather than anything hand-typed.
+  var h1 = titleBlock.querySelector("h1.title");
+  var pageTitle = h1 ? h1.textContent.trim() : document.title;
+  var pageUrl = window.location.href;
+  var encodedUrl = encodeURIComponent(pageUrl);
+  var encodedTitle = encodeURIComponent(pageTitle);
+
+  var shareLinks = [
+    {
+      label: "Share on X",
+      icon: "bi-twitter",
+      href: "https://twitter.com/intent/tweet?url=" + encodedUrl + "&text=" + encodedTitle,
+    },
+    {
+      label: "Share on Facebook",
+      icon: "bi-facebook",
+      href: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+    },
+    {
+      label: "Share on LinkedIn",
+      icon: "bi-linkedin",
+      href: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+    },
+    {
+      label: "Share on Weibo",
+      icon: "bi-sina-weibo",
+      href: "https://service.weibo.com/share/share.php?url=" + encodedUrl + "&title=" + encodedTitle,
+    },
+    {
+      label: "Share by email",
+      icon: "bi-envelope-fill",
+      href: "mailto:?subject=" + encodedTitle + "&body=" + encodedUrl,
+    },
+  ];
+
+  var shareRow = document.createElement("div");
+  shareRow.className = "post-share-row";
+  shareLinks.forEach(function (link) {
+    var a = document.createElement("a");
+    a.className = "post-share-icon";
+    a.href = link.href;
+    a.setAttribute("aria-label", link.label);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var i = document.createElement("i");
+    i.className = "bi " + link.icon;
+    a.appendChild(i);
+    shareRow.appendChild(a);
+  });
+  // Copy-link is an action, not a navigation, so it's a real <button>
+  // rather than an <a> styled to look like one.
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "post-share-icon";
+  copyBtn.setAttribute("aria-label", "Copy link");
+  var copyIcon = document.createElement("i");
+  copyIcon.className = "bi bi-link-45deg";
+  copyBtn.appendChild(copyIcon);
+  copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(pageUrl).then(function () {
+      copyIcon.className = "bi bi-clipboard-check-fill";
+      copyBtn.classList.add("post-share-copied");
+      setTimeout(function () {
+        copyIcon.className = "bi bi-link-45deg";
+        copyBtn.classList.remove("post-share-copied");
+      }, 1500);
+    });
+  });
+  shareRow.appendChild(copyBtn);
+
+  meta.insertAdjacentElement("afterend", shareRow);
+
+  if (catsEl) catsEl.style.display = "none";
+  var titleMeta = document.querySelector(".quarto-title-meta");
+  if (titleMeta) titleMeta.style.display = "none";
+  if (readingEl) readingEl.style.display = "none";
+
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  //
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
+  var DISPLAYED_VIEWS_OFFSET = 10;
+  fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (data) {
+      var n = data && typeof data.count === "string"
+        ? parseInt(data.count.replace(/,/g, ""), 10)
+        : 0;
+      if (!isFinite(n)) n = 0;
+      n += DISPLAYED_VIEWS_OFFSET;
+      viewSpan.textContent = n + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yujuan-zhang\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

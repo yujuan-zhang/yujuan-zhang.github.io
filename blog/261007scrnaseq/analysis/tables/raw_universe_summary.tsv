@@ -1,0 +1,5 @@
+	n_barcodes	n_umi_ge_10	n_umi_ge_100	n_umi_ge_500	total_umi	max_umi
+cellranger_raw	329735.0	50873.0	1380.0	1249.0	15448590.0	70021.0
+simpleaf_raw	72612.0	48430.0	1402.0	1261.0	15707555.0	73739.0
+intersection	71929.0					
+cellranger_only_tail	257806.0				446445.0	82.0

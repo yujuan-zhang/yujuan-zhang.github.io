@@ -1,0 +1,3 @@
+condition	counts	universe	num_sims	seed	n_barcodes	ambient_rank_range	ambient_umi_range	min_umi_to_test	n_initial_ordmag	n_tested_emptydrops	n_added_emptydrops	n_called	overlap_cellranger_official	overlap_qcatch_official	identical_to_cellranger	identical_to_qcatch	seconds
+D	Simpleaf counts	shared barcodes	10000	42	71929	45000-71929	0-10	500	1138	123	88	1226	1220	1226	False	False	743.2
+E	Simpleaf counts	Simpleaf raw + Cell Ranger-only tail	10000	42	330418	45000-90000	6-10	500	1140	121	91	1231	1221	1227	False	False	363.3

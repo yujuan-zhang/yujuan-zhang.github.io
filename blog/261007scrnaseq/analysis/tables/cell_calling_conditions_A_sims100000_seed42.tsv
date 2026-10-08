@@ -1,0 +1,2 @@
+condition	counts	universe	num_sims	seed	n_barcodes	ambient_rank_range	ambient_umi_range	min_umi_to_test	n_initial_ordmag	n_tested_emptydrops	n_added_emptydrops	n_called	overlap_cellranger_official	overlap_qcatch_official	identical_to_cellranger	identical_to_qcatch	seconds
+A	Simpleaf counts	Simpleaf raw	100000	42	72612	45000-72612	0-10	500	1133	128	95	1228	1221	1228	False	True	30247.8

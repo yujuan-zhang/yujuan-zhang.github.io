@@ -1,0 +1,201 @@
+counts	seed	cell_set	cell_type	pct
+cellranger_counts	0	Cell Ranger cells	CD14 Mono	27.682227682227683
+cellranger_counts	0	Cell Ranger cells	CD4 T	26.289926289926292
+cellranger_counts	0	Cell Ranger cells	B	16.134316134316133
+cellranger_counts	0	Cell Ranger cells	NK	10.974610974610975
+cellranger_counts	0	Cell Ranger cells	CD8 T	10.647010647010648
+cellranger_counts	0	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+cellranger_counts	0	Cell Ranger cells	FCGR3A Mono	2.293202293202293
+cellranger_counts	0	Cell Ranger cells	cDC	1.3104013104013106
+cellranger_counts	0	Cell Ranger cells	Platelet	1.2285012285012284
+cellranger_counts	0	Cell Ranger cells	pDC	0.6552006552006553
+cellranger_counts	0	Simpleaf+QCatch cells	CD14 Mono	27.524429967426713
+cellranger_counts	0	Simpleaf+QCatch cells	CD4 T	26.140065146579804
+cellranger_counts	0	Simpleaf+QCatch cells	B	16.042345276872965
+cellranger_counts	0	Simpleaf+QCatch cells	NK	10.912052117263844
+cellranger_counts	0	Simpleaf+QCatch cells	CD8 T	10.586319218241043
+cellranger_counts	0	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+cellranger_counts	0	Simpleaf+QCatch cells	FCGR3A Mono	2.3615635179153096
+cellranger_counts	0	Simpleaf+QCatch cells	cDC	1.4657980456026058
+cellranger_counts	0	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+cellranger_counts	0	Simpleaf+QCatch cells	pDC	0.6514657980456027
+cellranger_counts	1	Cell Ranger cells	CD4 T	26.289926289926292
+cellranger_counts	1	Cell Ranger cells	CD14 Mono	24.897624897624897
+cellranger_counts	1	Cell Ranger cells	B	16.134316134316133
+cellranger_counts	1	Cell Ranger cells	NK	10.974610974610975
+cellranger_counts	1	Cell Ranger cells	CD8 T	10.647010647010648
+cellranger_counts	1	Cell Ranger cells	FCGR3A Mono	5.077805077805078
+cellranger_counts	1	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+cellranger_counts	1	Cell Ranger cells	cDC	1.3104013104013106
+cellranger_counts	1	Cell Ranger cells	Platelet	1.2285012285012284
+cellranger_counts	1	Cell Ranger cells	pDC	0.6552006552006553
+cellranger_counts	1	Simpleaf+QCatch cells	CD4 T	26.140065146579804
+cellranger_counts	1	Simpleaf+QCatch cells	CD14 Mono	24.7557003257329
+cellranger_counts	1	Simpleaf+QCatch cells	B	16.042345276872965
+cellranger_counts	1	Simpleaf+QCatch cells	NK	10.912052117263844
+cellranger_counts	1	Simpleaf+QCatch cells	CD8 T	10.586319218241043
+cellranger_counts	1	Simpleaf+QCatch cells	FCGR3A Mono	5.130293159609121
+cellranger_counts	1	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+cellranger_counts	1	Simpleaf+QCatch cells	cDC	1.4657980456026058
+cellranger_counts	1	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+cellranger_counts	1	Simpleaf+QCatch cells	pDC	0.6514657980456027
+cellranger_counts	2	Cell Ranger cells	CD4 T	26.289926289926292
+cellranger_counts	2	Cell Ranger cells	CD14 Mono	24.488124488124487
+cellranger_counts	2	Cell Ranger cells	B	16.134316134316133
+cellranger_counts	2	Cell Ranger cells	NK	10.974610974610975
+cellranger_counts	2	Cell Ranger cells	CD8 T	10.647010647010648
+cellranger_counts	2	Cell Ranger cells	FCGR3A Mono	4.995904995904995
+cellranger_counts	2	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+cellranger_counts	2	Cell Ranger cells	cDC	1.8018018018018018
+cellranger_counts	2	Cell Ranger cells	Platelet	1.2285012285012284
+cellranger_counts	2	Cell Ranger cells	pDC	0.6552006552006553
+cellranger_counts	2	Simpleaf+QCatch cells	CD4 T	26.140065146579804
+cellranger_counts	2	Simpleaf+QCatch cells	CD14 Mono	24.348534201954397
+cellranger_counts	2	Simpleaf+QCatch cells	B	16.042345276872965
+cellranger_counts	2	Simpleaf+QCatch cells	NK	10.912052117263844
+cellranger_counts	2	Simpleaf+QCatch cells	CD8 T	10.586319218241043
+cellranger_counts	2	Simpleaf+QCatch cells	FCGR3A Mono	5.048859934853421
+cellranger_counts	2	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+cellranger_counts	2	Simpleaf+QCatch cells	cDC	1.9543973941368076
+cellranger_counts	2	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+cellranger_counts	2	Simpleaf+QCatch cells	pDC	0.6514657980456027
+cellranger_counts	3	Cell Ranger cells	CD14 Mono	26.617526617526615
+cellranger_counts	3	Cell Ranger cells	CD4 T	26.289926289926292
+cellranger_counts	3	Cell Ranger cells	B	16.134316134316133
+cellranger_counts	3	Cell Ranger cells	NK	10.974610974610975
+cellranger_counts	3	Cell Ranger cells	CD8 T	10.647010647010648
+cellranger_counts	3	Cell Ranger cells	FCGR3A Mono	2.8665028665028665
+cellranger_counts	3	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+cellranger_counts	3	Cell Ranger cells	cDC	1.8018018018018018
+cellranger_counts	3	Cell Ranger cells	Platelet	1.2285012285012284
+cellranger_counts	3	Cell Ranger cells	pDC	0.6552006552006553
+cellranger_counts	3	Simpleaf+QCatch cells	CD14 Mono	26.465798045602607
+cellranger_counts	3	Simpleaf+QCatch cells	CD4 T	26.140065146579804
+cellranger_counts	3	Simpleaf+QCatch cells	B	16.042345276872965
+cellranger_counts	3	Simpleaf+QCatch cells	NK	10.912052117263844
+cellranger_counts	3	Simpleaf+QCatch cells	CD8 T	10.586319218241043
+cellranger_counts	3	Simpleaf+QCatch cells	FCGR3A Mono	2.9315960912052117
+cellranger_counts	3	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+cellranger_counts	3	Simpleaf+QCatch cells	cDC	1.9543973941368076
+cellranger_counts	3	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+cellranger_counts	3	Simpleaf+QCatch cells	pDC	0.6514657980456027
+cellranger_counts	4	Cell Ranger cells	CD14 Mono	27.108927108927112
+cellranger_counts	4	Cell Ranger cells	CD4 T	26.289926289926292
+cellranger_counts	4	Cell Ranger cells	B	16.134316134316133
+cellranger_counts	4	Cell Ranger cells	NK	10.974610974610975
+cellranger_counts	4	Cell Ranger cells	CD8 T	10.647010647010648
+cellranger_counts	4	Cell Ranger cells	FCGR3A Mono	2.8665028665028665
+cellranger_counts	4	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+cellranger_counts	4	Cell Ranger cells	cDC	1.3104013104013106
+cellranger_counts	4	Cell Ranger cells	Platelet	1.2285012285012284
+cellranger_counts	4	Cell Ranger cells	pDC	0.6552006552006553
+cellranger_counts	4	Simpleaf+QCatch cells	CD14 Mono	26.95439739413681
+cellranger_counts	4	Simpleaf+QCatch cells	CD4 T	26.140065146579804
+cellranger_counts	4	Simpleaf+QCatch cells	B	16.042345276872965
+cellranger_counts	4	Simpleaf+QCatch cells	NK	10.912052117263844
+cellranger_counts	4	Simpleaf+QCatch cells	CD8 T	10.586319218241043
+cellranger_counts	4	Simpleaf+QCatch cells	FCGR3A Mono	2.9315960912052117
+cellranger_counts	4	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+cellranger_counts	4	Simpleaf+QCatch cells	cDC	1.4657980456026058
+cellranger_counts	4	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+cellranger_counts	4	Simpleaf+QCatch cells	pDC	0.6514657980456027
+simpleaf_counts	0	Cell Ranger cells	CD14 Mono	27.354627354627354
+simpleaf_counts	0	Cell Ranger cells	CD4 T	26.453726453726457
+simpleaf_counts	0	Cell Ranger cells	CD8 T	16.953316953316953
+simpleaf_counts	0	Cell Ranger cells	B	16.134316134316133
+simpleaf_counts	0	Cell Ranger cells	NK	4.504504504504505
+simpleaf_counts	0	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+simpleaf_counts	0	Cell Ranger cells	FCGR3A Mono	2.620802620802621
+simpleaf_counts	0	Cell Ranger cells	cDC	1.3104013104013106
+simpleaf_counts	0	Cell Ranger cells	Platelet	1.2285012285012284
+simpleaf_counts	0	Cell Ranger cells	pDC	0.6552006552006553
+simpleaf_counts	0	Simpleaf+QCatch cells	CD14 Mono	27.19869706840391
+simpleaf_counts	0	Simpleaf+QCatch cells	CD4 T	26.302931596091206
+simpleaf_counts	0	Simpleaf+QCatch cells	CD8 T	16.856677524429966
+simpleaf_counts	0	Simpleaf+QCatch cells	B	16.042345276872965
+simpleaf_counts	0	Simpleaf+QCatch cells	NK	4.478827361563518
+simpleaf_counts	0	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+simpleaf_counts	0	Simpleaf+QCatch cells	FCGR3A Mono	2.687296416938111
+simpleaf_counts	0	Simpleaf+QCatch cells	cDC	1.4657980456026058
+simpleaf_counts	0	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+simpleaf_counts	0	Simpleaf+QCatch cells	pDC	0.6514657980456027
+simpleaf_counts	1	Cell Ranger cells	CD14 Mono	28.00982800982801
+simpleaf_counts	1	Cell Ranger cells	CD4 T	26.453726453726457
+simpleaf_counts	1	Cell Ranger cells	CD8 T	16.953316953316953
+simpleaf_counts	1	Cell Ranger cells	B	16.134316134316133
+simpleaf_counts	1	Cell Ranger cells	NK	4.504504504504505
+simpleaf_counts	1	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+simpleaf_counts	1	Cell Ranger cells	FCGR3A Mono	1.9656019656019657
+simpleaf_counts	1	Cell Ranger cells	cDC	1.3104013104013106
+simpleaf_counts	1	Cell Ranger cells	Platelet	1.2285012285012284
+simpleaf_counts	1	Cell Ranger cells	pDC	0.6552006552006553
+simpleaf_counts	1	Simpleaf+QCatch cells	CD14 Mono	27.850162866449512
+simpleaf_counts	1	Simpleaf+QCatch cells	CD4 T	26.302931596091206
+simpleaf_counts	1	Simpleaf+QCatch cells	CD8 T	16.856677524429966
+simpleaf_counts	1	Simpleaf+QCatch cells	B	16.042345276872965
+simpleaf_counts	1	Simpleaf+QCatch cells	NK	4.478827361563518
+simpleaf_counts	1	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+simpleaf_counts	1	Simpleaf+QCatch cells	FCGR3A Mono	2.035830618892508
+simpleaf_counts	1	Simpleaf+QCatch cells	cDC	1.4657980456026058
+simpleaf_counts	1	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+simpleaf_counts	1	Simpleaf+QCatch cells	pDC	0.6514657980456027
+simpleaf_counts	2	Cell Ranger cells	CD14 Mono	27.354627354627354
+simpleaf_counts	2	Cell Ranger cells	CD4 T	26.453726453726457
+simpleaf_counts	2	Cell Ranger cells	CD8 T	16.953316953316953
+simpleaf_counts	2	Cell Ranger cells	B	16.134316134316133
+simpleaf_counts	2	Cell Ranger cells	NK	4.504504504504505
+simpleaf_counts	2	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+simpleaf_counts	2	Cell Ranger cells	FCGR3A Mono	2.620802620802621
+simpleaf_counts	2	Cell Ranger cells	cDC	1.3104013104013106
+simpleaf_counts	2	Cell Ranger cells	Platelet	1.2285012285012284
+simpleaf_counts	2	Cell Ranger cells	pDC	0.6552006552006553
+simpleaf_counts	2	Simpleaf+QCatch cells	CD14 Mono	27.19869706840391
+simpleaf_counts	2	Simpleaf+QCatch cells	CD4 T	26.302931596091206
+simpleaf_counts	2	Simpleaf+QCatch cells	CD8 T	16.856677524429966
+simpleaf_counts	2	Simpleaf+QCatch cells	B	16.042345276872965
+simpleaf_counts	2	Simpleaf+QCatch cells	NK	4.478827361563518
+simpleaf_counts	2	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+simpleaf_counts	2	Simpleaf+QCatch cells	FCGR3A Mono	2.687296416938111
+simpleaf_counts	2	Simpleaf+QCatch cells	cDC	1.4657980456026058
+simpleaf_counts	2	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+simpleaf_counts	2	Simpleaf+QCatch cells	pDC	0.6514657980456027
+simpleaf_counts	3	Cell Ranger cells	CD4 T	26.453726453726457
+simpleaf_counts	3	Cell Ranger cells	CD14 Mono	17.526617526617528
+simpleaf_counts	3	Cell Ranger cells	CD8 T	16.953316953316953
+simpleaf_counts	3	Cell Ranger cells	B	16.134316134316133
+simpleaf_counts	3	Cell Ranger cells	FCGR3A Mono	12.448812448812449
+simpleaf_counts	3	Cell Ranger cells	NK	4.504504504504505
+simpleaf_counts	3	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+simpleaf_counts	3	Cell Ranger cells	cDC	1.3104013104013106
+simpleaf_counts	3	Cell Ranger cells	Platelet	1.2285012285012284
+simpleaf_counts	3	Cell Ranger cells	pDC	0.6552006552006553
+simpleaf_counts	3	Simpleaf+QCatch cells	CD4 T	26.302931596091206
+simpleaf_counts	3	Simpleaf+QCatch cells	CD14 Mono	17.42671009771987
+simpleaf_counts	3	Simpleaf+QCatch cells	CD8 T	16.856677524429966
+simpleaf_counts	3	Simpleaf+QCatch cells	B	16.042345276872965
+simpleaf_counts	3	Simpleaf+QCatch cells	FCGR3A Mono	12.45928338762215
+simpleaf_counts	3	Simpleaf+QCatch cells	NK	4.478827361563518
+simpleaf_counts	3	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+simpleaf_counts	3	Simpleaf+QCatch cells	cDC	1.4657980456026058
+simpleaf_counts	3	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+simpleaf_counts	3	Simpleaf+QCatch cells	pDC	0.6514657980456027
+simpleaf_counts	4	Cell Ranger cells	CD14 Mono	27.682227682227683
+simpleaf_counts	4	Cell Ranger cells	CD4 T	26.453726453726457
+simpleaf_counts	4	Cell Ranger cells	CD8 T	16.953316953316953
+simpleaf_counts	4	Cell Ranger cells	B	16.134316134316133
+simpleaf_counts	4	Cell Ranger cells	NK	4.504504504504505
+simpleaf_counts	4	Cell Ranger cells	Low quality (no markers)	2.7846027846027845
+simpleaf_counts	4	Cell Ranger cells	FCGR3A Mono	2.293202293202293
+simpleaf_counts	4	Cell Ranger cells	cDC	1.3104013104013106
+simpleaf_counts	4	Cell Ranger cells	Platelet	1.2285012285012284
+simpleaf_counts	4	Cell Ranger cells	pDC	0.6552006552006553
+simpleaf_counts	4	Simpleaf+QCatch cells	CD14 Mono	27.524429967426713
+simpleaf_counts	4	Simpleaf+QCatch cells	CD4 T	26.302931596091206
+simpleaf_counts	4	Simpleaf+QCatch cells	CD8 T	16.856677524429966
+simpleaf_counts	4	Simpleaf+QCatch cells	B	16.042345276872965
+simpleaf_counts	4	Simpleaf+QCatch cells	NK	4.478827361563518
+simpleaf_counts	4	Simpleaf+QCatch cells	Low quality (no markers)	2.9315960912052117
+simpleaf_counts	4	Simpleaf+QCatch cells	FCGR3A Mono	2.3615635179153096
+simpleaf_counts	4	Simpleaf+QCatch cells	cDC	1.4657980456026058
+simpleaf_counts	4	Simpleaf+QCatch cells	Platelet	1.3843648208469055
+simpleaf_counts	4	Simpleaf+QCatch cells	pDC	0.6514657980456027

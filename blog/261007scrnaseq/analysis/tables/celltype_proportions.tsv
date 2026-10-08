@@ -1,0 +1,77 @@
+labels_from	cell_set	after_std_qc	cell_type	n	pct	total
+cr_counts	Cell Ranger cells	False	CD14 Mono	338	27.682	1221
+cr_counts	Cell Ranger cells	False	CD4 T	321	26.29	1221
+cr_counts	Cell Ranger cells	False	B	197	16.134	1221
+cr_counts	Cell Ranger cells	False	NK	134	10.975	1221
+cr_counts	Cell Ranger cells	False	CD8 T	130	10.647	1221
+cr_counts	Cell Ranger cells	False	Low quality (no markers)	34	2.785	1221
+cr_counts	Cell Ranger cells	False	FCGR3A Mono	28	2.293	1221
+cr_counts	Cell Ranger cells	False	cDC	16	1.31	1221
+cr_counts	Cell Ranger cells	False	Platelet	15	1.229	1221
+cr_counts	Cell Ranger cells	False	pDC	8	0.655	1221
+cr_counts	Cell Ranger cells	True	CD14 Mono	337	28.754	1172
+cr_counts	Cell Ranger cells	True	CD4 T	316	26.962	1172
+cr_counts	Cell Ranger cells	True	B	195	16.638	1172
+cr_counts	Cell Ranger cells	True	NK	132	11.263	1172
+cr_counts	Cell Ranger cells	True	CD8 T	127	10.836	1172
+cr_counts	Cell Ranger cells	True	FCGR3A Mono	26	2.218	1172
+cr_counts	Cell Ranger cells	True	cDC	16	1.365	1172
+cr_counts	Cell Ranger cells	True	Platelet	15	1.28	1172
+cr_counts	Cell Ranger cells	True	pDC	8	0.683	1172
+cr_counts	Simpleaf+QCatch cells	False	CD14 Mono	338	27.524	1228
+cr_counts	Simpleaf+QCatch cells	False	CD4 T	321	26.14	1228
+cr_counts	Simpleaf+QCatch cells	False	B	197	16.042	1228
+cr_counts	Simpleaf+QCatch cells	False	NK	134	10.912	1228
+cr_counts	Simpleaf+QCatch cells	False	CD8 T	130	10.586	1228
+cr_counts	Simpleaf+QCatch cells	False	Low quality (no markers)	36	2.932	1228
+cr_counts	Simpleaf+QCatch cells	False	FCGR3A Mono	29	2.362	1228
+cr_counts	Simpleaf+QCatch cells	False	cDC	18	1.466	1228
+cr_counts	Simpleaf+QCatch cells	False	Platelet	17	1.384	1228
+cr_counts	Simpleaf+QCatch cells	False	pDC	8	0.651	1228
+cr_counts	Simpleaf+QCatch cells	True	CD14 Mono	337	28.681	1175
+cr_counts	Simpleaf+QCatch cells	True	CD4 T	316	26.894	1175
+cr_counts	Simpleaf+QCatch cells	True	B	195	16.596	1175
+cr_counts	Simpleaf+QCatch cells	True	NK	132	11.234	1175
+cr_counts	Simpleaf+QCatch cells	True	CD8 T	127	10.809	1175
+cr_counts	Simpleaf+QCatch cells	True	FCGR3A Mono	27	2.298	1175
+cr_counts	Simpleaf+QCatch cells	True	cDC	18	1.532	1175
+cr_counts	Simpleaf+QCatch cells	True	Platelet	15	1.277	1175
+cr_counts	Simpleaf+QCatch cells	True	pDC	8	0.681	1175
+sa_counts	Cell Ranger cells	False	CD14 Mono	334	27.355	1221
+sa_counts	Cell Ranger cells	False	CD4 T	323	26.454	1221
+sa_counts	Cell Ranger cells	False	CD8 T	207	16.953	1221
+sa_counts	Cell Ranger cells	False	B	197	16.134	1221
+sa_counts	Cell Ranger cells	False	NK	55	4.505	1221
+sa_counts	Cell Ranger cells	False	Low quality (no markers)	34	2.785	1221
+sa_counts	Cell Ranger cells	False	FCGR3A Mono	32	2.621	1221
+sa_counts	Cell Ranger cells	False	cDC	16	1.31	1221
+sa_counts	Cell Ranger cells	False	Platelet	15	1.229	1221
+sa_counts	Cell Ranger cells	False	pDC	8	0.655	1221
+sa_counts	Cell Ranger cells	True	CD14 Mono	334	28.498	1172
+sa_counts	Cell Ranger cells	True	CD4 T	317	27.048	1172
+sa_counts	Cell Ranger cells	True	CD8 T	203	17.321	1172
+sa_counts	Cell Ranger cells	True	B	195	16.638	1172
+sa_counts	Cell Ranger cells	True	NK	55	4.693	1172
+sa_counts	Cell Ranger cells	True	FCGR3A Mono	29	2.474	1172
+sa_counts	Cell Ranger cells	True	cDC	16	1.365	1172
+sa_counts	Cell Ranger cells	True	Platelet	15	1.28	1172
+sa_counts	Cell Ranger cells	True	pDC	8	0.683	1172
+sa_counts	Simpleaf+QCatch cells	False	CD14 Mono	334	27.199	1228
+sa_counts	Simpleaf+QCatch cells	False	CD4 T	323	26.303	1228
+sa_counts	Simpleaf+QCatch cells	False	CD8 T	207	16.857	1228
+sa_counts	Simpleaf+QCatch cells	False	B	197	16.042	1228
+sa_counts	Simpleaf+QCatch cells	False	NK	55	4.479	1228
+sa_counts	Simpleaf+QCatch cells	False	Low quality (no markers)	36	2.932	1228
+sa_counts	Simpleaf+QCatch cells	False	FCGR3A Mono	33	2.687	1228
+sa_counts	Simpleaf+QCatch cells	False	cDC	18	1.466	1228
+sa_counts	Simpleaf+QCatch cells	False	Platelet	17	1.384	1228
+sa_counts	Simpleaf+QCatch cells	False	pDC	8	0.651	1228
+sa_counts	Simpleaf+QCatch cells	True	CD14 Mono	334	28.426	1175
+sa_counts	Simpleaf+QCatch cells	True	CD4 T	317	26.979	1175
+sa_counts	Simpleaf+QCatch cells	True	CD8 T	203	17.277	1175
+sa_counts	Simpleaf+QCatch cells	True	B	195	16.596	1175
+sa_counts	Simpleaf+QCatch cells	True	NK	55	4.681	1175
+sa_counts	Simpleaf+QCatch cells	True	FCGR3A Mono	30	2.553	1175
+sa_counts	Simpleaf+QCatch cells	True	cDC	18	1.532	1175
+sa_counts	Simpleaf+QCatch cells	True	Platelet	15	1.277	1175
+sa_counts	Simpleaf+QCatch cells	True	pDC	8	0.681	1175

@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-07">
+
+<title>scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧 – Yujuan Zhang, PhD</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cf06bf3c63dcc3f08f55f76a95a4da8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // Move the language link into the title block so it sits at the top right.
+  document.addEventListener("DOMContentLoaded", function () {
+    var s = document.querySelector(".lang-switch"), h = document.getElementById("title-block-header");
+    if (s && h) h.appendChild(s);
+  });
+</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yujuan Zhang, PhD</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../awards.html"> 
+<span class="menu-text">Awards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks_pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-lightning-charge-fill" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yujuan-zhang"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=CdA1HhMAAAAJ&amp;hl=en"> <i class="bi bi-mortarboard-fill" role="img" aria-label="Google Scholar">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:yujuan.zhang418@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#为什么做这个" id="toc-为什么做这个" class="nav-link active" data-scroll-target="#为什么做这个">为什么做这个</a></li>
+  <li><a href="#方法" id="toc-方法" class="nav-link" data-scroll-target="#方法">方法</a></li>
+  <li><a href="#到底差了哪些-barcode" id="toc-到底差了哪些-barcode" class="nav-link" data-scroll-target="#到底差了哪些-barcode">1. 到底差了哪些 barcode？</a></li>
+  <li><a href="#多出的-7-个像真实细胞吗" id="toc-多出的-7-个像真实细胞吗" class="nav-link" data-scroll-target="#多出的-7-个像真实细胞吗">2. 多出的 7 个像真实细胞吗？</a></li>
+  <li><a href="#是细胞识别算法不同还是输入计数不同" id="toc-是细胞识别算法不同还是输入计数不同" class="nav-link" data-scroll-target="#是细胞识别算法不同还是输入计数不同">3. 是细胞识别算法不同，还是输入计数不同？</a>
+  <ul class="collapse">
+  <li><a href="#个跨过了-500-umi-门槛" id="toc-个跨过了-500-umi-门槛" class="nav-link" data-scroll-target="#个跨过了-500-umi-门槛">3 个跨过了 500 UMI 门槛</a></li>
+  <li><a href="#另外-4-个在统计阈值附近" id="toc-另外-4-个在统计阈值附近" class="nav-link" data-scroll-target="#另外-4-个在统计阈值附近">另外 4 个在统计阈值附近</a></li>
+  </ul></li>
+  <li><a href="#最后这-7-个值得在意吗" id="toc-最后这-7-个值得在意吗" class="nav-link" data-scroll-target="#最后这-7-个值得在意吗">最后：这 7 个值得在意吗？</a></li>
+  <li><a href="#结论" id="toc-结论" class="nav-link" data-scroll-target="#结论">结论</a></li>
+  <li><a href="#复现" id="toc-复现" class="nav-link" data-scroll-target="#复现">复现</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">scrna-seq</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="reading-time">
+3 min read
+</div>
+<div class="lang-switch">
+<p><a href="../../blog/261007scrnaseq/index.html">English</a></p>
+</div>
+<section id="为什么做这个" class="level2">
+<h2 class="anchored" data-anchor-id="为什么做这个">为什么做这个</h2>
+<p>Nextflow 管理并记录分析过程，nf-core/scrnaseq 提供单细胞RNA的多条标准化处理路线。我想知道：<strong>同一批测序数据，为什么不同路线保留的细胞不完全相同？</strong> 多出的 barcode 是真实细胞、背景 RNA，还是低质量液滴？它们会不会改变生物学结论？</p>
+</section>
+<section id="方法" class="level2">
+<h2 class="anchored" data-anchor-id="方法">方法</h2>
+<p>数据为 10x 公开的 <a href="https://www.10xgenomics.com/datasets/1-k-pbm-cs-from-a-healthy-donor-v-3-chemistry-3-standard-3-0-0">PBMC 1k v3</a>，流程为 <a href="https://nf-co.re/scrnaseq/4.2.0">nf-core/scrnaseq 4.2.0</a>。两边使用同一批 FASTQ、GRCh38-2024-A 参考：Cell Ranger 用预建索引，Simpleaf 用包内 FASTA/GTF 建索引。</p>
+<p>版本为 Cell Ranger 10.0.0、Simpleaf 0.19.5、QCatch 0.2.12。 <strong>这里比较的是 Cell Ranger 与 Simpleaf＋QCatch：Simpleaf 负责计数，QCatch 负责后续细胞识别。</strong></p>
+<p>上游在 AWS r6i.4xlarge（16 vCPU、128 GiB）运行，采用 CloudFormation 自动安装、分析、上传结果后自动终止实例。成功的一次全程 84 分钟；账单约 $2.05，含 3 次失败尝试，成功的那次约 $1.41。本样本的下游比较在 8 GB Mac 个人电脑上完成。</p>
+</section>
+<section id="到底差了哪些-barcode" class="level2">
+<h2 class="anchored" data-anchor-id="到底差了哪些-barcode">1. 到底差了哪些 barcode？</h2>
+<p>先比较三个 barcode 集合：共同保留、仅 Cell Ranger、仅 Simpleaf＋QCatch。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 从两份筛选结果读取并统一 barcode 后缀</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>shared <span class="op">=</span> cr_cells <span class="op">&amp;</span> sa_cells</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cr_only <span class="op">=</span> cr_cells <span class="op">-</span> sa_cells</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sa_only <span class="op">=</span> sa_cells <span class="op">-</span> cr_cells</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(shared), <span class="bu">len</span>(cr_only), <span class="bu">len</span>(sa_only))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1221 0 7</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(shared) <span class="op">/</span> <span class="bu">len</span>(cr_cells <span class="op">|</span> sa_cells))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.9943：交集 / 并集</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>这 7 个 barcode 都集中在细胞与背景的过渡区域。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/01_knee_plots.png" class="img-fluid figure-img"></p>
+<figcaption>Barcode 排名及拐点放大：绿色标记为仅 Simpleaf＋QCatch 保留的 7 个 barcode</figcaption>
+</figure>
+</div>
+<p><em>横轴为 UMI 排名，纵轴为 UMI 数。右图空心圆为 Cell Ranger，菱形为 Simpleaf；连线对应同一 barcode。500 UMI 是本次实现的检验门槛，不是所有 EmptyDrops 分析的固定值。</em></p>
+<p>按交集／并集计算，细胞集合一致率为 <strong>99.4%</strong>。共同细胞中，每个细胞总 UMI 的 Spearman 相关系数为 0.9997，Simpleaf 平均计数约高 5%。<strong>整体高度一致，但小差异能改变边界 barcode 的去留。</strong></p>
+<p>还要注意：图中的两份“原始矩阵”分别包含 329,735 和 72,612 个 barcode。它们的上游保留范围不同，不能当成完全相同的液滴全集。</p>
+</section>
+<section id="多出的-7-个像真实细胞吗" class="level2">
+<h2 class="anchored" data-anchor-id="多出的-7-个像真实细胞吗">2. 多出的 7 个像真实细胞吗？</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>编号</th>
+<th>初步判断</th>
+<th>UMI：CR → SA</th>
+<th>检出基因数</th>
+<th>线粒体比例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>血小板样：PPBP、PF4</td>
+<td>455 → 508</td>
+<td>178</td>
+<td>6%</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>血小板样：PPBP</td>
+<td>464 → 532</td>
+<td>172</td>
+<td>18%</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>cDC 样：FCER1A、CST3</td>
+<td>1,200 → 1,262</td>
+<td>753</td>
+<td>5%</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>单核／DC 样：LYZ、CST3</td>
+<td>1,309 → 1,366</td>
+<td>815</td>
+<td>7%</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>FCGR3A 单核样</td>
+<td>1,239 → 1,298</td>
+<td>802</td>
+<td>3%</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>低质量，无明确 marker</td>
+<td>294 → 577</td>
+<td>121</td>
+<td>52%</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>低质量，无明确 marker</td>
+<td>618 → 716</td>
+<td>67</td>
+<td>90%</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/03_marker_dotplot.png" class="img-fluid figure-img"></p>
+<figcaption>共同细胞群与 7 个差异 barcode 的 marker 表达</figcaption>
+</figure>
+</div>
+<p><em>点大小为检出比例，颜色为相对表达。SA_only 每行仅一个 barcode，标签为初步判断。</em></p>
+<p>1、6 号有血小板 marker。<strong>低 UMI 不等于空液滴：血小板本身 RNA 就少。</strong> 5、7 号线粒体比例很高，应标为低质量候选，而非直接认定“濒死”。</p>
+<p>低深度会影响表达相关性，因此我设置了同深度对照：下采样的同类细胞，以及环境 RNA 模拟的空液滴。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/03_depth_matched.png" class="img-fluid figure-img"></p>
+<figcaption>深度匹配对照：真实细胞下采样、环境 RNA 模拟与差异 barcode</figcaption>
+</figure>
+</div>
+<p><em>横轴为与环境 RNA 的相关性，纵轴为与候选细胞类型的相关性。蓝：下采样细胞；灰：模拟空液滴；绿：差异 barcode。</em></p>
+<p>1、6 号更接近血小板对照；7 号远离模拟空液滴，5 号介于两者之间，两者都不代表质量合格。2、3、4 号的两类对照区分较弱：环境 RNA 与单核／DC 表达谱相似，相关性不足以裁定它们是不是细胞。</p>
+</section>
+<section id="是细胞识别算法不同还是输入计数不同" class="level2">
+<h2 class="anchored" data-anchor-id="是细胞识别算法不同还是输入计数不同">3. 是细胞识别算法不同，还是输入计数不同？</h2>
+<p>我用<strong>同一套 QCatch 代码和参数</strong>，以 OrdMag＋EmptyDrops 框架重新识别两份矩阵。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># QCatch 内部接口节选；m 为 CountMatrix，cc 为细胞识别模块。</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入、版本及矩阵转换见 analysis/，不是独立运行脚本。</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>initial <span class="op">=</span> cc.initial_filtering_OrdMag(m, <span class="st">"10X_3p_v3"</span>, <span class="va">None</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> cc.find_nonambient_barcodes(m, initial, <span class="st">"10X_3p_v3"</span>, <span class="va">None</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>called <span class="op">=</span> {b.decode() <span class="cf">for</span> b <span class="kw">in</span> initial} <span class="op">|</span> <span class="bu">set</span>(res.eval_bcs[res.is_nonambient])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cell Ranger 矩阵仍得到 1,221 个，Simpleaf 矩阵仍得到 1,228 个，与原结果逐个一致。改变随机种子和模拟次数后，本次分歧也未消失。</p>
+<p><strong>同一识别实现仍有分歧，接下来应查输入矩阵。</strong> 但输入差异包括计数和背景 barcode 范围，不能只归因于某个单一因素。</p>
+<section id="个跨过了-500-umi-门槛" class="level3">
+<h3 class="anchored" data-anchor-id="个跨过了-500-umi-门槛">3 个跨过了 500 UMI 门槛</h3>
+<p>1、5、6 号在 Cell Ranger 矩阵中低于 500 UMI，未进入这一步的非背景检验；在 Simpleaf 矩阵中则超过门槛。额外计数中，DHFR 占了显著一部分。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>编号</th>
+<th>总 UMI 增量</th>
+<th>DHFR 增量</th>
+<th>SA 扣除 DHFR 与一个 chr8 lncRNA 后的 UMI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>53</td>
+<td>19</td>
+<td>485</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>68</td>
+<td>29</td>
+<td>495</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>283</td>
+<td>236</td>
+<td>341</td>
+</tr>
+</tbody>
+</table>
+<p>移除这两个基因并重新识别，三个 barcode 都不再被保留。<strong>少数基因的计数，足以改变它们能否进入检验。</strong></p>
+<p>DHFR 的差异也出现在共同细胞中：Simpleaf 计数为 45,624 UMI（其中 unspliced 45,532），Cell Ranger 为 739。我进一步检查了 Cell Ranger BAM 中的 DHFR 区域：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pysam</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># BAM_URL、BAI_URL 为已有 BAM 及索引的临时访问链接。</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pysam.AlignmentFile(BAM_URL, index_filename<span class="op">=</span>BAI_URL) <span class="im">as</span> bam:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    mapq <span class="op">=</span> Counter(r.mapping_quality</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="cf">for</span> r <span class="kw">in</span> bam.fetch(<span class="st">"chr5"</span>, <span class="dv">80626226</span>, <span class="dv">80655002</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapq)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Counter({1: 4718, 3: 2747, 255: 1519, 0: 4})</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>约 83% 的比对记录 MAPQ 低于 255；这些记录高度集中在一个约 200 bp 的内含子窗口，NH 标签为 2–4，即同一条 read 能比对到基因组 2–4 个位置。</p>
+<p><strong>重复序列是 DHFR 异常计数的线索。</strong> 两条路线的参考目标和比对／分配规则不同，可能导致这些 reads 的归属不同。未逐条核对 Simpleaf 的 read 分配，因此机制仍是推断，chr8 lncRNA 也不能凭类比认定原因。</p>
+<p>注意：Cell Ranger 会根据基因归属调整 MAPQ，不能简化为“只计唯一基因组比对”。MAPQ＝255 不必然代表原始 STAR 比对只有一个位置。<a href="https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/cr-outputs-bam">10x BAM 标签说明</a></p>
+</section>
+<section id="另外-4-个在统计阈值附近" class="level3">
+<h3 class="anchored" data-anchor-id="另外-4-个在统计阈值附近">另外 4 个在统计阈值附近</h3>
+<p>2、3、4 号都进入检验，但校正后 p 值从 Cell Ranger 的约 0.004 变为 Simpleaf 的约 0.0001，跨过本次 0.001 的阈值。7 号也在阈值附近。这几个未找到明确的单一来源，目前解释到统计阈值层面，而非 read 层面。</p>
+</section>
+</section>
+<section id="最后这-7-个值得在意吗" class="level2">
+<h2 class="anchored" data-anchor-id="最后这-7-个值得在意吗">最后：这 7 个值得在意吗？</h2>
+<p><strong>对细胞类型比例：几乎没有影响。</strong> 我固定计数、聚类和注释，只改变细胞集。多出的 7 个分属 4 类：血小板 2 个、cDC 2 个、FCGR3A 单核 1 个、低质量 2 个。其余细胞类型的细胞数完全没变，只是分母从 1,221 变成 1,228，比例被稀释，最多 0.16 个百分点。按常见 QC（≥ 200 个基因、线粒体 ≤ 20%）过滤后，差异只剩 3 个细胞：2 个 cDC、1 个 FCGR3A 单核。</p>
+<p>这个变化有多小？我在同一流程里只改聚类随机种子，或只换计数矩阵，作为对照：</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/07_proportion_impact.png" class="img-fluid figure-img"></p>
+<figcaption>只改变一个因素时，各类细胞比例的最大变化</figcaption>
+</figure>
+</div>
+<p><em>蓝：只换细胞集；橙：只换聚类随机种子（0–4）；绿：只换计数矩阵（Cell Ranger 或 Simpleaf）。</em></p>
+<p>细胞集带来的变化最多 0.16 个百分点；随机种子或计数矩阵却能让单核、NK／CD8 T 的比例变化 6–10 个百分点。后两项来自我这套简单的聚类／注释方法，不能推广为工具差异。<strong>比起这 7 个 barcode，注释对分析设置的敏感性更值得检查。</strong></p>
+<p><strong>对小细胞群的 marker：有影响，但有限。</strong> cDC 只有 16 个细胞，多 2 个就是 +12.5%。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/07_cdc_markers.png" class="img-fluid figure-img"></p>
+<figcaption>cDC marker 的表达比例与校正后 p 值</figcaption>
+</figure>
+</div>
+<p>CST3、FCER1A、CLEC10A 的结论不变。CD1C 变弱：表达比例从 63% 降到 56%，校正后 p 值从 0.012 升到 0.034，因为新增的 2 个细胞不表达 CD1C。另外，QC 后两边是同一批 15 个血小板，PPBP 的 marker 排名却从第 13 变为第 1，因为前列基因分数接近。<strong>看 marker，要看表达比例、效应大小和统计证据，不能只看排名。</strong></p>
+</section>
+<section id="结论" class="level2">
+<h2 class="anchored" data-anchor-id="结论">结论</h2>
+<p>同一批 FASTQ，Cell Ranger 保留 <strong>1,221 个细胞</strong>，Simpleaf＋QCatch 保留 <strong>1,228 个</strong>，前者全部包含在后者中。我追查了多出的 <strong>7 个 barcode</strong>：3 个因额外计数跨过 UMI 门槛，DHFR 内含子重复序列是其中的重要线索；另外 4 个处于统计阈值附近。只改变细胞集时，细胞类型比例最多变化 <strong>0.16 个百分点</strong>。这 7 个对整体细胞类型比例影响很小，但少数基因与固定阈值足以改变去留。两次比较仅使用了一份 PBMC 样本；两种流程在其他数据中是否同样接近，还需要进一步验证。</p>
+</section>
+<section id="复现" class="level2">
+<h2 class="anchored" data-anchor-id="复现">复现</h2>
+<ul>
+<li>AWS 模板：<a href="scrnaseq-comparison.yaml">scrnaseq-comparison.yaml</a>。</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+// Rebuilds the title-block metadata (date, reading time, view count,
+// categories) as a single plain-text line, matching the reference layout
+// at https://divingintogeneticsandgenomics.com. Quarto's own title
+// template renders these as separate elements (badge-style categories,
+// a "Published" block, and our own .reading-time div from
+// _reading-time.lua) that can't be reordered with CSS alone since they
+// aren't DOM siblings -- so this reads their text back out, builds one
+// line, and hides the originals.
+(function () {
+  var titleBlock = document.querySelector(".quarto-title");
+  if (!titleBlock) return;
+
+  var dateEl = document.querySelector(".quarto-title-meta-contents .date");
+  var readingEl = document.querySelector(".reading-time");
+  var catsEl = document.querySelector(".quarto-categories");
+
+  var dateText = dateEl ? dateEl.textContent.trim() : "";
+  var readingText = readingEl ? readingEl.textContent.trim() : "";
+  var cats = catsEl
+    ? Array.prototype.map.call(
+        catsEl.querySelectorAll(".quarto-category"),
+        function (c) {
+          return c.textContent.trim();
+        }
+      )
+    : [];
+
+  var meta = document.createElement("div");
+  meta.className = "post-meta-line";
+
+  function addPart(node) {
+    if (meta.childElementCount > 0) {
+      var dot = document.createElement("span");
+      dot.className = "post-meta-dot";
+      dot.textContent = "·";
+      meta.appendChild(dot);
+    }
+    meta.appendChild(node);
+  }
+
+  function textPart(text) {
+    var span = document.createElement("span");
+    span.textContent = text;
+    return span;
+  }
+
+  if (dateText) addPart(textPart("Last updated on " + dateText));
+  if (readingText) addPart(textPart(readingText));
+
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
+
+  if (cats.length) {
+    var catPart = document.createElement("span");
+    var icon = document.createElement("i");
+    icon.className = "bi bi-folder2 post-meta-folder-icon";
+    catPart.appendChild(icon);
+    catPart.appendChild(document.createTextNode(cats.join(", ")));
+    addPart(catPart);
+  }
+
+  titleBlock.insertAdjacentElement("afterend", meta);
+
+  // Share row -- the actual second line under the title, right below the
+  // metadata line. Built from the live page URL/title (works the same on
+  // localhost and the published site) rather than anything hand-typed.
+  var h1 = titleBlock.querySelector("h1.title");
+  var pageTitle = h1 ? h1.textContent.trim() : document.title;
+  var pageUrl = window.location.href;
+  var encodedUrl = encodeURIComponent(pageUrl);
+  var encodedTitle = encodeURIComponent(pageTitle);
+
+  var shareLinks = [
+    {
+      label: "Share on X",
+      icon: "bi-twitter",
+      href: "https://twitter.com/intent/tweet?url=" + encodedUrl + "&text=" + encodedTitle,
+    },
+    {
+      label: "Share on Facebook",
+      icon: "bi-facebook",
+      href: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+    },
+    {
+      label: "Share on LinkedIn",
+      icon: "bi-linkedin",
+      href: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+    },
+    {
+      label: "Share on Weibo",
+      icon: "bi-sina-weibo",
+      href: "https://service.weibo.com/share/share.php?url=" + encodedUrl + "&title=" + encodedTitle,
+    },
+    {
+      label: "Share by email",
+      icon: "bi-envelope-fill",
+      href: "mailto:?subject=" + encodedTitle + "&body=" + encodedUrl,
+    },
+  ];
+
+  var shareRow = document.createElement("div");
+  shareRow.className = "post-share-row";
+  shareLinks.forEach(function (link) {
+    var a = document.createElement("a");
+    a.className = "post-share-icon";
+    a.href = link.href;
+    a.setAttribute("aria-label", link.label);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var i = document.createElement("i");
+    i.className = "bi " + link.icon;
+    a.appendChild(i);
+    shareRow.appendChild(a);
+  });
+  // Copy-link is an action, not a navigation, so it's a real <button>
+  // rather than an <a> styled to look like one.
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "post-share-icon";
+  copyBtn.setAttribute("aria-label", "Copy link");
+  var copyIcon = document.createElement("i");
+  copyIcon.className = "bi bi-link-45deg";
+  copyBtn.appendChild(copyIcon);
+  copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(pageUrl).then(function () {
+      copyIcon.className = "bi bi-clipboard-check-fill";
+      copyBtn.classList.add("post-share-copied");
+      setTimeout(function () {
+        copyIcon.className = "bi bi-link-45deg";
+        copyBtn.classList.remove("post-share-copied");
+      }, 1500);
+    });
+  });
+  shareRow.appendChild(copyBtn);
+
+  meta.insertAdjacentElement("afterend", shareRow);
+
+  if (catsEl) catsEl.style.display = "none";
+  var titleMeta = document.querySelector(".quarto-title-meta");
+  if (titleMeta) titleMeta.style.display = "none";
+  if (readingEl) readingEl.style.display = "none";
+
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  //
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
+  var DISPLAYED_VIEWS_OFFSET = 10;
+  fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (data) {
+      var n = data && typeof data.count === "string"
+        ? parseInt(data.count.replace(/,/g, ""), 10)
+        : 0;
+      if (!isFinite(n)) n = 0;
+      n += DISPLAYED_VIEWS_OFFSET;
+      viewSpan.textContent = n + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yujuan-zhang\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

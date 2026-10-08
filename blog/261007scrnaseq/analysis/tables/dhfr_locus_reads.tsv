@@ -1,0 +1,38 @@
+metric	value
+DHFR: primary reads in span	8988
+DHFR: unique (MAPQ 255)	1519
+DHFR: multi-mapped (MAPQ < 255)	7469
+DHFR: intronic (RE=N)	8566
+DHFR: exonic (RE=E)	399
+DHFR: reads representing a counted UMI (xf & 8)	859
+DHFR: hotspot 200-bp window start (multi-mapped)	80651400
+DHFR: multi-mapped reads in hotspot window	7219
+DHFR: reads with NH=1	1285
+DHFR: reads with NH=2	2980
+DHFR: reads with NH=3	2998
+DHFR: reads with NH=4	1721
+DHFR: reads with NH=5	2
+DHFR: reads with NH=6	2
+lncRNA chr8: primary reads in span	513
+lncRNA chr8: unique (MAPQ 255)	510
+lncRNA chr8: multi-mapped (MAPQ < 255)	3
+lncRNA chr8: intronic (RE=N)	222
+lncRNA chr8: exonic (RE=E)	229
+lncRNA chr8: reads representing a counted UMI (xf & 8)	119
+lncRNA chr8: hotspot 200-bp window start (multi-mapped)	32959800
+lncRNA chr8: multi-mapped reads in hotspot window	1
+lncRNA chr8: reads with NH=1	510
+lncRNA chr8: reads with NH=2	2
+lncRNA chr8: reads with NH=4	1
+DHFR UMIs in agreed cells, Cell Ranger	739
+DHFR UMIs in agreed cells, Simpleaf spliced	80
+DHFR UMIs in agreed cells, Simpleaf unspliced	45532
+DHFR UMIs in agreed cells, Simpleaf ambiguous	12
+lncRNA chr8 UMIs in agreed cells, Cell Ranger	106
+lncRNA chr8 UMIs in agreed cells, Simpleaf spliced	57
+lncRNA chr8 UMIs in agreed cells, Simpleaf unspliced	23748
+lncRNA chr8 UMIs in agreed cells, Simpleaf ambiguous	1
+MSH3 UMIs in agreed cells, Cell Ranger	881
+MSH3 UMIs in agreed cells, Simpleaf spliced	145
+MSH3 UMIs in agreed cells, Simpleaf unspliced	732
+MSH3 UMIs in agreed cells, Simpleaf ambiguous	13
