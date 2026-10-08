@@ -8,6 +8,8 @@ project:
   render:
     - "*.qmd"
     - "blog/**/*.qmd"
+    - "blog/261007scrnaseq/index.md"
+    - "blog/261007scrnaseq/index-chinese.md"
 
 website:
   title: "Yujuan Zhang, PhD"

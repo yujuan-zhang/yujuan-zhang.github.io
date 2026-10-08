@@ -1,0 +1,12 @@
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // Move the language link into the title block so it sits at the top right.
+  document.addEventListener("DOMContentLoaded", function () {
+    var s = document.querySelector(".lang-switch"), h = document.getElementById("title-block-header");
+    if (s && h) h.appendChild(s);
+  });
+</script>
