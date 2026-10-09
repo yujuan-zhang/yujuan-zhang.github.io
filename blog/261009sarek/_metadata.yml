@@ -7,3 +7,5 @@ filters:
 format:
   html:
     include-in-header: lang-switch.html
+resources:
+  - execution_report_2026-08-31_21-28-04.html

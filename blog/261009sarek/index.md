@@ -93,6 +93,10 @@ VEP and SnpEff add biological context, including affected genes and transcripts,
 
 Outputs include processed alignments, VCF files and tool-specific results. CNV and MSI analyses also generate their own tables or plots. MultiQC summarizes metrics such as coverage, alignment statistics and duplication rates.[1]
 
+::: {.callout-tip}
+**[Execution report](execution_report_2026-08-31_21-28-04.html){target="_blank"}**: records how the entire Nextflow pipeline ran, showing whether each step succeeded, along with its runtime and resource usage.
+:::
+
 ## 7. Reproducibility Across Computing Environments
 
 Sarek uses Nextflow to coordinate tasks and containers to manage software environments. This supports consistent execution on local machines, clusters and cloud infrastructure, reducing the manual work required to connect individual tools.[1]
