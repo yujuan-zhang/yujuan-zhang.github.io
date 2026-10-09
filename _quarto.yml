@@ -10,6 +10,8 @@ project:
     - "blog/**/*.qmd"
     - "blog/261007scrnaseq/index.md"
     - "blog/261007scrnaseq/index-chinese.md"
+    - "blog/261009sarek/index.md"
+    - "blog/261009sarek/index-chinese.md"
 
 website:
   title: "Yujuan Zhang, PhD"

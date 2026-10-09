@@ -1,0 +1,9 @@
+# index.md / index-chinese.md are kept exactly as written (no front matter),
+# so the shared site metadata for this post lives here.
+date: 2026-10-09
+categories: [bioinformatics, nextflow]
+filters:
+  - _h1-title.lua
+format:
+  html:
+    include-in-header: lang-switch.html

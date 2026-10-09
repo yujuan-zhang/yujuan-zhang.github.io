@@ -4,6 +4,7 @@ listing:
   contents:
     - blog
     - "!blog/261007scrnaseq/index-chinese.md"
+    - "!blog/261009sarek/index-chinese.md"
   sort: "date desc"
   type: default
   categories: true
