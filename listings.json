@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/261009sarek/index.html",
       "/blog/261007scrnaseq/index.html",
       "/blog/260930genome-plot-gallery/index.html",
       "/blog/260930nextflow-aws/index.html",

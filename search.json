@@ -1,5 +1,75 @@
 [
   {
+    "objectID": "blog/261009sarek/index-chinese.html",
+    "href": "blog/261009sarek/index-chinese.html",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "",
+    "text": "2 min read"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#名字像景点干的是科研的活",
+    "href": "blog/261009sarek/index-chinese.html#名字像景点干的是科研的活",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "名字像景点，干的是科研的活",
+    "text": "名字像景点，干的是科研的活\nSarek 听起来像某个算法的缩写，其实它和瑞典北部一座同名国家公园有关。开发者在介绍流程时还展示过公园的风景，早期版本也用过 Ruotes、Skårki 等名字。别人发新版本：v2.1、v2.2；它发新版本，顺便给你上一小节瑞典地理课。出处见开发者的 2020 年介绍。\n不过，这个项目的出身很务实：最初由瑞典 SciLifeLab 旗下的 NGI 和 NBIS 团队开发，得到瑞典儿童肿瘤生物样本库的支持。后来，德国 QBiC 的开发者也加入了进来，并与其他贡献者一起推动后续开发和 Nextflow DSL2 重构。[1]\n测完一个人的 DNA，拿到的不是一份完整的基因组说明书，而是海量短小的序列片段。把这些碎片放回正确位置，再找出哪些字母换了、哪些段落删了、哪些章节多了几份，就是变异分析的基本任务。\n它要解决的麻烦，做过分析的人应该不陌生：数据终于拿到了，接下来却要安装一串软件、处理不同文件格式，再祈祷换台服务器后还能跑。测序仪已经下班，分析的人还在和环境报错加班。Sarek 把这些步骤组织成可重复运行的工作流，让研究者少花些时间接管道，多花些时间看结果。\nnf-core/sarek 把这件事串成了一条自动化流程：预处理 → 变异检测 → 注释 → 质量报告。它既能分析个体原本携带的生殖系变异，也能寻找肿瘤等组织后来产生的体细胞变异。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
+    "href": "blog/261009sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "1. Sarek 在 nf-core 中有多受关注？",
+    "text": "1. Sarek 在 nf-core 中有多受关注？\n截至 2026 年 10 月 8 日查询时，Sarek 的 GitHub 仓库约有 612 Stars，作为对照，nf-core/rnaseq 约有 1,400 Stars。它是 nf-core 中受到广泛关注的成熟 DNA 变异分析流程之一。[3]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#为什么变异分析这么重要",
+    "href": "blog/261009sarek/index-chinese.html#为什么变异分析这么重要",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "2. 为什么变异分析这么重要？",
+    "text": "2. 为什么变异分析这么重要？\n如果把基因组比作一本说明书，RNA 表达分析关注的是“哪些章节正在被阅读、读了多少”；DNA 变异分析关注的是“说明书的内容发生了什么变化”。\n这些变化与许多研究问题直接相关：\n\n遗传病研究：某个基因的变异，是否可能影响蛋白质功能？\n癌症研究：肿瘤新增了哪些突变？哪些区域发生扩增或缺失？\n群体遗传研究：不同个体携带哪些差异？这些差异与性状有什么关系？\n\n因此，变异检测是 DNA 测序分析中的基础环节。但“与参考基因组不同”不等于“有害”：大量变异只是正常的个体差异。找到变异后，还需要注释、筛选和进一步解释。"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#它能接收什么数据",
+    "href": "blog/261009sarek/index-chinese.html#它能接收什么数据",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "3. 它能接收什么数据？",
+    "text": "3. 它能接收什么数据？\nSarek 支持全基因组测序、全外显子测序和靶向测序。\n\n\n\n数据类型\n检查范围\n直观理解\n\n\n\n\nWGS：全基因组测序\n整个基因组\n检查整本说明书\n\n\nWES：全外显子测序\n主要覆盖外显子区域\n重点检查编码蛋白质的部分\n\n\nPanel：靶向测序\n预先指定的基因或区域\n只检查选定的章节\n\n\n\n流程可以从 FASTQ 等原始测序数据开始，也能根据起始步骤从已有比对文件或变异文件继续。它支持同一患者的正常、肿瘤及额外复发样本。它最初面向人和小鼠，但也能用于有参考基因组的其他物种；具体工具和注释资源仍需与物种及数据匹配。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#sarek-找的不同不止一个字母",
+    "href": "blog/261009sarek/index-chinese.html#sarek-找的不同不止一个字母",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "4. Sarek 找的“不同”，不止一个字母",
+    "text": "4. Sarek 找的“不同”，不止一个字母\n\n\n\n\n\n\n\n\n类型\n基因组发生什么变化\n代表工具\n\n\n\n\nSNV：单碱基变异\n一个碱基换了，如 A → G\nHaplotypeCaller、DeepVariant、Mutect2\n\n\n小型 indel：插入或缺失\n多了或少了几个碱基\nHaplotypeCaller、Mutect2、Strelka2 等\n\n\nSV：结构变异\n较大片段发生删除、翻转或重排等\nManta、TIDDIT\n\n\nCNV：拷贝数变异\n某个区域的拷贝数增加或减少\nASCAT、CNVkit、Control-FREEC\n\n\nMSI：微卫星不稳定性\n短重复序列的重复次数出现不稳定变化\nMSIsensor-pro\n\n\n\n不同工具适合不同样本、测序范围和变异类型，运行前应先确定研究问题。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
+    "href": "blog/261009sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "5. 为什么分 germline 和 somatic 两条路线？",
+    "text": "5. 为什么分 germline 和 somatic 两条路线？\nGermline（生殖系）分析：这个人原本携带哪些变异？这些变异通常存在于几乎所有细胞中，可以来自父母，也可以是新发变异。\nSomatic（体细胞）分析：某些细胞后来新增了哪些变异？在癌症研究中，常用同一患者的肿瘤与配对正常样本比较，帮助区分原有遗传背景和肿瘤新增变化。\n检测难度也不同。在正常二倍体、没有拷贝数变化的常染色体区域，germline 杂合变异通常有约 50% 的 reads 支持变异。肿瘤样本则混合了正常细胞、肿瘤细胞和不同肿瘤亚群，真实 somatic 变异可能只得到少量 reads 的支持。\n例如，假设 20% 的细胞带有一个杂合突变，其余细胞没有，而且没有拷贝数变化，那么预期的变异等位基因比例（VAF）约为：\n\\[\n\\mathrm{VAF} \\approx 20\\% \\times \\frac{1}{2} = 10\\%\n\\]\n软件必须判断：这 10% 是真实突变，还是测序或比对错误？因此，两条路线需要不同的统计模型和过滤逻辑。GATK 的 HaplotypeCaller 主要用于 germline 检测，Mutect2 则用于 somatic 检测。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#步骤",
+    "href": "blog/261009sarek/index-chinese.html#步骤",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "6. 步骤",
+    "text": "6. 步骤\n\n第一步：预处理——先把证据整理好\n检查 reads 的质量，按需去除接头，把序列比对到参考基因组，标记重复 reads，并进行适用的碱基质量校正。[1]\n这里应避免“假证据”：如果一条 DNA 片段被反复扩增，这些拷贝不应被当成许多独立分子在支持同一个突变；一条 read 放错位置，也可能制造出并不存在的差异。\n\n\n第二步：变异检测——选择合适的工具\n根据 germline 或 somatic 研究目标，以及需要寻找的变异类型，选择相应 caller。比如，germline 小变异可以使用 HaplotypeCaller 或 DeepVariant，somatic 小变异可以使用 Mutect2，结构变异则交给 Manta 等工具。[1]\n\n\n第三步：注释——从坐标变成生物学问题\n一个变异坐标本身并不容易理解。VEP、SnpEff 等工具会补充信息：它落在哪个基因、哪个转录本？是否改变氨基酸？是否可能影响剪接？[1]\n这一步把“某个位置 A 变成 G”转化为“这个变化可能影响某个蛋白质”。\n\n\n第四步：报告——检查结果，也检查质量\n运行结束后，通常得到处理后的比对文件、VCF 变异文件，以及所选工具对应的结果。CNV、MSI 等模块还会产生各自的表格或图形报告。\nMultiQC 汇总质量指标，帮助查看测序覆盖度、比对情况和重复率等。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
+    "href": "blog/261009sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "7. Sarek：把复杂步骤变成可复现的工作流",
+    "text": "7. Sarek：把复杂步骤变成可复现的工作流\n单独运行这些软件，需要自己处理文件格式、工具版本、步骤衔接和计算资源。Sarek 用 Nextflow 组织任务，并通过容器管理软件环境，让同一套流程能在本地、集群或云端运行。[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index-chinese.html#参考资料",
+    "href": "blog/261009sarek/index-chinese.html#参考资料",
+    "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
+    "section": "参考资料",
+    "text": "参考资料\n\nSarek 3.5.1：官方介绍\nnf-core：流程目录\nGitHub 仓库：nf-core/sarek、nf-core/rnaseq（Stars 查询日期：2026-10-08）"
+  },
+  {
     "objectID": "blog/261007scrnaseq/index-chinese.html",
     "href": "blog/261007scrnaseq/index-chinese.html",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
@@ -214,7 +284,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
+    "text": "nf-core/sarek: From DNA Reads to Variant Discovery\n\n\n\nbioinformatics\n\nnextflow\n\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nscRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "awards.html",
@@ -383,5 +453,75 @@
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Reproducibility",
     "text": "Reproducibility\n\nAWS template: scrnaseq-comparison.yaml."
+  },
+  {
+    "objectID": "blog/261009sarek/index.html",
+    "href": "blog/261009sarek/index.html",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "",
+    "text": "5 min read"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#a-swedish-name-a-practical-purpose",
+    "href": "blog/261009sarek/index.html#a-swedish-name-a-practical-purpose",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "A Swedish Name, a Practical Purpose",
+    "text": "A Swedish Name, a Practical Purpose\nSarek shares its name with a national park in northern Sweden. Early releases used names such as Ruotes and Skårki, giving the project a distinctive geographic identity. The connection appears in the developer’s 2020 presentation.\nThe workflow originated at SciLifeLab’s National Genomics Infrastructure (NGI) and National Bioinformatics Infrastructure Sweden (NBIS), with support from the Swedish Childhood Tumor Biobank. Developers at Germany’s QBiC later joined the project and contributed to its development and Nextflow DSL2 implementation.[1]\nnf-core/sarek is a reproducible workflow for DNA variant discovery. It supports whole-genome, exome and targeted sequencing, with separate germline and somatic analysis routes. Depending on the selected tools, it detects small variants, structural variants, copy-number changes and microsatellite instability.\nDNA sequencing produces reads that must be aligned to a reference genome before differences can be identified. Running this analysis manually requires coordinating software versions, file formats and computing environments. Sarek organizes these tasks into a consistent workflow:\nPreprocessing → Variant calling → Annotation → Quality reporting.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#how-popular-is-sarek",
+    "href": "blog/261009sarek/index.html#how-popular-is-sarek",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "1. How Popular Is Sarek?",
+    "text": "1. How Popular Is Sarek?\nAs checked on October 8, 2026, Sarek had approximately 612 GitHub stars, compared with roughly 1,400 for nf-core/rnaseq. These figures indicate community interest, rather than execution counts or analytical accuracy.[3]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#why-variant-analysis-matters",
+    "href": "blog/261009sarek/index.html#why-variant-analysis-matters",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "2. Why Variant Analysis Matters",
+    "text": "2. Why Variant Analysis Matters\nIf the genome is an instruction manual, RNA expression analysis measures which sections are being read and how frequently. DNA variant analysis identifies changes to the text itself.\nIts applications include:\n\nGenetic disease research: identifying variants that may disrupt gene function.\nCancer research: detecting acquired mutations, amplifications and deletions.\nPopulation genetics: studying genetic differences between individuals and their associations with traits.\n\nA difference from the reference genome is not necessarily harmful. Many variants represent ordinary genetic variation; annotation, filtering and additional evidence are needed to assess their significance."
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#supported-data",
+    "href": "blog/261009sarek/index.html#supported-data",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "3. Supported Data",
+    "text": "3. Supported Data\n\n\n\nSequencing approach\nScope\n\n\n\n\nWhole-genome sequencing (WGS)\nGenome-wide coverage\n\n\nWhole-exome sequencing (WES)\nPrimarily exonic regions\n\n\nTargeted sequencing (panels)\nSelected genes or genomic regions\n\n\n\nSarek can start from raw reads, or from existing alignment or variant files at the appropriate entry point. It supports normal, tumor and additional relapse samples from the same patient. Initially developed for human and mouse data, it can also analyze other species with a suitable reference genome, compatible tools and annotation resources.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#beyond-single-base-changes",
+    "href": "blog/261009sarek/index.html#beyond-single-base-changes",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "4. Beyond Single-Base Changes",
+    "text": "4. Beyond Single-Base Changes\n\n\n\n\n\n\n\n\nAnalysis\nChange detected\nRepresentative tools\n\n\n\n\nSingle-nucleotide variants (SNVs)\nA single-base substitution, such as A → G\nHaplotypeCaller, DeepVariant, Mutect2\n\n\nSmall insertions and deletions (indels)\nShort sequence insertions or deletions\nHaplotypeCaller, Mutect2, Strelka2\n\n\nStructural variants (SVs)\nLarger deletions, inversions or rearrangements\nManta, TIDDIT\n\n\nCopy-number variants (CNVs)\nGains or losses of genomic copies\nASCAT, CNVkit, Control-FREEC\n\n\nMicrosatellite instability (MSI)\nInstability in short tandem-repeat lengths\nMSIsensor-pro\n\n\n\nTool selection depends on the sample design, sequencing approach and biological question. These are optional analysis routes, rather than a list of tools that must all run together.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#why-separate-germline-and-somatic-routes",
+    "href": "blog/261009sarek/index.html#why-separate-germline-and-somatic-routes",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "5. Why Separate Germline and Somatic Routes?",
+    "text": "5. Why Separate Germline and Somatic Routes?\nGermline analysis identifies constitutional variants, usually present in nearly all cells. These may be inherited or arise de novo.\nSomatic analysis identifies variants acquired in a subset of cells. In cancer studies, comparing a tumor with a matched normal sample helps distinguish acquired changes from the individual’s germline background.\nThe statistical assumptions differ. At a diploid autosomal locus without copy-number changes, a heterozygous germline variant typically has a variant allele fraction (VAF) near 50%. Tumor samples contain mixtures of normal cells, cancer cells and tumor subclones, so genuine somatic variants may have much lower VAFs.\nFor example, if 20% of cells carry a heterozygous mutation and all cells are diploid at that locus, the expected VAF is:\n\\[\n\\mathrm{VAF} \\approx 20\\% \\times \\frac{1}{2} = 10\\%\n\\]\nThe caller must distinguish this signal from sequencing or alignment errors. Germline and somatic detection therefore require different models and filters: HaplotypeCaller primarily targets germline variants, while Mutect2 targets somatic variants.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#workflow",
+    "href": "blog/261009sarek/index.html#workflow",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "6. Workflow",
+    "text": "6. Workflow\nFigure 1 shows the germline and somatic routes, their shared processing stages and representative tools.\n\n\n\nSarek workflow showing germline and somatic preprocessing, variant calling, annotation and reporting\n\n\nFigure 1. Sarek workflow overview (Sarek 3.5.1). Source: nf-core/sarek.[1]\n\nStep 1: Preprocessing\nCheck read quality, optionally trim adapters, align reads to the reference genome, mark duplicates and perform base quality score recalibration where appropriate.[1]\nThese steps reduce misleading evidence: PCR copies are not independent observations, and incorrectly aligned reads can create apparent variants.\n\n\nStep 2: Variant Calling\nSelect callers for the study design and variant classes of interest. Examples include HaplotypeCaller or DeepVariant for germline small variants, Mutect2 for somatic small variants, and Manta for structural variants.[1]\n\n\nStep 3: Annotation\nVEP and SnpEff add biological context, including affected genes and transcripts, amino-acid changes and predicted splice effects. Annotation translates genomic coordinates into potential functional consequences.[1]\n\n\nStep 4: Reporting\nOutputs include processed alignments, VCF files and tool-specific results. CNV and MSI analyses also generate their own tables or plots. MultiQC summarizes metrics such as coverage, alignment statistics and duplication rates.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#reproducibility-across-computing-environments",
+    "href": "blog/261009sarek/index.html#reproducibility-across-computing-environments",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "7. Reproducibility Across Computing Environments",
+    "text": "7. Reproducibility Across Computing Environments\nSarek uses Nextflow to coordinate tasks and containers to manage software environments. This supports consistent execution on local machines, clusters and cloud infrastructure, reducing the manual work required to connect individual tools.[1]"
+  },
+  {
+    "objectID": "blog/261009sarek/index.html#references",
+    "href": "blog/261009sarek/index.html#references",
+    "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
+    "section": "References",
+    "text": "References\n\nSarek 3.5.1: Official documentation\nnf-core pipeline directory\nGitHub repositories: nf-core/sarek and nf-core/rnaseq. Star counts checked on October 8, 2026."
   }
 ]
