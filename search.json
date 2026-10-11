@@ -1,133 +1,189 @@
 [
   {
-    "objectID": "blog/261009sarek/index-chinese.html",
-    "href": "blog/261009sarek/index-chinese.html",
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html",
+    "href": "blog/2026-10-11atacseq/index-chinese.html",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "",
+    "text": "2 min read\n人体大多数有核体细胞拥有基本相同的DNA，却各有分工。一个直观的理解是：细胞不仅要有“说明书”，还要决定哪些页方便翻开，哪些页暂时收起来。\nATAC-seq 研究的，就是染色质的这种“可访问程度”。 而 nf-core/atacseq，则把测序后的数据整理成可以检查、比较和继续分析的结果。"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#年把建库工具变成染色质探针",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#年把建库工具变成染色质探针",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "1. 2013 年：把建库工具变成染色质探针",
+    "text": "1. 2013 年：把建库工具变成染色质探针\nATAC-seq 并不是第一个研究开放染色质的方法。在它出现之前，研究者已经使用 DNase-seq 等技术寻找这些区域。2013 年，Buenrostro 等人在 Nature Methods 发表 ATAC-seq，把一种更简便的实验思路带到了这个领域。[2]\n它的巧思在于 Tn5 转座酶。这种酶能够切割 DNA，并把测序接头接到 DNA 上。在染色质中，DNA 的包装程度不同，Tn5 接近它的难易程度也不同：相对开放的区域更容易被插入接头。测序后，再把这些片段定位回基因组，就能推断哪些区域更容易被访问。[2]当然，标签多少也会受到实验条件和酶的偏好影响，因此测出来的是需要质控和统计解释的信号。\n不同于 ChIP-seq 针对特定蛋白质与 DNA 的结合位置进行检测，ATAC-seq 和 DNase-seq主要用于描绘全基因组的染色质开放区域，无需针对特定蛋白质的抗体。相较于 DNase-seq，ATAC-seq利用Tn5转座酶同时完成 DNA 切割和测序接头插入，通常所需细胞更少、建库步骤更简洁，因此更适合样本量有限的研究。"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#有趣的是片段长度也在讲故事",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#有趣的是片段长度也在讲故事",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "2. 有趣的是，片段长度也在“讲故事”",
+    "text": "2. 有趣的是，片段长度也在“讲故事”\nATAC-seq 的信息不只来自“片段落在哪里”。DNA 会缠绕在组蛋白上形成核小体。测序得到的片段长度，因此也能反映这种包装结构：较短片段常与核小体缺失区域有关，较长片段可以包含一个或多个核小体对应的结构信息。[2]\n所以，片段长度分布并不是报告里凑数的一张图。它把实验信号与染色质结构联系起来。这项技术后来继续改进。2017 年，Corces 等人提出 Omni-ATAC，改善信噪比，并拓展了对冷冻组织等样本的适用性。ATAC-seq 的发展，也是一段不断降低样本和实验门槛的历史。[3]"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#这条流程最初竟然还与牛有关",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#这条流程最初竟然还与牛有关",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "3. 这条流程，最初竟然还与牛有关",
+    "text": "3. 这条流程，最初竟然还与牛有关\n官方致谢记录：流程最初由 Harshil Patel 编写，后来由 Björn Langer 和 Jose Espinosa-Carrasco 在 BovReg 项目框架下迁移到 Nextflow DSL2。[1]\nBovReg 研究牛基因组的功能调控，希望理解基因组及表观遗传差异如何与不同牛品种的性状联系起来。[4]\n牛为什么也需要 ATAC-seq？因为知道 DNA序列，只是理解性状的一部分。要研究基因调控，还需要知道哪些区域在特定细胞或条件下可以被访问。这正是染色质可及性研究能够提供的线索。"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#workflow从-fastq-到开放染色质图谱",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#workflow从-fastq-到开放染色质图谱",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "4. Workflow：从 FASTQ 到开放染色质图谱",
+    "text": "4. Workflow：从 FASTQ 到开放染色质图谱\n本文介绍的是 2.1.2 版本。下图来自官网：绿色线路表示文库合并后的分析，蓝色线路表示可选的跨生物学重复合并分析；方形节点表示必需步骤，圆形节点表示可选步骤。[1]\n\n\n\nnf-core/atacseq 2.1.2 流程图\n\n\n图 1. nf-core/atacseq 流程概览（2.1.2 版本）。来源：nf-core/atacseq。[1]\n\n4.1 先清理 reads，再定位到基因组\n原始 FASTQ 先经 FastQC 检查质量，再由 Trim Galore! 调用 Cutadapt 去除接头并进行质量修剪，随后再次质控。比对工具可选择 BWA（默认）、Bowtie2、STAR 或 Chromap。需要注意，2.1.2 中 Chromap 的双端数据仅处理到比对阶段，不进入后续分析。[1,5]\n比对后，Picard 标记重复并合并同一生物学重复内的多批测序数据，再次标记重复后进行过滤。SAMtools、BEDTools、BAMTools 和 Pysam 共同去除线粒体来源、黑名单区域、重复及不可靠比对，并检查双端 reads 的配对情况。这一步减少技术噪声对峰识别的干扰。[1]\n\n\n4.2 过滤之后，几条分析线路并行展开\n\n\n\n\n\n\n\n\n分析任务\n主要工具\n作用\n\n\n\n\n比对与文库质控\nPicard、Preseq\n检查比对质量，估计文库复杂度及继续测序的收益\n\n\n信号轨道生成\nBEDTools、bedGraphToBigWig\n生成按每百万 mapped reads 缩放的 bigWig\n\n\n信号富集检查\ndeepTools\n查看转录起始位点、基因体及全基因组的信号分布\n\n\n峰识别与注释\nMACS2、HOMER\n找到信号富集区域，注释其基因组位置及附近基因\n\n\n共同区域构建与计数\nBEDTools、featureCounts\n整合 consensus peaks，在相同区域统计各样本 reads\n\n\n样本比较与报告\nR/DESeq2、ataqv、MultiQC、IGV\n进行标准化、PCA 和聚类，汇总质控并支持轨道浏览\n\n\n\n以上步骤对应官网流程图中的比对质控、富集分析、峰识别及报告分支。[1,5]\n\n\n4.3 读图时，三个细节容易被忽略\n第一，合并文库与合并生物学重复是两件事。 同一个重复分多次测序时，样本表中的 sample 和 replicate 相同，数据会在比对后合并。同一实验组的不同生物学重复，则使用相同 sample、不同 replicate。蓝色线路进一步合并这些重复以提高峰识别的覆盖度；即使使用这条线路生成的共识峰，计数仍来自各重复分别保留的比对数据，避免丢失重复之间的差异。[5]（样本表填写规则见官方使用文档。）\n第二，峰的形状与共识峰的筛选都有默认设置。 该版本的 MACS2 默认调用 broad peaks，可用 --narrow_peak 改为 narrow peaks。Consensus peaks 默认来自各样本峰的并集，并不要求每个样本都出现；可通过 --min_reps_consensus 提高重复支持要求。[5]\n第三，流程里的DESeq2会生成PCA和聚类图，帮助查看样本是否相似；要判断处理组与对照组哪些区域有显著差异，还需要按实验分组设置统计分析。[5]"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#nf-coreatacseq-把数据变成了什么",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#nf-coreatacseq-把数据变成了什么",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "5. nf-core/atacseq 把数据变成了什么？",
+    "text": "5. nf-core/atacseq 把数据变成了什么？\n实验负责留下“标签”，分析流程负责解释标签的位置和分布。\n2.1.2 版本将原始测序质控、接头去除、比对、过滤、峰识别和报告生成组织成 Nextflow 工作流，并使用容器管理软件环境。[1]\n其中，peak（峰）可以理解为测序信号显著富集的一段基因组区域。\n阅读结果时，可以先抓住三个问题：[5]\n\n\n\n\n\n\n\n想知道什么\n对应结果\n\n\n\n\n数据是否值得继续分析？\nMultiQC、ataqv 及相关质控指标\n\n\n哪些区域存在可及性信号？\nMACS2 peaks、bigWig 信号轨道\n\n\n不同样本能否在同一套区域上比较？\nconsensus peaks、区域计数矩阵、PCA 和聚类\n\n\n\n这里的 consensus peaks 是把各样本的峰整合成共同的比较区域。[5]"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#看到了开放区域然后呢",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#看到了开放区域然后呢",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "6. 看到了开放区域，然后呢？",
+    "text": "6. 看到了开放区域，然后呢？\nATAC-seq 的吸引力在于它给基因组增加了一个新的观察角度：除了序列本身，还能观察细胞怎样开放和包装这些序列。\nnf-core/atacseq 则把这个观察过程落实为可复用的分析步骤。读懂结果之后，真正有意思的工作才开始：把开放区域、基因表达和实验条件连接起来，形成可以检验的生物学解释。"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index-chinese.html#参考资料",
+    "href": "blog/2026-10-11atacseq/index-chinese.html#参考资料",
+    "title": "nf-core/atacseq：用一把“分子剪刀”，找出基因组的开放区域",
+    "section": "参考资料",
+    "text": "参考资料\n\nnf-core/atacseq 2.1.2：官方介绍与开发者致谢\nBuenrostro et al., 2013：ATAC-seq 原始论文\nCorces et al., 2017：Omni-ATAC\nBovReg：项目背景\nnf-core/atacseq 2.1.2：输出文档"
+  },
+  {
+    "objectID": "blog/2026-10-09sarek/index-chinese.html",
+    "href": "blog/2026-10-09sarek/index-chinese.html",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "",
     "text": "2 min read"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#名字像景点干的是科研的活",
-    "href": "blog/261009sarek/index-chinese.html#名字像景点干的是科研的活",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#名字像景点干的是科研的活",
+    "href": "blog/2026-10-09sarek/index-chinese.html#名字像景点干的是科研的活",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "名字像景点，干的是科研的活",
     "text": "名字像景点，干的是科研的活\nSarek 听起来像某个算法的缩写，其实它和瑞典北部一座同名国家公园有关。开发者在介绍流程时还展示过公园的风景，早期版本也用过 Ruotes、Skårki 等名字。别人发新版本：v2.1、v2.2；它发新版本，顺便给你上一小节瑞典地理课。出处见开发者的 2020 年介绍。\n不过，这个项目的出身很务实：最初由瑞典 SciLifeLab 旗下的 NGI 和 NBIS 团队开发，得到瑞典儿童肿瘤生物样本库的支持。后来，德国 QBiC 的开发者也加入了进来，并与其他贡献者一起推动后续开发和 Nextflow DSL2 重构。[1]\n测完一个人的 DNA，拿到的不是一份完整的基因组说明书，而是海量短小的序列片段。把这些碎片放回正确位置，再找出哪些字母换了、哪些段落删了、哪些章节多了几份，就是变异分析的基本任务。\n它要解决的麻烦，做过分析的人应该不陌生：数据终于拿到了，接下来却要安装一串软件、处理不同文件格式，再祈祷换台服务器后还能跑。测序仪已经下班，分析的人还在和环境报错加班。Sarek 把这些步骤组织成可重复运行的工作流，让研究者少花些时间接管道，多花些时间看结果。\nnf-core/sarek 把这件事串成了一条自动化流程：预处理 → 变异检测 → 注释 → 质量报告。它既能分析个体原本携带的生殖系变异，也能寻找肿瘤等组织后来产生的体细胞变异。[1]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
-    "href": "blog/261009sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
+    "href": "blog/2026-10-09sarek/index-chinese.html#sarek-在-nf-core-中有多受关注",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "1. Sarek 在 nf-core 中有多受关注？",
     "text": "1. Sarek 在 nf-core 中有多受关注？\n截至 2026 年 10 月 8 日查询时，Sarek 的 GitHub 仓库约有 612 Stars，作为对照，nf-core/rnaseq 约有 1,400 Stars。它是 nf-core 中受到广泛关注的成熟 DNA 变异分析流程之一。[3]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#为什么变异分析这么重要",
-    "href": "blog/261009sarek/index-chinese.html#为什么变异分析这么重要",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#为什么变异分析这么重要",
+    "href": "blog/2026-10-09sarek/index-chinese.html#为什么变异分析这么重要",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "2. 为什么变异分析这么重要？",
     "text": "2. 为什么变异分析这么重要？\n如果把基因组比作一本说明书，RNA 表达分析关注的是“哪些章节正在被阅读、读了多少”；DNA 变异分析关注的是“说明书的内容发生了什么变化”。\n这些变化与许多研究问题直接相关：\n\n遗传病研究：某个基因的变异，是否可能影响蛋白质功能？\n癌症研究：肿瘤新增了哪些突变？哪些区域发生扩增或缺失？\n群体遗传研究：不同个体携带哪些差异？这些差异与性状有什么关系？\n\n因此，变异检测是 DNA 测序分析中的基础环节。但“与参考基因组不同”不等于“有害”：大量变异只是正常的个体差异。找到变异后，还需要注释、筛选和进一步解释。"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#它能接收什么数据",
-    "href": "blog/261009sarek/index-chinese.html#它能接收什么数据",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#它能接收什么数据",
+    "href": "blog/2026-10-09sarek/index-chinese.html#它能接收什么数据",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "3. 它能接收什么数据？",
     "text": "3. 它能接收什么数据？\nSarek 支持全基因组测序、全外显子测序和靶向测序。\n\n\n\n数据类型\n检查范围\n直观理解\n\n\n\n\nWGS：全基因组测序\n整个基因组\n检查整本说明书\n\n\nWES：全外显子测序\n主要覆盖外显子区域\n重点检查编码蛋白质的部分\n\n\nPanel：靶向测序\n预先指定的基因或区域\n只检查选定的章节\n\n\n\n流程可以从 FASTQ 等原始测序数据开始，也能根据起始步骤从已有比对文件或变异文件继续。它支持同一患者的正常、肿瘤及额外复发样本。它最初面向人和小鼠，但也能用于有参考基因组的其他物种；具体工具和注释资源仍需与物种及数据匹配。[1]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#sarek-找的不同不止一个字母",
-    "href": "blog/261009sarek/index-chinese.html#sarek-找的不同不止一个字母",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#sarek-找的不同不止一个字母",
+    "href": "blog/2026-10-09sarek/index-chinese.html#sarek-找的不同不止一个字母",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "4. Sarek 找的“不同”，不止一个字母",
     "text": "4. Sarek 找的“不同”，不止一个字母\n\n\n\n\n\n\n\n\n类型\n基因组发生什么变化\n代表工具\n\n\n\n\nSNV：单碱基变异\n一个碱基换了，如 A → G\nHaplotypeCaller、DeepVariant、Mutect2\n\n\n小型 indel：插入或缺失\n多了或少了几个碱基\nHaplotypeCaller、Mutect2、Strelka2 等\n\n\nSV：结构变异\n较大片段发生删除、翻转或重排等\nManta、TIDDIT\n\n\nCNV：拷贝数变异\n某个区域的拷贝数增加或减少\nASCAT、CNVkit、Control-FREEC\n\n\nMSI：微卫星不稳定性\n短重复序列的重复次数出现不稳定变化\nMSIsensor-pro\n\n\n\n不同工具适合不同样本、测序范围和变异类型，运行前应先确定研究问题。[1]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
-    "href": "blog/261009sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
+    "href": "blog/2026-10-09sarek/index-chinese.html#为什么分-germline-和-somatic-两条路线",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "5. 为什么分 germline 和 somatic 两条路线？",
     "text": "5. 为什么分 germline 和 somatic 两条路线？\nGermline（生殖系）分析：这个人原本携带哪些变异？这些变异通常存在于几乎所有细胞中，可以来自父母，也可以是新发变异。\nSomatic（体细胞）分析：某些细胞后来新增了哪些变异？在癌症研究中，常用同一患者的肿瘤与配对正常样本比较，帮助区分原有遗传背景和肿瘤新增变化。\n检测难度也不同。在正常二倍体、没有拷贝数变化的常染色体区域，germline 杂合变异通常有约 50% 的 reads 支持变异。肿瘤样本则混合了正常细胞、肿瘤细胞和不同肿瘤亚群，真实 somatic 变异可能只得到少量 reads 的支持。\n例如，假设 20% 的细胞带有一个杂合突变，其余细胞没有，而且没有拷贝数变化，那么预期的变异等位基因比例（VAF）约为：\n\\[\n\\mathrm{VAF} \\approx 20\\% \\times \\frac{1}{2} = 10\\%\n\\]\n软件必须判断：这 10% 是真实突变，还是测序或比对错误？因此，两条路线需要不同的统计模型和过滤逻辑。GATK 的 HaplotypeCaller 主要用于 germline 检测，Mutect2 则用于 somatic 检测。[1]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#步骤",
-    "href": "blog/261009sarek/index-chinese.html#步骤",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#步骤",
+    "href": "blog/2026-10-09sarek/index-chinese.html#步骤",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "6. 步骤",
     "text": "6. 步骤\n\n第一步：预处理——先把证据整理好\n检查 reads 的质量，按需去除接头，把序列比对到参考基因组，标记重复 reads，并进行适用的碱基质量校正。[1]\n这里应避免“假证据”：如果一条 DNA 片段被反复扩增，这些拷贝不应被当成许多独立分子在支持同一个突变；一条 read 放错位置，也可能制造出并不存在的差异。\n\n\n第二步：变异检测——选择合适的工具\n根据 germline 或 somatic 研究目标，以及需要寻找的变异类型，选择相应 caller。比如，germline 小变异可以使用 HaplotypeCaller 或 DeepVariant，somatic 小变异可以使用 Mutect2，结构变异则交给 Manta 等工具。[1]\n\n\n第三步：注释——从坐标变成生物学问题\n一个变异坐标本身并不容易理解。VEP、SnpEff 等工具会补充信息：它落在哪个基因、哪个转录本？是否改变氨基酸？是否可能影响剪接？[1]\n这一步把“某个位置 A 变成 G”转化为“这个变化可能影响某个蛋白质”。\n\n\n第四步：报告——检查结果，也检查质量\n运行结束后，通常得到处理后的比对文件、VCF 变异文件，以及所选工具对应的结果。CNV、MSI 等模块还会产生各自的表格或图形报告。\nMultiQC 汇总质量指标，帮助查看测序覆盖度、比对情况和重复率等。[1]\n\n\n\n\n\n\nTip\n\n\n\nExecution report：记录整个 Nextflow 流程的执行情况，告诉你各步骤是否成功，以及耗时和资源消耗。"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
-    "href": "blog/261009sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
+    "href": "blog/2026-10-09sarek/index-chinese.html#sarek把复杂步骤变成可复现的工作流",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "7. Sarek：把复杂步骤变成可复现的工作流",
     "text": "7. Sarek：把复杂步骤变成可复现的工作流\n单独运行这些软件，需要自己处理文件格式、工具版本、步骤衔接和计算资源。Sarek 用 Nextflow 组织任务，并通过容器管理软件环境，让同一套流程能在本地、集群或云端运行。[1]"
   },
   {
-    "objectID": "blog/261009sarek/index-chinese.html#参考资料",
-    "href": "blog/261009sarek/index-chinese.html#参考资料",
+    "objectID": "blog/2026-10-09sarek/index-chinese.html#参考资料",
+    "href": "blog/2026-10-09sarek/index-chinese.html#参考资料",
     "title": "nf-core/sarek：从 DNA 测序到“基因组找不同”",
     "section": "参考资料",
     "text": "参考资料\n\nSarek 3.5.1：官方介绍\nnf-core：流程目录\nGitHub 仓库：nf-core/sarek、nf-core/rnaseq（Stars 查询日期：2026-10-08）"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html",
-    "href": "blog/261007scrnaseq/index-chinese.html",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "",
     "text": "3 min read"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#为什么做这个",
-    "href": "blog/261007scrnaseq/index-chinese.html#为什么做这个",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#为什么做这个",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#为什么做这个",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "为什么做这个",
     "text": "为什么做这个\nNextflow 管理并记录分析过程，nf-core/scrnaseq 提供单细胞RNA的多条标准化处理路线。我想知道：同一批测序数据，为什么不同路线保留的细胞不完全相同？ 多出的 barcode 是真实细胞、背景 RNA，还是低质量液滴？它们会不会改变生物学结论？"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#方法",
-    "href": "blog/261007scrnaseq/index-chinese.html#方法",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#方法",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#方法",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "方法",
     "text": "方法\n数据为 10x 公开的 PBMC 1k v3，流程为 nf-core/scrnaseq 4.2.0。两边使用同一批 FASTQ、GRCh38-2024-A 参考：Cell Ranger 用预建索引，Simpleaf 用包内 FASTA/GTF 建索引。\n版本为 Cell Ranger 10.0.0、Simpleaf 0.19.5、QCatch 0.2.12。 这里比较的是 Cell Ranger 与 Simpleaf＋QCatch：Simpleaf 负责计数，QCatch 负责后续细胞识别。\n上游在 AWS r6i.4xlarge（16 vCPU、128 GiB）运行，采用 CloudFormation 自动安装、分析、上传结果后自动终止实例。成功的一次全程 84 分钟；账单约 $2.05，含 3 次失败尝试，成功的那次约 $1.41。本样本的下游比较在 8 GB Mac 个人电脑上完成。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#到底差了哪些-barcode",
-    "href": "blog/261007scrnaseq/index-chinese.html#到底差了哪些-barcode",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#到底差了哪些-barcode",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#到底差了哪些-barcode",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "1. 到底差了哪些 barcode？",
     "text": "1. 到底差了哪些 barcode？\n先比较三个 barcode 集合：共同保留、仅 Cell Ranger、仅 Simpleaf＋QCatch。\n# 从两份筛选结果读取并统一 barcode 后缀\nshared = cr_cells & sa_cells\ncr_only = cr_cells - sa_cells\nsa_only = sa_cells - cr_cells\n\nprint(len(shared), len(cr_only), len(sa_only))\n# 1221 0 7\nprint(len(shared) / len(cr_cells | sa_cells))\n# 0.9943：交集 / 并集\n这 7 个 barcode 都集中在细胞与背景的过渡区域。\n\n\n\nBarcode 排名及拐点放大：绿色标记为仅 Simpleaf＋QCatch 保留的 7 个 barcode\n\n\n横轴为 UMI 排名，纵轴为 UMI 数。右图空心圆为 Cell Ranger，菱形为 Simpleaf；连线对应同一 barcode。500 UMI 是本次实现的检验门槛，不是所有 EmptyDrops 分析的固定值。\n按交集／并集计算，细胞集合一致率为 99.4%。共同细胞中，每个细胞总 UMI 的 Spearman 相关系数为 0.9997，Simpleaf 平均计数约高 5%。整体高度一致，但小差异能改变边界 barcode 的去留。\n还要注意：图中的两份“原始矩阵”分别包含 329,735 和 72,612 个 barcode。它们的上游保留范围不同，不能当成完全相同的液滴全集。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#多出的-7-个像真实细胞吗",
-    "href": "blog/261007scrnaseq/index-chinese.html#多出的-7-个像真实细胞吗",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#多出的-7-个像真实细胞吗",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#多出的-7-个像真实细胞吗",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "2. 多出的 7 个像真实细胞吗？",
     "text": "2. 多出的 7 个像真实细胞吗？\n\n\n\n编号\n初步判断\nUMI：CR → SA\n检出基因数\n线粒体比例\n\n\n\n\n1\n血小板样：PPBP、PF4\n455 → 508\n178\n6%\n\n\n6\n血小板样：PPBP\n464 → 532\n172\n18%\n\n\n2\ncDC 样：FCER1A、CST3\n1,200 → 1,262\n753\n5%\n\n\n3\n单核／DC 样：LYZ、CST3\n1,309 → 1,366\n815\n7%\n\n\n4\nFCGR3A 单核样\n1,239 → 1,298\n802\n3%\n\n\n5\n低质量，无明确 marker\n294 → 577\n121\n52%\n\n\n7\n低质量，无明确 marker\n618 → 716\n67\n90%\n\n\n\n\n\n\n共同细胞群与 7 个差异 barcode 的 marker 表达\n\n\n点大小为检出比例，颜色为相对表达。SA_only 每行仅一个 barcode，标签为初步判断。\n1、6 号有血小板 marker。低 UMI 不等于空液滴：血小板本身 RNA 就少。 5、7 号线粒体比例很高，应标为低质量候选，而非直接认定“濒死”。\n低深度会影响表达相关性，因此我设置了同深度对照：下采样的同类细胞，以及环境 RNA 模拟的空液滴。\n\n\n\n深度匹配对照：真实细胞下采样、环境 RNA 模拟与差异 barcode\n\n\n横轴为与环境 RNA 的相关性，纵轴为与候选细胞类型的相关性。蓝：下采样细胞；灰：模拟空液滴；绿：差异 barcode。\n1、6 号更接近血小板对照；7 号远离模拟空液滴，5 号介于两者之间，两者都不代表质量合格。2、3、4 号的两类对照区分较弱：环境 RNA 与单核／DC 表达谱相似，相关性不足以裁定它们是不是细胞。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#是细胞识别算法不同还是输入计数不同",
-    "href": "blog/261007scrnaseq/index-chinese.html#是细胞识别算法不同还是输入计数不同",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#是细胞识别算法不同还是输入计数不同",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#是细胞识别算法不同还是输入计数不同",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "3. 是细胞识别算法不同，还是输入计数不同？",
     "text": "3. 是细胞识别算法不同，还是输入计数不同？\n我用同一套 QCatch 代码和参数，以 OrdMag＋EmptyDrops 框架重新识别两份矩阵。\n# QCatch 内部接口节选；m 为 CountMatrix，cc 为细胞识别模块。\n# 导入、版本及矩阵转换见 analysis/，不是独立运行脚本。\ninitial = cc.initial_filtering_OrdMag(m, \"10X_3p_v3\", None)\nres = cc.find_nonambient_barcodes(m, initial, \"10X_3p_v3\", None)\ncalled = {b.decode() for b in initial} | set(res.eval_bcs[res.is_nonambient])\nCell Ranger 矩阵仍得到 1,221 个，Simpleaf 矩阵仍得到 1,228 个，与原结果逐个一致。改变随机种子和模拟次数后，本次分歧也未消失。\n同一识别实现仍有分歧，接下来应查输入矩阵。 但输入差异包括计数和背景 barcode 范围，不能只归因于某个单一因素。\n\n3 个跨过了 500 UMI 门槛\n1、5、6 号在 Cell Ranger 矩阵中低于 500 UMI，未进入这一步的非背景检验；在 Simpleaf 矩阵中则超过门槛。额外计数中，DHFR 占了显著一部分。\n\n\n\n\n\n\n\n\n\n编号\n总 UMI 增量\nDHFR 增量\nSA 扣除 DHFR 与一个 chr8 lncRNA 后的 UMI\n\n\n\n\n1\n53\n19\n485\n\n\n6\n68\n29\n495\n\n\n5\n283\n236\n341\n\n\n\n移除这两个基因并重新识别，三个 barcode 都不再被保留。少数基因的计数，足以改变它们能否进入检验。\nDHFR 的差异也出现在共同细胞中：Simpleaf 计数为 45,624 UMI（其中 unspliced 45,532），Cell Ranger 为 739。我进一步检查了 Cell Ranger BAM 中的 DHFR 区域：\nfrom collections import Counter\nimport pysam\n\n# BAM_URL、BAI_URL 为已有 BAM 及索引的临时访问链接。\nwith pysam.AlignmentFile(BAM_URL, index_filename=BAI_URL) as bam:\n    mapq = Counter(r.mapping_quality\n                   for r in bam.fetch(\"chr5\", 80626226, 80655002))\nprint(mapq)\n# Counter({1: 4718, 3: 2747, 255: 1519, 0: 4})\n约 83% 的比对记录 MAPQ 低于 255；这些记录高度集中在一个约 200 bp 的内含子窗口，NH 标签为 2–4，即同一条 read 能比对到基因组 2–4 个位置。\n重复序列是 DHFR 异常计数的线索。 两条路线的参考目标和比对／分配规则不同，可能导致这些 reads 的归属不同。未逐条核对 Simpleaf 的 read 分配，因此机制仍是推断，chr8 lncRNA 也不能凭类比认定原因。\n注意：Cell Ranger 会根据基因归属调整 MAPQ，不能简化为“只计唯一基因组比对”。MAPQ＝255 不必然代表原始 STAR 比对只有一个位置。10x BAM 标签说明\n\n\n另外 4 个在统计阈值附近\n2、3、4 号都进入检验，但校正后 p 值从 Cell Ranger 的约 0.004 变为 Simpleaf 的约 0.0001，跨过本次 0.001 的阈值。7 号也在阈值附近。这几个未找到明确的单一来源，目前解释到统计阈值层面，而非 read 层面。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#最后这-7-个值得在意吗",
-    "href": "blog/261007scrnaseq/index-chinese.html#最后这-7-个值得在意吗",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#最后这-7-个值得在意吗",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#最后这-7-个值得在意吗",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "最后：这 7 个值得在意吗？",
     "text": "最后：这 7 个值得在意吗？\n对细胞类型比例：几乎没有影响。 我固定计数、聚类和注释，只改变细胞集。多出的 7 个分属 4 类：血小板 2 个、cDC 2 个、FCGR3A 单核 1 个、低质量 2 个。其余细胞类型的细胞数完全没变，只是分母从 1,221 变成 1,228，比例被稀释，最多 0.16 个百分点。按常见 QC（≥ 200 个基因、线粒体 ≤ 20%）过滤后，差异只剩 3 个细胞：2 个 cDC、1 个 FCGR3A 单核。\n这个变化有多小？我在同一流程里只改聚类随机种子，或只换计数矩阵，作为对照：\n\n\n\n只改变一个因素时，各类细胞比例的最大变化\n\n\n蓝：只换细胞集；橙：只换聚类随机种子（0–4）；绿：只换计数矩阵（Cell Ranger 或 Simpleaf）。\n细胞集带来的变化最多 0.16 个百分点；随机种子或计数矩阵却能让单核、NK／CD8 T 的比例变化 6–10 个百分点。后两项来自我这套简单的聚类／注释方法，不能推广为工具差异。比起这 7 个 barcode，注释对分析设置的敏感性更值得检查。\n对小细胞群的 marker：有影响，但有限。 cDC 只有 16 个细胞，多 2 个就是 +12.5%。\n\n\n\ncDC marker 的表达比例与校正后 p 值\n\n\nCST3、FCER1A、CLEC10A 的结论不变。CD1C 变弱：表达比例从 63% 降到 56%，校正后 p 值从 0.012 升到 0.034，因为新增的 2 个细胞不表达 CD1C。另外，QC 后两边是同一批 15 个血小板，PPBP 的 marker 排名却从第 13 变为第 1，因为前列基因分数接近。看 marker，要看表达比例、效应大小和统计证据，不能只看排名。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#结论",
-    "href": "blog/261007scrnaseq/index-chinese.html#结论",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#结论",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#结论",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "结论",
     "text": "结论\n同一批 FASTQ，Cell Ranger 保留 1,221 个细胞，Simpleaf＋QCatch 保留 1,228 个，前者全部包含在后者中。我追查了多出的 7 个 barcode：3 个因额外计数跨过 UMI 门槛，DHFR 内含子重复序列是其中的重要线索；另外 4 个处于统计阈值附近。只改变细胞集时，细胞类型比例最多变化 0.16 个百分点。这 7 个对整体细胞类型比例影响很小，但少数基因与固定阈值足以改变去留。两次比较仅使用了一份 PBMC 样本；两种流程在其他数据中是否同样接近，还需要进一步验证。"
   },
   {
-    "objectID": "blog/261007scrnaseq/index-chinese.html#复现",
-    "href": "blog/261007scrnaseq/index-chinese.html#复现",
+    "objectID": "blog/2026-10-07scrnaseq/index-chinese.html#复现",
+    "href": "blog/2026-10-07scrnaseq/index-chinese.html#复现",
     "title": "scRNA-seq：Cell Ranger 与 Simpleaf 路线的 barcode 分歧",
     "section": "复现",
     "text": "复现\n\nAWS 模板：scrnaseq-comparison.yaml。"
@@ -203,78 +259,78 @@
     "text": "Teaching\nBachelor: Bioinformatics: From Zero to Hero, English for Biology, Bioinformatics\nMaster: Advanced Bioinformatics, R Language: Statistical computing and graphics, Comparative Genomics, Proteomics and Genomics\nDoctor: Frontiers of Life Science Research"
   },
   {
-    "objectID": "blog/260930nextflow-aws/index.html",
-    "href": "blog/260930nextflow-aws/index.html",
+    "objectID": "blog/2026-09-30nextflow-aws/index.html",
+    "href": "blog/2026-09-30nextflow-aws/index.html",
     "title": "Nextflow: Local Server, Cluster, or Cloud computation?",
     "section": "",
     "text": "3 min read\nNextflow shines when it comes to resource management, natively supporting everything from your local machine and local HPC clusters to top-tier cloud platforms. You can easily tailor your compute environment to match your specific project scale.\nFor small-scale tasks, a local setup does the trick. Just install Nextflow on your machine, configure your environment variables, and you’re good to go.\nFor heavy workloads, scaling out to a compute cluster is the way to go. Nextflow seamlessly integrates with popular schedulers like Slurm, SGE, and LSF. All you need to do is specify the scheduler and its parameters in your configuration file. Tip: You can check out nf-core/configs, where the community has already shared production-ready setups for 158 institutional clusters.\nIf you want to tap into cloud computing for its limitless scalability and elastic provisioning, Nextflow has you covered. You can spin up VMs on AWS or GCP, install Nextflow, and configure your cloud credentials and resource types.\nHere is a quick walkthrough of how it works on AWS:\nCurrently, Nextflow’s official community plugins only support native integration with AWS and GCP, which is a bit of a bummer for users based in China. On top of that, for biotech companies unfamiliar with cloud resource management, handling the initial setup and day-to-day DevOps for Nextflow can be a real headache.\nBut look at the bright side—the payoffs for enterprises are massive. It completely takes the burden off your IT operations team, keeping them out of the weeds of complex infrastructure management. More importantly, it dramatically shrinks the turnaround time from “raw sequencing data” to “actionable insights.” By offloading the heavy lifting of infrastructure, your core scientific teams can focus entirely on what they do best: biological innovation and breakthroughs, driving true cost-efficiency in a highly competitive market."
   },
   {
-    "objectID": "blog/260930nextflow-aws/index.html#putting-it-all-together-nextflow.config",
-    "href": "blog/260930nextflow-aws/index.html#putting-it-all-together-nextflow.config",
+    "objectID": "blog/2026-09-30nextflow-aws/index.html#putting-it-all-together-nextflow.config",
+    "href": "blog/2026-09-30nextflow-aws/index.html#putting-it-all-together-nextflow.config",
     "title": "Nextflow: Local Server, Cluster, or Cloud computation?",
     "section": "Putting It All Together: nextflow.config",
     "text": "Putting It All Together: nextflow.config\nTo switch between infrastructures, you don’t need to rewrite a single line of your pipeline logic. Nextflow allows you to define different environments using profiles in your central config file:\n// 1. Global Parameter Defaults\nparams {\n    input  = \"./data/*.fastq.gz\"\n    outdir = \"./results\"\n}\n\n// 2. Environment Profiles (Local, Cluster, AWS)\nprofiles {\n\n    // Scenario 1: Local Server (For lightweight testing and debugging)\n    local_server {\n        process {\n            executor = 'local'\n            cpus     = 2\n            memory   = '8 GB'\n        }\n        docker.enabled = true\n    }\n\n    // Scenario 2: HPC Cluster (For large-scale tasks on existing institutional hardware)\n    hpc_cluster {\n        process {\n            executor = 'slurm' // Can be changed to sge, lsf, etc.\n            queue    = 'compute'\n            cpus     = 8\n            memory   = '32 GB'\n            time     = '12h'\n        }\n        singularity.enabled    = true\n        singularity.autoMounts = true\n    }\n\n    // Scenario 3: AWS Cloud (For massive, elastic, and serverless workflows)\n    aws_cloud {\n        process {\n            executor  = 'awsbatch'\n            queue     = 'nextflow-job-queue'\n            container = 'biocontainers/samtools:v1.17_cv1'\n        }\n        \n        aws {\n            region = 'us-east-1'\n            batch {\n                cliPath = '/home/ec2-user/miniconda/bin/aws'\n            }\n        }\n        \n        // Point data inputs directly to AWS S3\n        params {\n            input  = 's3://my-biotech-bucket/raw-data/*.fastq.gz'\n            outdir = 's3://my-biotech-bucket/results/'\n        }\n        \n        docker.enabled = true\n    }\n}"
   },
   {
-    "objectID": "blog/260930nextflow-aws/index.html#switching-environments-with--profile",
-    "href": "blog/260930nextflow-aws/index.html#switching-environments-with--profile",
+    "objectID": "blog/2026-09-30nextflow-aws/index.html#switching-environments-with--profile",
+    "href": "blog/2026-09-30nextflow-aws/index.html#switching-environments-with--profile",
     "title": "Nextflow: Local Server, Cluster, or Cloud computation?",
     "section": "Switching Environments with -profile",
     "text": "Switching Environments with -profile\nNow, triggering your workflow across different environments is as simple as adding a flag:\n\nLocal testing: nextflow run main.nf -profile local_server\nHPC deployment: nextflow run main.nf -profile hpc_cluster\nAWS cloud scaling: nextflow run main.nf -profile aws_cloud"
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html",
-    "href": "blog/260928nf-core-customize/index.html",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html",
+    "href": "blog/2026-09-28nf-core-customize/index.html",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "",
     "text": "4 min read\nTake nf-core/rnaseq as an example: if your research question calls for a different analysis path, where should you make the change?"
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#how-many-steps-are-in-nf-corernaseq",
-    "href": "blog/260928nf-core-customize/index.html#how-many-steps-are-in-nf-corernaseq",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#how-many-steps-are-in-nf-corernaseq",
+    "href": "blog/2026-09-28nf-core-customize/index.html#how-many-steps-are-in-nf-corernaseq",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "1. How Many Steps Are in nf-core/rnaseq?",
     "text": "1. How Many Steps Are in nf-core/rnaseq?\nThe official overview lists 16 categories of tasks, but they are not 16 steps that every run executes in sequence. Broadly, the pipeline can merge FASTQ files and infer library strandedness; run FastQC; extract UMIs and trim reads; optionally remove contaminants and rRNA; align reads and quantify expression; process BAM files; generate expression and coverage outputs; and compile QC results in MultiQC. Several alignment and quantification routes are available, so the tasks that actually run depend on your input and settings. nf-core/rnaseq produces an expression matrix; for downstream differential expression analysis, you can use nf-core/differentialabundance."
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#which-files-matter-for-customization",
-    "href": "blog/260928nf-core-customize/index.html#which-files-matter-for-customization",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#which-files-matter-for-customization",
+    "href": "blog/2026-09-28nf-core-customize/index.html#which-files-matter-for-customization",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "2. Which Files Matter for Customization?",
     "text": "2. Which Files Matter for Customization?\nBefore making changes, distinguish these four file types.\n\n\n\n\n\n\n\n\n\n\nFile type\nWhat it controls\nWhat the pipeline or community provides\nWhat you typically supply\nHow they relate\n\n\n\n\nNextflow scripts (.nf)\nAnalysis steps: which tools run, how data moves, and which commands are executed\nmain.nf is the entry point; workflows/*.nf connects steps and data; modules/…/main.nf defines individual steps and commands\nUsually no .nf edits\nSource code determines what runs and how steps connect\n\n\nParameter files\nAnalysis choices: input, outdir, genome, etc.\nnextflow_schema.json describes parameters; nextflow.config or .nf files provide some defaults\nparams.yaml or params.json via -params-file; for a few values, command-line options such as –input\nYour values replace the corresponding defaults\n\n\nConfiguration files\nExecution settings: CPUs, memory, containers, Slurm, etc.\nPipeline nextflow.config and conf/*.config; shared cluster profiles such as uppmax.config (loaded with -profile uppmax)\ncustom.config when needed, passed with -c custom.config\nOverride only the settings you need to change\n\n\nSamplesheet\nThe sample list\nPipeline documentation specifies CSV columns and format\nsamplesheet.csv\nList your samples and FASTQ file paths"
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#switch-trimming-tools-with-a-command-line-parameter",
-    "href": "blog/260928nf-core-customize/index.html#switch-trimming-tools-with-a-command-line-parameter",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#switch-trimming-tools-with-a-command-line-parameter",
+    "href": "blog/2026-09-28nf-core-customize/index.html#switch-trimming-tools-with-a-command-line-parameter",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "3. Switch Trimming Tools with a Command-Line Parameter",
     "text": "3. Switch Trimming Tools with a Command-Line Parameter\nSuppose you want to replace the default Trim Galore! trimmer with fastp. The pipeline already supports –trimmer fastp, so add that option to your command:\nnextflow run nf-core/rnaseq -r 3.27.0 \\\n  --input samplesheet.csv \\\n  --fasta genome.fa \\\n  --gtf annotation.gtf \\\n  --trimmer fastp \\\n  --outdir results_fastp \\\n  -profile docker\nIf your parameter file also says trimmer: trimgalore, the command-line option –trimmer fastp takes precedence. To compare the tools fairly, keep the samples, reference files, and pipeline version fixed; save outputs separately; then compare retained reads, FastQC/MultiQC metrics, and downstream alignment results."
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#save-analysis-choices-in-params.yaml",
-    "href": "blog/260928nf-core-customize/index.html#save-analysis-choices-in-params.yaml",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#save-analysis-choices-in-params.yaml",
+    "href": "blog/2026-09-28nf-core-customize/index.html#save-analysis-choices-in-params.yaml",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "4. Save Analysis Choices in params.yaml",
     "text": "4. Save Analysis Choices in params.yaml\nSuppose you want to keep STAR as the aligner but switch quantification from the default STAR → Salmon route to STAR → RSEM. Put the choices in params.yaml:\ninput: samplesheet.csv\nfasta: genome.fa\ngtf: annotation.gtf\noutdir: results_rsem\naligner: star_rsem\nPass that file when you run the pipeline:\nnextflow run nf-core/rnaseq -r 3.27.0 \\\n  -params-file params.yaml \\\n  -profile docker\nA parameter file records the data and analysis route chosen for a run."
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#change-resource-settings-with-custom.config",
-    "href": "blog/260928nf-core-customize/index.html#change-resource-settings-with-custom.config",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#change-resource-settings-with-custom.config",
+    "href": "blog/2026-09-28nf-core-customize/index.html#change-resource-settings-with-custom.config",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "5. Change Resource Settings with custom.config",
     "text": "5. Change Resource Settings with custom.config\nSuppose STAR alignment fails because it runs out of memory. To request more resources only for STAR_ALIGN, create custom.config:\nprocess {\n  withName: 'NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN' {\n    cpus = 16\n    memory = 80.GB\n  }\n}\nThen run:\nnextflow run nf-core/rnaseq -r 3.27.0 \\\n  -params-file params.yaml \\\n  -profile docker \\\n  -c custom.config\nThis file changes the CPU and memory requested for the task; the machine or cluster must have those resources available. The withName selector targets a specific process, leaving the other steps at their configured settings.\nOn an existing HPC cluster, check whether nf-core already provides a profile for it. At the time of writing, nf-core/configs lists 158 shared configurations, including UPPMAX. On a supported UPPMAX cluster, -profile uppmax loads its settings."
   },
   {
-    "objectID": "blog/260928nf-core-customize/index.html#when-should-you-edit-.nf-files",
-    "href": "blog/260928nf-core-customize/index.html#when-should-you-edit-.nf-files",
+    "objectID": "blog/2026-09-28nf-core-customize/index.html#when-should-you-edit-.nf-files",
+    "href": "blog/2026-09-28nf-core-customize/index.html#when-should-you-edit-.nf-files",
     "title": "What If You want Customize an nf-core Pipeline?",
     "section": "6. When Should You Edit .nf Files?",
     "text": "6. When Should You Edit .nf Files?\nMaintain your own pipeline version only when you need to insert a new step into the workflow, replace a tool that the pipeline does not support, or change how data passes between steps. For example, if a new module must run after per-sample quantification and feed its output into subsequent steps, you are changing the workflow, not just selecting parameters. If the new analysis only uses the pipeline’s final output, run it separately after nf-core/rnaseq finishes.\nThe practical order is simple: check built-in parameters first, adjust runtime configuration if needed, and edit .nf files only when the workflow itself must change."
   },
   {
-    "objectID": "blog/260925nextflow-pipelines/index.html",
-    "href": "blog/260925nextflow-pipelines/index.html",
+    "objectID": "blog/2026-09-25nextflow-pipelines/index.html",
+    "href": "blog/2026-09-25nextflow-pipelines/index.html",
     "title": "Nextflow: Reproducible Bioinformatics at Scale",
     "section": "",
     "text": "2 min read\n\n\nIn modern computational biology, reproducibility is no longer a bonus. It is the standard.\nRunning an RNA-seq pipeline once is no longer the hard part. The real test is running it again—across hundreds of samples, different collaborators, HPC clusters, and the cloud—and getting results you can trust every time.\nThat is why Nextflow is becoming an essential skill alongside R and Python. A pipeline that works only on your laptop is a fragile experiment. A workflow that others can run and reproduce is research they can build on.\nAchieving reproducible workflows through Docker, Singularity, and Conda.\nImagine being able to answer “yes” to all three questions:\n\nCan I process 500 RNA-seq samples with the same workflow?\nCan collaborators run it on an HPC cluster, AWS, or Azure?\nIf a sample fails halfway through, can I resume the analysis without starting over?\n\nThe infographic shows a typical RNA-seq pipeline, but the same workflow approach applies to:\n\nSingle-cell RNA-seq (Cell Ranger → Scanpy or Seurat)\nChIP-seq (Bowtie2 → MACS3 peak calling)\nWGS/WES variant calling (BWA → GATK → VEP)\nShotgun metagenomics (fastp → MEGAHIT assembly → MetaBAT2 binning)\nDNA methylation sequencing (Bismark alignment → methylation calling)\n\nWant to explore real Nextflow workflows? Start here:\n\nnf-core Pipelines — A community collection of tested pipelines covering RNA-seq, ChIP-seq, methylation analysis, metagenomics, and more.\nAwesome Nextflow — A curated collection of pipelines, examples, modules, and learning resources."
@@ -284,7 +340,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "nf-core/sarek: From DNA Reads to Variant Discovery\n\n\n\nbioinformatics\n\nnextflow\n\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nscRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
+    "text": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”\n\n\n\nbioinformatics\n\nnextflow\n\natac-seq\n\n\n\n\n\n\n\n\n\nOct 11, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nnf-core/sarek: From DNA Reads to Variant Discovery\n\n\n\nbioinformatics\n\nnextflow\n\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nscRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "awards.html",
@@ -315,50 +371,50 @@
     "text": "Grants\n\n2022 Natural Science Foundation Project of Chongqing (CSTB2022NSCQ-MSX0650), Stoichioomic study of the adaptive evolution mechanism of biomolecular in altered stomach environment and application. China, PI.\n2020 Open Project of National Key Laboratory of Microbiology (MML-202005), Research of adaptive evolution of sulfur bacteria based on stoichioomics, China, PI.\n2018 National Natural Science Foundation of China (Grant No. 3187090549), A study of cellular compartments and construction of integrated analysis platform based on stoichiogenomics, China, PI.\n2018 Natural Science Foundation Project of Chongqing (CSTC2018jcyjA2487), China, PI.\n2016 Science and Technology Project of Chongqing Municipal Education Commission (No. KJ1600304), China, PI.\n2013 Natural Science Foundation Project of Chongqing (CSTC2013JCYJA00013), China, PI.\n2013 Science and Technology Project of Chongqing Municipal Education Commission (No. KJ130629), China, PI.\n2012 National Natural Science Foundation of China (Grant No. 31200947), Protein transport system of secondary plastids (chloroplasts) in two diatoms species and its evolution research, China, PI.\n2011 Open Project of State Key Laboratory of Genetic Resources and Evolution, Kunming Institute of Zoology, Chinese Academy of Science (Grant No. GREKF11-09), Comparative genomic analysis of protein transport in secondary plastids (chloroplasts), China, PI.\n2010 Doctoral Start Fund in Chongqing Normal University (Grant No. 11XLB001), China, PI."
   },
   {
-    "objectID": "blog/260924my-story/index.html",
-    "href": "blog/260924my-story/index.html",
+    "objectID": "blog/2026-09-24my-story/index.html",
+    "href": "blog/2026-09-24my-story/index.html",
     "title": "My Story",
     "section": "",
     "text": "5 min read\n\n\nMy family ran a small village shop when I was a child. Buying and selling kept us going, and my parents taught me numbers and arithmetic early. By age three, I was behind the counter. A customer would hand me money and ask for candy; I would count it out, pack it up, work out the price, and return every last bit of change. I rarely made a mistake. The neighbors loved to tease me about it, and our little shop was often full of laughter.\nThen my father’s job took us to another town. One curious neighbor liked to borrow me to mind her shop. People would gather just to watch a child balance the books to the last cent. That early feel for numbers followed me to school. I often earned full marks in math, and I won math competition prizes without extra tutoring or endless practice sheets. I assumed I would keep following that path.\nLife, of course, had other plans. When it was time to choose a university major, the claim that “the 21st century belongs to life sciences” won me over. I chose life sciences without hesitation. I was hardly alone: from 1999 to 2007, many of China’s top entrance exam scorers made the same choice. Once classes began, though, the dream met reality. There were endless facts about plants, animals, and anatomy to memorize. I drifted through my days, unsure how to study and even less sure where I belonged. The field I had entered with such hope became what people called a major with bleak prospects. As admission scores fell year after year, I felt the distance between the promise and the reality. That was my first hurdle: I had plenty of passion, but nowhere to put it.\nGraduate school at the Chinese Academy of Sciences came as genomics was taking off. My adviser worked in cell biology, but a series of turns led me into evolutionary genomics and then bioinformatics. There, at last, I found my way back to the quantitative thinking I had loved as a child. I learned that an early interest can shape a lifetime of work.\nThe next wave brought next generation sequencing, whole genome sequencing, RNA sequencing, and proteomics. I rode that wave. I published more than 50 papers in international journals, received national awards and research funding, and became a full professor while still relatively young. Colleagues told me I could simply enjoy what I had built until retirement. For a while, I almost did. But a problem was growing beneath the calm: traditional statistics struggled with the flood of biological data. Breakthroughs became harder to find, and publishing became harder too. I could see the road ahead but could barely move along it. That was my second hurdle: from a position others envied, I could see the ceiling above me.\nThen AI began changing every field, including mine. My students showed me the opening. When your students know more than you do about a new subject, the best thing a teacher can do is encourage them and let them pull you forward. I am grateful for those remarkable young people. Our shared enthusiasm and humor have kept us close, and their kind words online still mean a great deal to me. Even so, entering AI from scratch was frightening. I had to rebuild my knowledge from the ground up. I started arriving at the office at five in the morning and leaving at eleven at night, as if I were back in high school preparing for exams. Some nights, after struggling through one more difficult concept, I asked myself whether all this effort at my age was worth it. That was my third hurdle.\nThankfully, the work paid off. We made the transition. Take protein research: we used to extract sequence features by hand. That worked at first, but eventually we hit a wall. With protein language models such as ESM2, a single sequence can yield 5,120 features and capture relationships between distant parts of a protein. This can make protein function predictions more accurate and interpretable, and help models work across species. In synthetic biology, it can also address a pressing industrial need: finding enzymes with better catalytic performance.\nI went on to study data science, machine learning, deep learning, and cloud computing systematically. I once earned a top global score on DataCamp, honed my skills in Kaggle competitions, and explored targeted therapy with a Harvard professor. Over time, I learned to connect mathematics, linear algebra, statistics, computer science, software and data engineering, cloud computing, machine learning, bioinformatics, computational biology, genomics, transcriptomics, proteomics, structural biology, immunology, precision oncology, and pharmacology. The longer I study them, the more connections I see. Those connections are what I hope to share in this blog.\nI am grateful to live in a time when knowledge is easier to reach than ever. Anyone willing to put in the work can enter a new field.\nGrowing older is inevitable. Losing your curiosity is not. At any stage of life, the desire to learn can open the door to a new beginning."
   },
   {
-    "objectID": "blog/260925workflow-management/index.html",
-    "href": "blog/260925workflow-management/index.html",
+    "objectID": "blog/2026-09-25workflow-management/index.html",
+    "href": "blog/2026-09-25workflow-management/index.html",
     "title": "Workflow Management in Bioinformatics and Deep Learning",
     "section": "",
     "text": "5 min read"
   },
   {
-    "objectID": "blog/260925workflow-management/index.html#worlds-apart-in-workflow-management",
-    "href": "blog/260925workflow-management/index.html#worlds-apart-in-workflow-management",
+    "objectID": "blog/2026-09-25workflow-management/index.html#worlds-apart-in-workflow-management",
+    "href": "blog/2026-09-25workflow-management/index.html#worlds-apart-in-workflow-management",
     "title": "Workflow Management in Bioinformatics and Deep Learning",
     "section": "Worlds Apart in Workflow Management",
     "text": "Worlds Apart in Workflow Management\nIn bioinformatics, analyzing a single sample often involves a dozen or even several dozen independent command-line tools developed by different laboratories: BWA for alignment, samtools for sorting, GATK for variant calling, and FastQC for quality control, for example. Written in languages ranging from C and C++ to Python and Perl, these tools also work with a variety of file formats, including FASTQ, SAM/BAM, and VCF. For large analyses that must be reproducible, workflow engines such as Nextflow and Snakemake often bring these separate tools together through scripts and containers (Docker or Singularity). One reason is that bioinformatics software is developed and maintained by research groups large and small all over the world.\n\n\n \n\nBy contrast, the model-training stage of deep learning is usually more cohesive. Frameworks such as PyTorch and TensorFlow provide a relatively unified programming environment: data loading, the forward pass, loss computation, backpropagation, and optimizer updates can all happen in the same codebase. There is no need to write an intermediate file and invoke a separate external program at every step. One reason is that PyTorch and TensorFlow are developed and maintained by large companies such as Meta and Google.\nEnd-to-end programmability: Data loading (DataLoader), the model’s forward pass (Forward), loss computation (Loss), backpropagation (Backward), and optimizer updates (Optimizer) can flow through a single Python script or framework object, without repeatedly writing intermediate files and calling standalone external binaries.\nA more cohesive model-training workflow: Bioinformatics pipelines can branch into hundreds or thousands of tool combinations depending on the sequencing platform, reference genome version, and analytical goal (RNA-seq versus ChIP-seq). Deep-learning code, meanwhile, is highly modular: changing a model architecture or loss function may take only a few lines of Python, without requiring Nextflow to orchestrate separate applications.\n\nWhat Does Standardization Look Like in Deep Learning?\nAlthough deep learning does not always need a workflow engine to connect a collection of standalone tools, it faces its own challenges in experiment management, hyperparameter search, model deployment, and pipeline reproducibility. Different layers of standardization have therefore emerged:\nLifecycle and experiment tracking (in the spirit of nf-core)\n\nMLflow: Manages the machine-learning lifecycle by recording training parameters, code versions, evaluation metrics, and model weights so that experiments can be reproduced.\nWeights & Biases (W&B): A widely used tool in industry and academia for visualizing and tracking experiments, and for comparing performance across training runs.\n\nProduction-scale pipeline orchestration (the closest parallel to a workflow engine)\n\nKubeflow: A Kubernetes-based machine-learning toolkit that can orchestrate data preprocessing, distributed training, model validation, and deployment as a directed acyclic graph (DAG).\nTFX (TensorFlow Extended): A production-grade ML platform developed by Google for standardized pipelines covering large-scale data validation, training, and inference.\n\nEasy reuse and reproducibility (a research-side analogue to nf-core)\n\nHugging Face Transformers / Timm: In areas such as computer vision and natural language processing, these libraries serve as collections of standard building blocks. Instead of writing every training loop and low-level operation from scratch, you can use packaged models and datasets to assemble a complete workflow."
   },
   {
-    "objectID": "blog/260925workflow-management/index.html#one-workflow-to-rule-them-all",
-    "href": "blog/260925workflow-management/index.html#one-workflow-to-rule-them-all",
+    "objectID": "blog/2026-09-25workflow-management/index.html#one-workflow-to-rule-them-all",
+    "href": "blog/2026-09-25workflow-management/index.html#one-workflow-to-rule-them-all",
     "title": "Workflow Management in Bioinformatics and Deep Learning",
     "section": "One Workflow to Rule Them All?",
     "text": "One Workflow to Rule Them All?\n\n\n\n\n\n\n\nTo be fair, standards start with good intentions. Each promises to bring order to a fragmented field. It is a little like the ambition behind Tolkien’s One Ring: one ring to rule them all. Yet every new standard can become another little kingdom, complete with its own rules and followers. Each would like developers to enter its orbit, but reality is less accommodating. When one standard disappoints, another appears. The race to standardize can end in a proliferation of standards. Workflow languages alone now include Snakemake, Nextflow, CWL, and WDL.\n\n\n\nHere is the kind of task-dependency graph a workflow engine like Snakemake builds and runs – two samples, each moving through alignment, sorting, and indexing independently:"
   },
   {
-    "objectID": "blog/260925workflow-management/index.html#back-to-basics",
-    "href": "blog/260925workflow-management/index.html#back-to-basics",
+    "objectID": "blog/2026-09-25workflow-management/index.html#back-to-basics",
+    "href": "blog/2026-09-25workflow-management/index.html#back-to-basics",
     "title": "Workflow Management in Bioinformatics and Deep Learning",
     "section": "Back to Basics",
     "text": "Back to Basics\n\nWhat is the most basic language for invoking bioinformatics tools? The shell on Linux and other Unix-like systems – most often Bash.\nWhy? Because we commonly use the shell to call bioinformatics software on a server. Whatever framework sits above it, an analysis ultimately comes down to concrete tasks: which files go in, which commands run, which parameters are used, and which results come out. That points to two principles for building bioinformatics workflows:\n\nFor a small, one-off analysis, a shell script may be all you need.\nAs the workflow grows more complex, Python can handle the logic, or Nextflow or Snakemake can manage the tasks. In either case, the commands each task actually runs and the logs it produces should be easy to inspect.\n\nThese principles also help us judge a workflow framework. A good one manages complexity while keeping what actually runs transparent."
   },
   {
-    "objectID": "blog/260930genome-plot-gallery/index.html",
-    "href": "blog/260930genome-plot-gallery/index.html",
+    "objectID": "blog/2026-09-30genome-plot-gallery/index.html",
+    "href": "blog/2026-09-30genome-plot-gallery/index.html",
     "title": "Genome plots by R",
     "section": "",
     "text": "2 min read\n\nNeed a circos plot, a chromosome map, and a zoomed-in regional view, and you’d rather not spend an afternoon fighting circlize margins again? Same idea as last time, same afternoon saved.\n\nFour views, one coordinate system, no re-deriving Mb math at 2am: A a circular genome overview stacking gene density, GC and signal tracks with interval links through the middle, B a chromosome map marking target genes and highlighted regions, C the same three tracks laid out linearly per chromosome for when circles aren’t the point, and D a regional zoom on one window with strand-aware gene arrows. Patchwork stitches the global and regional views into one composite so the detail panel doesn’t float around looking lost.\nThe genome is entirely made up — six fictional chromosomes, about 545 one-megabase bins, 288 gene spans. It exists to make the coordinate math behave, not to represent anything you’d find in Ensembl. Point it at your own chromosomes.csv, bins.csv, genes.csv, regions.csv and links.csv and it draws your actual genome instead.\nThe one thing this project is pedantic about: coordinates are 1-based and closed, both ends included. Coming from a BED file? Add 1 to the start, leave the end alone. Get that wrong once and every track is off by a base — see Ming “Tommy” Tang’s post on exactly this mistake: Most common mistake for bioinformatics.\nRunning it:\ninstall.packages(c('ggplot2', 'patchwork', 'circlize', 'gridGraphics',\n                   'ggrepel', 'ragg', 'svglite'), repos = 'https://cloud.r-project.org')\n\nsource('run.R')\nFive figures and one composite land in figures/, PNG and SVG both. Every plotting function works on its own too, if all you need today is the circle.\nCode’s right here, help yourself: r-genome-plot-gallery"
   },
   {
-    "objectID": "blog/260930rnaseq-plot-gallery/index.html",
-    "href": "blog/260930rnaseq-plot-gallery/index.html",
+    "objectID": "blog/2026-09-30rnaseq-plot-gallery/index.html",
+    "href": "blog/2026-09-30rnaseq-plot-gallery/index.html",
     "title": "RNA-seq plots by R",
     "section": "",
     "text": "2 min read\n\nMaking the same five RNA-seq figures from scratch, every single project, for the hundredth time? Yeah, me too. So I finally sat down and turned the whole mess into one R script that spits out a publication-ready panel figure and doesn’t ask me a single follow-up question.\n\nFive panels, one dataset, no copy-pasted ggplot incantations: A PCA with group ellipses and batch shapes, B a sample correlation heatmap that clusters itself, C a volcano plot that actually labels the genes worth knowing about, D a two-module expression heatmap with side bar charts for flair, and E violin plots for the genes everyone’s going to ask about anyway. Patchwork glues them into one A–E composite so nobody has to eyeball five separate PNGs and pretend they form a coherent story.\nThe example data is 800 simulated genes across 24 samples — two groups, two batches. Swap in your own expression.csv, samples.csv, and differential_expression.csv and the whole pipeline runs on real numbers instead.\nRunning it is embarrassingly simple:\ninstall.packages(c('ggplot2', 'ggrepel', 'patchwork', 'ragg', 'svglite', 'circlize'),\n                 repos = 'https://cloud.r-project.org')\ninstall.packages('BiocManager')\nBiocManager::install('ComplexHeatmap', ask = FALSE, update = FALSE)\n\nsource('run.R')\nThat’s it. No notebook archaeology, no “wait, which chunk made the heatmap again.” Every plot function also works standalone if you just want one panel for a talk instead of the whole gallery.\nCode’s right here, help yourself: r-rnaseq-plot-gallery"
@@ -392,136 +448,192 @@
     "text": "Kaggle Competitions\nMy Kaggle Profile: https://www.kaggle.com/yujuanzhangai\n\nDiabetes Prediction Challenge - Playground Series - Season 5, Episode 12 (Playground · 4206 Teams)\nCAFA 6 Protein Function Prediction - Predict the biological function of a protein (Research · 2190 Teams)\nStanford RNA 3D Folding - Solve RNA structure prediction, one of biology’s remaining grand challenges (Featured · Code Competition · 1516 Teams)\nBinary Prediction of Poisonous Mushrooms - Playground Series - Season 4, Episode 8 (Playground · 2422 Teams)\nISIC 2024 - Skin Cancer Detection with 3D-TBP - Identify cancers among skin lesions cropped from 3D total body photographs (Research · Code Competition · 2739 Teams)\nNeurIPS 2024 - Predict New Medicines with BELKA - Predict small molecule-protein interactions for drug discovery (Research · Code Competition)"
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html",
-    "href": "blog/261007scrnaseq/index.html",
+    "objectID": "blog/2026-10-07scrnaseq/index.html",
+    "href": "blog/2026-10-07scrnaseq/index.html",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "",
     "text": "9 min read"
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#why-this-question",
-    "href": "blog/261007scrnaseq/index.html#why-this-question",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#why-this-question",
+    "href": "blog/2026-10-07scrnaseq/index.html#why-this-question",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Why this question",
     "text": "Why this question\nNextflow orchestrates and records each analysis, and nf-core/scrnaseq offers several standardized routes for processing single-cell RNA-seq data. I wanted to know: given the same sequencing data, why do different routes retain slightly different sets of cells? Are the extra barcodes real cells, ambient RNA, or low-quality droplets? And do they change any biological conclusion?"
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#methods",
-    "href": "blog/261007scrnaseq/index.html#methods",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#methods",
+    "href": "blog/2026-10-07scrnaseq/index.html#methods",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Methods",
     "text": "Methods\nThe data are the public 10x PBMC 1k v3 dataset, processed with nf-core/scrnaseq 4.2.0. Both routes used the same FASTQ files and the GRCh38-2024-A reference: Cell Ranger used the prebuilt index, and Simpleaf built its own index from the FASTA/GTF in the same package.\nVersions: Cell Ranger 10.0.0, Simpleaf 0.19.5, QCatch 0.2.12. The comparison is Cell Ranger versus Simpleaf + QCatch: Simpleaf produces the counts, and QCatch performs the subsequent cell calling.\nUpstream processing ran on an AWS r6i.4xlarge instance (16 vCPU, 128 GiB). A CloudFormation template installed the software, ran the analysis, uploaded the results, and then terminated the instance automatically. The successful run took 84 minutes end to end. The bill came to about $2.05 including three failed attempts; the successful run alone cost about $1.41. All downstream comparisons for this sample ran on a personal Mac with 8 GB of RAM."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#which-barcodes-differ",
-    "href": "blog/261007scrnaseq/index.html#which-barcodes-differ",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#which-barcodes-differ",
+    "href": "blog/2026-10-07scrnaseq/index.html#which-barcodes-differ",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "1. Which barcodes differ?",
     "text": "1. Which barcodes differ?\nI first compared three barcode sets: retained by both, by Cell Ranger only, and by Simpleaf + QCatch only.\n# Read both filtered results and harmonize the barcode suffix\nshared = cr_cells & sa_cells\ncr_only = cr_cells - sa_cells\nsa_only = sa_cells - cr_cells\n\nprint(len(shared), len(cr_only), len(sa_only))\n# 1221 0 7\nprint(len(shared) / len(cr_cells | sa_cells))\n# 0.9943: intersection / union\nAll 7 barcodes sit in the transition zone between cells and background.\n\n\n\nBarcode-rank plots with a zoom on the knee: green markers are the 7 barcodes retained only by Simpleaf + QCatch\n\n\nThe x-axis is barcode rank by UMI count; the y-axis is UMI count. In the right panel, open circles are Cell Ranger and diamonds are Simpleaf; a line joins the two values for the same barcode. The 500-UMI line is the testing threshold of this implementation, not a fixed value for every EmptyDrops analysis.\nMeasured as intersection over union, the two cell sets agree at 99.4%. Among shared cells, the Spearman correlation of total UMIs per cell is 0.9997, and Simpleaf counts are about 5% higher on average. Overall agreement is very high, but small differences can decide whether a borderline barcode is kept.\nNote also that the two “raw matrices” in the figure contain 329,735 and 72,612 barcodes. They were retained under different upstream rules, so they cannot be treated as the same universe of droplets."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#do-the-7-extra-barcodes-look-like-real-cells",
-    "href": "blog/261007scrnaseq/index.html#do-the-7-extra-barcodes-look-like-real-cells",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#do-the-7-extra-barcodes-look-like-real-cells",
+    "href": "blog/2026-10-07scrnaseq/index.html#do-the-7-extra-barcodes-look-like-real-cells",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "2. Do the 7 extra barcodes look like real cells?",
     "text": "2. Do the 7 extra barcodes look like real cells?\n\n\n\n\n\n\n\n\n\n\n#\nInitial call\nUMI: CR → SA\nGenes detected\nMitochondrial fraction\n\n\n\n\n1\nPlatelet-like: PPBP, PF4\n455 → 508\n178\n6%\n\n\n6\nPlatelet-like: PPBP\n464 → 532\n172\n18%\n\n\n2\ncDC-like: FCER1A, CST3\n1,200 → 1,262\n753\n5%\n\n\n3\nMonocyte/DC-like: LYZ, CST3\n1,309 → 1,366\n815\n7%\n\n\n4\nFCGR3A monocyte-like\n1,239 → 1,298\n802\n3%\n\n\n5\nLow quality, no clear marker\n294 → 577\n121\n52%\n\n\n7\nLow quality, no clear marker\n618 → 716\n67\n90%\n\n\n\n\n\n\nMarker expression in the shared cell populations and the 7 disputed barcodes\n\n\nDot size is the fraction of cells with detected expression; color is relative expression. Each SA_only row is a single barcode, labeled with its initial call.\nBarcodes 1 and 6 carry platelet markers. Low UMI does not mean an empty droplet: platelets contain very little RNA to begin with. Barcodes 5 and 7 have very high mitochondrial fractions; they should be flagged as low-quality candidates rather than declared “dying”.\nLow sequencing depth depresses expression correlations, so I built depth-matched controls: cells of the same type downsampled to the same depth, and empty droplets simulated from the ambient RNA profile.\n\n\n\nDepth-matched controls: downsampled real cells, ambient-RNA simulations, and the disputed barcodes\n\n\nThe x-axis is correlation with ambient RNA; the y-axis is correlation with the candidate cell type. Blue: downsampled cells; gray: simulated empty droplets; green: disputed barcodes.\nBarcodes 1 and 6 sit closer to the platelet controls. Barcode 7 is far from the simulated empty droplets and barcode 5 falls between the two groups; neither result means the barcode passes quality control. For barcodes 2, 3 and 4 the two control groups barely separate: ambient RNA resembles the monocyte/DC expression profile, so correlation alone cannot decide whether they are cells."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#different-cell-calling-algorithms-or-different-input-counts",
-    "href": "blog/261007scrnaseq/index.html#different-cell-calling-algorithms-or-different-input-counts",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#different-cell-calling-algorithms-or-different-input-counts",
+    "href": "blog/2026-10-07scrnaseq/index.html#different-cell-calling-algorithms-or-different-input-counts",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "3. Different cell-calling algorithms, or different input counts?",
     "text": "3. Different cell-calling algorithms, or different input counts?\nI re-called cells in both matrices with the same QCatch code and parameters, using the OrdMag + EmptyDrops framework.\n# Excerpt of QCatch internals; m is a CountMatrix, cc is the cell-calling module.\n# Imports, versions and matrix conversion are in analysis/; this is not a standalone script.\ninitial = cc.initial_filtering_OrdMag(m, \"10X_3p_v3\", None)\nres = cc.find_nonambient_barcodes(m, initial, \"10X_3p_v3\", None)\ncalled = {b.decode() for b in initial} | set(res.eval_bcs[res.is_nonambient])\nThe Cell Ranger matrix still yields 1,221 cells and the Simpleaf matrix still yields 1,228, each identical barcode for barcode to the original results. Changing the random seed and the number of simulations did not remove the disagreement either.\nThe same implementation still disagrees, so the next place to look is the input matrices. The input differences, however, include both the counts and the range of background barcodes, so the disagreement cannot be attributed to a single factor.\n\nThree barcodes crossed the 500-UMI threshold\nBarcodes 1, 5 and 6 have fewer than 500 UMIs in the Cell Ranger matrix, so they never enter this step’s test against the ambient background; in the Simpleaf matrix they exceed the threshold. DHFR accounts for a substantial share of the extra counts.\n\n\n\n\n\n\n\n\n\n#\nTotal UMI gain\nDHFR gain\nSA UMIs after removing DHFR and one chr8 lncRNA\n\n\n\n\n1\n53\n19\n485\n\n\n6\n68\n29\n495\n\n\n5\n283\n236\n341\n\n\n\nAfter removing these two genes and re-calling cells, none of the three barcodes is retained. The counts of a few genes are enough to decide whether a barcode is tested at all.\nThe DHFR difference also appears in the shared cells: Simpleaf counts 45,624 UMIs (45,532 of them unspliced), whereas Cell Ranger counts 739. I then examined the DHFR region in the Cell Ranger BAM:\nfrom collections import Counter\nimport pysam\n\n# BAM_URL and BAI_URL are temporary access links to an existing BAM and its index.\nwith pysam.AlignmentFile(BAM_URL, index_filename=BAI_URL) as bam:\n    mapq = Counter(r.mapping_quality\n                   for r in bam.fetch(\"chr5\", 80626226, 80655002))\nprint(mapq)\n# Counter({1: 4718, 3: 2747, 255: 1519, 0: 4})\nAbout 83% of the alignment records have MAPQ below 255. These records are concentrated in a single ~200 bp intronic window, with NH tags of 2–4: each read aligns to 2–4 locations in the genome.\nA repeated sequence is the lead for the anomalous DHFR counts. The two routes use different reference targets and different alignment/assignment rules, which may send these reads to different places. I did not verify Simpleaf’s read-by-read assignment, so the mechanism remains an inference, and the chr8 lncRNA cannot be assumed to share the same cause by analogy.\nNote: Cell Ranger adjusts MAPQ according to gene assignment, so its behavior cannot be reduced to “counting only uniquely mapped genomic alignments”. MAPQ = 255 does not necessarily mean the original STAR alignment had a single location. See the 10x BAM tag documentation.\n\n\nThe other four sit near the statistical threshold\nBarcodes 2, 3 and 4 are all tested, but their adjusted p-values go from about 0.004 with Cell Ranger to about 0.0001 with Simpleaf, crossing this run’s 0.001 threshold. Barcode 7 is also near the threshold. I found no single clear source for these; for now the explanation stops at the statistical threshold rather than at the level of individual reads."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#finally-do-these-7-barcodes-matter",
-    "href": "blog/261007scrnaseq/index.html#finally-do-these-7-barcodes-matter",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#finally-do-these-7-barcodes-matter",
+    "href": "blog/2026-10-07scrnaseq/index.html#finally-do-these-7-barcodes-matter",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Finally: do these 7 barcodes matter?",
     "text": "Finally: do these 7 barcodes matter?\nFor cell-type proportions: almost not at all. I held the counts, clustering and annotation fixed and changed only the cell set. The 7 extra barcodes fall into 4 groups: 2 platelets, 2 cDCs, 1 FCGR3A monocyte and 2 low-quality barcodes. Every other cell type keeps exactly the same number of cells; only the denominator grows from 1,221 to 1,228, diluting their proportions by at most 0.16 percentage points. After a common QC filter (≥ 200 genes, ≤ 20% mitochondrial), only 3 cells differ: 2 cDCs and 1 FCGR3A monocyte.\nHow small is that change? As controls, I changed only the clustering random seed, or only the count matrix, within the same workflow:\n\n\n\nLargest change in each cell type’s proportion when only one factor changes\n\n\nBlue: only the cell set changes; orange: only the clustering random seed (0–4); green: only the count matrix (Cell Ranger or Simpleaf).\nThe cell set shifts proportions by at most 0.16 percentage points, whereas the random seed or the count matrix shifts the monocyte and NK/CD8 T proportions by 6–10 percentage points. The latter two reflect my simple clustering/annotation approach and should not be generalized into a difference between the tools. The sensitivity of the annotation to analysis settings deserves more scrutiny than these 7 barcodes.\nFor markers of small cell populations: some effect, but limited. The cDC population has only 16 cells, so 2 more is a 12.5% increase.\n\n\n\nExpression fraction and adjusted p-value of cDC markers\n\n\nThe conclusions for CST3, FCER1A and CLEC10A are unchanged. CD1C weakens: its expression fraction drops from 63% to 56% and its adjusted p-value rises from 0.012 to 0.034, because the 2 added cells do not express CD1C. In addition, after QC both sides contain the same 15 platelets, yet PPBP’s marker rank moves from 13th to 1st because the top genes have nearly tied scores. When reading markers, look at expression fraction, effect size and statistical evidence, not rank alone."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#conclusion",
-    "href": "blog/261007scrnaseq/index.html#conclusion",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#conclusion",
+    "href": "blog/2026-10-07scrnaseq/index.html#conclusion",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Conclusion",
     "text": "Conclusion\nFrom the same FASTQ files, Cell Ranger retains 1,221 cells and Simpleaf + QCatch retains 1,228, with the former entirely contained in the latter. I traced the 7 extra barcodes: 3 crossed the UMI threshold because of extra counts, with a repeated sequence in a DHFR intron as an important lead; the other 4 sit near the statistical threshold. Changing only the cell set shifts cell-type proportions by at most 0.16 percentage points. These 7 barcodes have little effect on overall cell-type proportions, but a few genes combined with fixed thresholds are enough to decide whether a barcode is kept. Both comparisons used a single PBMC sample; whether the two workflows agree this closely on other data remains to be tested."
   },
   {
-    "objectID": "blog/261007scrnaseq/index.html#reproducibility",
-    "href": "blog/261007scrnaseq/index.html#reproducibility",
+    "objectID": "blog/2026-10-07scrnaseq/index.html#reproducibility",
+    "href": "blog/2026-10-07scrnaseq/index.html#reproducibility",
     "title": "scRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf",
     "section": "Reproducibility",
     "text": "Reproducibility\n\nAWS template: scrnaseq-comparison.yaml."
   },
   {
-    "objectID": "blog/261009sarek/index.html",
-    "href": "blog/261009sarek/index.html",
+    "objectID": "blog/2026-10-09sarek/index.html",
+    "href": "blog/2026-10-09sarek/index.html",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "",
     "text": "5 min read"
   },
   {
-    "objectID": "blog/261009sarek/index.html#a-swedish-name-a-practical-purpose",
-    "href": "blog/261009sarek/index.html#a-swedish-name-a-practical-purpose",
+    "objectID": "blog/2026-10-09sarek/index.html#a-swedish-name-a-practical-purpose",
+    "href": "blog/2026-10-09sarek/index.html#a-swedish-name-a-practical-purpose",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "A Swedish Name, a Practical Purpose",
     "text": "A Swedish Name, a Practical Purpose\nSarek shares its name with a national park in northern Sweden. Early releases used names such as Ruotes and Skårki, giving the project a distinctive geographic identity. The connection appears in the developer’s 2020 presentation.\nThe workflow originated at SciLifeLab’s National Genomics Infrastructure (NGI) and National Bioinformatics Infrastructure Sweden (NBIS), with support from the Swedish Childhood Tumor Biobank. Developers at Germany’s QBiC later joined the project and contributed to its development and Nextflow DSL2 implementation.[1]\nnf-core/sarek is a reproducible workflow for DNA variant discovery. It supports whole-genome, exome and targeted sequencing, with separate germline and somatic analysis routes. Depending on the selected tools, it detects small variants, structural variants, copy-number changes and microsatellite instability.\nDNA sequencing produces reads that must be aligned to a reference genome before differences can be identified. Running this analysis manually requires coordinating software versions, file formats and computing environments. Sarek organizes these tasks into a consistent workflow:\nPreprocessing → Variant calling → Annotation → Quality reporting.[1]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#how-popular-is-sarek",
-    "href": "blog/261009sarek/index.html#how-popular-is-sarek",
+    "objectID": "blog/2026-10-09sarek/index.html#how-popular-is-sarek",
+    "href": "blog/2026-10-09sarek/index.html#how-popular-is-sarek",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "1. How Popular Is Sarek?",
     "text": "1. How Popular Is Sarek?\nAs checked on October 8, 2026, Sarek had approximately 612 GitHub stars, compared with roughly 1,400 for nf-core/rnaseq. These figures indicate community interest, rather than execution counts or analytical accuracy.[3]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#why-variant-analysis-matters",
-    "href": "blog/261009sarek/index.html#why-variant-analysis-matters",
+    "objectID": "blog/2026-10-09sarek/index.html#why-variant-analysis-matters",
+    "href": "blog/2026-10-09sarek/index.html#why-variant-analysis-matters",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "2. Why Variant Analysis Matters",
     "text": "2. Why Variant Analysis Matters\nIf the genome is an instruction manual, RNA expression analysis measures which sections are being read and how frequently. DNA variant analysis identifies changes to the text itself.\nIts applications include:\n\nGenetic disease research: identifying variants that may disrupt gene function.\nCancer research: detecting acquired mutations, amplifications and deletions.\nPopulation genetics: studying genetic differences between individuals and their associations with traits.\n\nA difference from the reference genome is not necessarily harmful. Many variants represent ordinary genetic variation; annotation, filtering and additional evidence are needed to assess their significance."
   },
   {
-    "objectID": "blog/261009sarek/index.html#supported-data",
-    "href": "blog/261009sarek/index.html#supported-data",
+    "objectID": "blog/2026-10-09sarek/index.html#supported-data",
+    "href": "blog/2026-10-09sarek/index.html#supported-data",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "3. Supported Data",
     "text": "3. Supported Data\n\n\n\nSequencing approach\nScope\n\n\n\n\nWhole-genome sequencing (WGS)\nGenome-wide coverage\n\n\nWhole-exome sequencing (WES)\nPrimarily exonic regions\n\n\nTargeted sequencing (panels)\nSelected genes or genomic regions\n\n\n\nSarek can start from raw reads, or from existing alignment or variant files at the appropriate entry point. It supports normal, tumor and additional relapse samples from the same patient. Initially developed for human and mouse data, it can also analyze other species with a suitable reference genome, compatible tools and annotation resources.[1]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#beyond-single-base-changes",
-    "href": "blog/261009sarek/index.html#beyond-single-base-changes",
+    "objectID": "blog/2026-10-09sarek/index.html#beyond-single-base-changes",
+    "href": "blog/2026-10-09sarek/index.html#beyond-single-base-changes",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "4. Beyond Single-Base Changes",
     "text": "4. Beyond Single-Base Changes\n\n\n\n\n\n\n\n\nAnalysis\nChange detected\nRepresentative tools\n\n\n\n\nSingle-nucleotide variants (SNVs)\nA single-base substitution, such as A → G\nHaplotypeCaller, DeepVariant, Mutect2\n\n\nSmall insertions and deletions (indels)\nShort sequence insertions or deletions\nHaplotypeCaller, Mutect2, Strelka2\n\n\nStructural variants (SVs)\nLarger deletions, inversions or rearrangements\nManta, TIDDIT\n\n\nCopy-number variants (CNVs)\nGains or losses of genomic copies\nASCAT, CNVkit, Control-FREEC\n\n\nMicrosatellite instability (MSI)\nInstability in short tandem-repeat lengths\nMSIsensor-pro\n\n\n\nTool selection depends on the sample design, sequencing approach and biological question. These are optional analysis routes, rather than a list of tools that must all run together.[1]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#why-separate-germline-and-somatic-routes",
-    "href": "blog/261009sarek/index.html#why-separate-germline-and-somatic-routes",
+    "objectID": "blog/2026-10-09sarek/index.html#why-separate-germline-and-somatic-routes",
+    "href": "blog/2026-10-09sarek/index.html#why-separate-germline-and-somatic-routes",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "5. Why Separate Germline and Somatic Routes?",
     "text": "5. Why Separate Germline and Somatic Routes?\nGermline analysis identifies constitutional variants, usually present in nearly all cells. These may be inherited or arise de novo.\nSomatic analysis identifies variants acquired in a subset of cells. In cancer studies, comparing a tumor with a matched normal sample helps distinguish acquired changes from the individual’s germline background.\nThe statistical assumptions differ. At a diploid autosomal locus without copy-number changes, a heterozygous germline variant typically has a variant allele fraction (VAF) near 50%. Tumor samples contain mixtures of normal cells, cancer cells and tumor subclones, so genuine somatic variants may have much lower VAFs.\nFor example, if 20% of cells carry a heterozygous mutation and all cells are diploid at that locus, the expected VAF is:\n\\[\n\\mathrm{VAF} \\approx 20\\% \\times \\frac{1}{2} = 10\\%\n\\]\nThe caller must distinguish this signal from sequencing or alignment errors. Germline and somatic detection therefore require different models and filters: HaplotypeCaller primarily targets germline variants, while Mutect2 targets somatic variants.[1]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#workflow",
-    "href": "blog/261009sarek/index.html#workflow",
+    "objectID": "blog/2026-10-09sarek/index.html#workflow",
+    "href": "blog/2026-10-09sarek/index.html#workflow",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "6. Workflow",
     "text": "6. Workflow\nFigure 1 shows the germline and somatic routes, their shared processing stages and representative tools.\n\n\n\nSarek workflow showing germline and somatic preprocessing, variant calling, annotation and reporting\n\n\nFigure 1. Sarek workflow overview (Sarek 3.5.1). Source: nf-core/sarek.[1]\n\nStep 1: Preprocessing\nCheck read quality, optionally trim adapters, align reads to the reference genome, mark duplicates and perform base quality score recalibration where appropriate.[1]\nThese steps reduce misleading evidence: PCR copies are not independent observations, and incorrectly aligned reads can create apparent variants.\n\n\nStep 2: Variant Calling\nSelect callers for the study design and variant classes of interest. Examples include HaplotypeCaller or DeepVariant for germline small variants, Mutect2 for somatic small variants, and Manta for structural variants.[1]\n\n\nStep 3: Annotation\nVEP and SnpEff add biological context, including affected genes and transcripts, amino-acid changes and predicted splice effects. Annotation translates genomic coordinates into potential functional consequences.[1]\n\n\nStep 4: Reporting\nOutputs include processed alignments, VCF files and tool-specific results. CNV and MSI analyses also generate their own tables or plots. MultiQC summarizes metrics such as coverage, alignment statistics and duplication rates.[1]\n\n\n\n\n\n\nTip\n\n\n\nExecution report: records how the entire Nextflow pipeline ran, showing whether each step succeeded, along with its runtime and resource usage."
   },
   {
-    "objectID": "blog/261009sarek/index.html#reproducibility-across-computing-environments",
-    "href": "blog/261009sarek/index.html#reproducibility-across-computing-environments",
+    "objectID": "blog/2026-10-09sarek/index.html#reproducibility-across-computing-environments",
+    "href": "blog/2026-10-09sarek/index.html#reproducibility-across-computing-environments",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "7. Reproducibility Across Computing Environments",
     "text": "7. Reproducibility Across Computing Environments\nSarek uses Nextflow to coordinate tasks and containers to manage software environments. This supports consistent execution on local machines, clusters and cloud infrastructure, reducing the manual work required to connect individual tools.[1]"
   },
   {
-    "objectID": "blog/261009sarek/index.html#references",
-    "href": "blog/261009sarek/index.html#references",
+    "objectID": "blog/2026-10-09sarek/index.html#references",
+    "href": "blog/2026-10-09sarek/index.html#references",
     "title": "nf-core/sarek: From DNA Reads to Variant Discovery",
     "section": "References",
     "text": "References\n\nSarek 3.5.1: Official documentation\nnf-core pipeline directory\nGitHub repositories: nf-core/sarek and nf-core/rnaseq. Star counts checked on October 8, 2026."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html",
+    "href": "blog/2026-10-11atacseq/index.html",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "",
+    "text": "6 min read\nMost nucleated cells in the human body share essentially the same DNA, yet perform different functions. Think of the genome as an instruction manual: different cells make different pages available to read.\nATAC-seq measures this accessibility. nf-core/atacseq turns the resulting sequencing data into outputs for quality assessment, sample comparison, and downstream analysis."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#turning-a-library-preparation-tool-into-a-chromatin-probe",
+    "href": "blog/2026-10-11atacseq/index.html#turning-a-library-preparation-tool-into-a-chromatin-probe",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "1. 2013: Turning a Library Preparation Tool into a Chromatin Probe",
+    "text": "1. 2013: Turning a Library Preparation Tool into a Chromatin Probe\nATAC-seq was not the first method for studying accessible chromatin. DNase-seq and other approaches were already in use when Buenrostro and colleagues introduced ATAC-seq in Nature Methods in 2013, offering a simpler experimental approach.[2]\nIts key component is Tn5 transposase, which cuts DNA and inserts sequencing adapters. DNA packaging affects how easily Tn5 can reach it, so accessible regions are more readily tagged. Mapping the sequenced fragments back to the genome reveals where these regions are.[2] Experimental conditions and Tn5 sequence preferences also affect the signal, making quality control and statistical analysis essential.\nWhereas ChIP-seq uses antibodies to map DNA associated with a specific protein or histone modification, ATAC-seq and DNase-seq profile chromatin accessibility without target-specific antibodies. By combining DNA fragmentation and adapter insertion, ATAC-seq generally requires fewer cells and fewer library preparation steps than conventional DNase-seq, making it useful when material is limited."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#fragment-lengths-tell-a-story-too",
+    "href": "blog/2026-10-11atacseq/index.html#fragment-lengths-tell-a-story-too",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "2. Fragment Lengths Tell a Story Too",
+    "text": "2. Fragment Lengths Tell a Story Too\nATAC-seq provides information beyond where fragments map. DNA wraps around histones to form nucleosomes, and fragment lengths can reflect this organization. Short fragments are often associated with nucleosome-free regions, while longer fragments can reflect DNA spanning one or more nucleosomes.[2]\nThe fragment length distribution therefore connects sequencing data to chromatin structure. In 2017, Corces and colleagues introduced Omni-ATAC, improving the signal-to-background ratio and extending the method to samples such as frozen tissues.[3] These developments have made chromatin accessibility profiling practical for a wider range of samples."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#an-unexpected-connection-to-cattle-research",
+    "href": "blog/2026-10-11atacseq/index.html#an-unexpected-connection-to-cattle-research",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "3. An Unexpected Connection to Cattle Research",
+    "text": "3. An Unexpected Connection to Cattle Research\nThe official credits identify Harshil Patel as the original developer. Björn Langer and Jose Espinosa-Carrasco later converted the pipeline to Nextflow DSL2 under the BovReg project.[1]\nBovReg studies functional regulation in the cattle genome, examining how genetic and epigenetic variation relates to traits across breeds.[4]\nWhy study chromatin accessibility in cattle? DNA sequence alone cannot fully explain a trait. Understanding gene regulation also requires knowing which genomic regions are accessible in particular cells or conditions. ATAC-seq provides part of that information."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#workflow-from-fastq-to-chromatin-accessibility-profiles",
+    "href": "blog/2026-10-11atacseq/index.html#workflow-from-fastq-to-chromatin-accessibility-profiles",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "4. Workflow: From FASTQ to Chromatin Accessibility Profiles",
+    "text": "4. Workflow: From FASTQ to Chromatin Accessibility Profiles\nThis article covers version 2.1.2. In the official workflow diagram below, green represents analysis after merging libraries within each biological replicate; blue represents optional analysis after merging biological replicates within each condition. Square nodes indicate required steps, and circular nodes indicate optional steps.[1]\n\n\n\nnf-core/atacseq 2.1.2 workflow diagram\n\n\nFigure 1. nf-core/atacseq workflow overview (version 2.1.2). Source: nf-core/atacseq.[1]\n\n4.1 Read Processing and Alignment\nFastQC assesses the raw FASTQ files. Trim Galore! uses Cutadapt to remove adapters and trim low-quality bases, followed by another quality check. Alignment options include BWA (default), Bowtie2, STAR, and Chromap. In version 2.1.2, paired-end data aligned with Chromap do not proceed beyond alignment.[1,5]\nPicard marks duplicates and merges sequencing runs belonging to the same biological replicate. Duplicates are marked again before filtering. SAMtools, BEDTools, BAMTools, and Pysam remove mitochondrial reads, reads overlapping blacklisted regions, duplicates, and unreliable alignments, and check paired-end read consistency. These steps reduce technical noise before peak calling.[1]\n\n\n4.2 Analysis After Filtering\n\n\n\n\n\n\n\n\nTask\nMain tools\nPurpose\n\n\n\n\nAlignment and library QC\nPicard, Preseq\nAssess alignment quality and library complexity; estimate the benefit of deeper sequencing\n\n\nSignal tracks\nBEDTools, bedGraphToBigWig\nGenerate bigWig tracks scaled to one million mapped reads\n\n\nSignal enrichment\ndeepTools\nExamine signal around transcription start sites, across gene bodies, and genome-wide\n\n\nPeak calling and annotation\nMACS2, HOMER\nIdentify enriched regions and annotate their genomic context and nearby genes\n\n\nConsensus regions and counting\nBEDTools, featureCounts\nCombine peaks into shared regions and count reads in each sample\n\n\nSample comparison and reporting\nR/DESeq2, ataqv, MultiQC, IGV\nNormalize counts, generate PCA and clustering plots, summarize QC, and visualize tracks\n\n\n\nThese tasks correspond to the alignment QC, enrichment, peak calling, and reporting branches in the official diagram.[1,5]\n\n\n4.3 Three Details to Keep in Mind\nLibrary merging and biological replicate merging serve different purposes. Repeated sequencing runs of the same biological replicate use identical sample and replicate values in the samplesheet and are merged after alignment. Biological replicates within a condition share the same sample value but have different replicate values. The blue branch pools these replicates to increase coverage for peak calling. Read counting against the resulting consensus peaks still uses the separate replicate alignments, preserving differences between replicates.[5] See the samplesheet documentation for details.\nPeak calling and consensus filtering have specific defaults. MACS2 calls broad peaks by default; --narrow_peak selects narrow peaks. The default consensus set is the union of peaks across samples, so a peak need not occur in every sample. Increasing --min_reps_consensus requires greater replicate support.[5]\nPCA and clustering show how similar the samples are. The pipeline uses DESeq2 to generate these plots. Identifying significantly different accessibility between treatment and control requires a statistical comparison based on the experimental groups.[5]"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#what-does-nf-coreatacseq-produce",
+    "href": "blog/2026-10-11atacseq/index.html#what-does-nf-coreatacseq-produce",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "5. What Does nf-core/atacseq Produce?",
+    "text": "5. What Does nf-core/atacseq Produce?\nThe experiment tags accessible DNA; the pipeline analyzes where those tags occur.\nVersion 2.1.2 organizes read QC, adapter trimming, alignment, filtering, peak calling, and reporting into a Nextflow workflow, with containers managing software dependencies.[1]\nA peak is a genomic interval with significant enrichment of sequencing signal.\nThree questions provide a useful starting point for reading the results:[5]\n\n\n\n\n\n\n\nQuestion\nRelevant outputs\n\n\n\n\nIs the data quality sufficient for further analysis?\nMultiQC, ataqv, and associated QC metrics\n\n\nWhere are the accessibility signals?\nMACS2 peaks and bigWig tracks\n\n\nCan samples be compared across the same regions?\nConsensus peaks, read count matrices, PCA, and clustering\n\n\n\nConsensus peaks combine the individual peak sets into shared genomic intervals for comparison.[5]"
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#what-comes-after-finding-accessible-regions",
+    "href": "blog/2026-10-11atacseq/index.html#what-comes-after-finding-accessible-regions",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "6. What Comes After Finding Accessible Regions?",
+    "text": "6. What Comes After Finding Accessible Regions?\nATAC-seq adds another perspective to genome analysis: how cells make DNA accessible and organize it into chromatin.\nnf-core/atacseq provides a reusable workflow for analyzing these signals. The next step is to connect accessible regions with gene expression and experimental conditions, developing biological explanations that can be tested."
+  },
+  {
+    "objectID": "blog/2026-10-11atacseq/index.html#references",
+    "href": "blog/2026-10-11atacseq/index.html#references",
+    "title": "nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”",
+    "section": "References",
+    "text": "References\n\nnf-core/atacseq 2.1.2: Introduction and credits\nBuenrostro et al., 2013: The original ATAC-seq study\nCorces et al., 2017: Omni-ATAC\nBovReg: Project background\nnf-core/atacseq 2.1.2: Output documentation"
   }
 ]

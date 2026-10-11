@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/261009sarek/index-chinese.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-11atacseq/index-chinese.html</loc>
+    <lastmod>2026-10-11T19:16:46.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-09sarek/index-chinese.html</loc>
     <lastmod>2026-10-09T22:40:10.188Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/261007scrnaseq/index-chinese.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-07scrnaseq/index-chinese.html</loc>
     <lastmod>2026-10-08T01:37:17.907Z</lastmod>
   </url>
   <url>
@@ -17,39 +21,39 @@
     <lastmod>2026-09-24T22:27:32.542Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260930nextflow-aws/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-30nextflow-aws/index.html</loc>
     <lastmod>2026-10-01T02:18:55.535Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260928nf-core-customize/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-28nf-core-customize/index.html</loc>
     <lastmod>2026-09-29T02:20:18.273Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260925nextflow-pipelines/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-25nextflow-pipelines/index.html</loc>
     <lastmod>2026-09-26T15:43:06.264Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/blog.html</loc>
-    <lastmod>2026-10-09T17:01:50.301Z</lastmod>
+    <lastmod>2026-10-11T19:16:46.125Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/awards.html</loc>
     <lastmod>2026-09-24T22:11:16.440Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260924my-story/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-24my-story/index.html</loc>
     <lastmod>2026-09-24T22:11:16.472Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260925workflow-management/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-25workflow-management/index.html</loc>
     <lastmod>2026-09-25T16:29:23.603Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260930genome-plot-gallery/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-30genome-plot-gallery/index.html</loc>
     <lastmod>2026-10-01T03:58:56.992Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/260930rnaseq-plot-gallery/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-30rnaseq-plot-gallery/index.html</loc>
     <lastmod>2026-10-01T03:51:06.669Z</lastmod>
   </url>
   <url>
@@ -57,11 +61,15 @@
     <lastmod>2026-09-24T22:11:24.759Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/261007scrnaseq/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-07scrnaseq/index.html</loc>
     <lastmod>2026-10-08T01:37:17.907Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/261009sarek/index.html</loc>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-09sarek/index.html</loc>
     <lastmod>2026-10-09T22:40:10.187Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-11atacseq/index.html</loc>
+    <lastmod>2026-10-11T19:16:46.072Z</lastmod>
   </url>
 </urlset>

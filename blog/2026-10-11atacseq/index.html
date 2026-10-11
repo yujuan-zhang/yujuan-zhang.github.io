@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-11">
+
+<title>nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors” – Yujuan Zhang, PhD</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cf06bf3c63dcc3f08f55f76a95a4da8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // The posts carry no front matter, so build the English/Chinese link here
+  // and put it at the top right of the title block.
+  document.addEventListener("DOMContentLoaded", function () {
+    var zh = /index-chinese(\.html)?$/.test(window.location.pathname);
+    var s = document.createElement("div"), a = document.createElement("a");
+    s.className = "lang-switch";
+    a.href = zh ? "index.html" : "index-chinese.html";
+    a.textContent = zh ? "English" : "Chinese";
+    s.appendChild(a);
+    var h = document.getElementById("title-block-header") || document.querySelector("main");
+    if (h) h.insertBefore(s, h.firstChild);
+  });
+</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yujuan Zhang, PhD</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../awards.html"> 
+<span class="menu-text">Awards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks_pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-lightning-charge-fill" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yujuan-zhang"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=CdA1HhMAAAAJ&amp;hl=en"> <i class="bi bi-mortarboard-fill" role="img" aria-label="Google Scholar">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:yujuan.zhang418@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#turning-a-library-preparation-tool-into-a-chromatin-probe" id="toc-turning-a-library-preparation-tool-into-a-chromatin-probe" class="nav-link active" data-scroll-target="#turning-a-library-preparation-tool-into-a-chromatin-probe">1. 2013: Turning a Library Preparation Tool into a Chromatin Probe</a></li>
+  <li><a href="#fragment-lengths-tell-a-story-too" id="toc-fragment-lengths-tell-a-story-too" class="nav-link" data-scroll-target="#fragment-lengths-tell-a-story-too">2. Fragment Lengths Tell a Story Too</a></li>
+  <li><a href="#an-unexpected-connection-to-cattle-research" id="toc-an-unexpected-connection-to-cattle-research" class="nav-link" data-scroll-target="#an-unexpected-connection-to-cattle-research">3. An Unexpected Connection to Cattle Research</a></li>
+  <li><a href="#workflow-from-fastq-to-chromatin-accessibility-profiles" id="toc-workflow-from-fastq-to-chromatin-accessibility-profiles" class="nav-link" data-scroll-target="#workflow-from-fastq-to-chromatin-accessibility-profiles">4. Workflow: From FASTQ to Chromatin Accessibility Profiles</a>
+  <ul class="collapse">
+  <li><a href="#read-processing-and-alignment" id="toc-read-processing-and-alignment" class="nav-link" data-scroll-target="#read-processing-and-alignment">4.1 Read Processing and Alignment</a></li>
+  <li><a href="#analysis-after-filtering" id="toc-analysis-after-filtering" class="nav-link" data-scroll-target="#analysis-after-filtering">4.2 Analysis After Filtering</a></li>
+  <li><a href="#three-details-to-keep-in-mind" id="toc-three-details-to-keep-in-mind" class="nav-link" data-scroll-target="#three-details-to-keep-in-mind">4.3 Three Details to Keep in Mind</a></li>
+  </ul></li>
+  <li><a href="#what-does-nf-coreatacseq-produce" id="toc-what-does-nf-coreatacseq-produce" class="nav-link" data-scroll-target="#what-does-nf-coreatacseq-produce">5. What Does nf-core/atacseq Produce?</a></li>
+  <li><a href="#what-comes-after-finding-accessible-regions" id="toc-what-comes-after-finding-accessible-regions" class="nav-link" data-scroll-target="#what-comes-after-finding-accessible-regions">6. What Comes After Finding Accessible Regions?</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">nf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">nextflow</div>
+    <div class="quarto-category">atac-seq</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 11, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="reading-time">
+6 min read
+</div>
+<p>Most nucleated cells in the human body share essentially the same DNA, yet perform different functions. Think of the genome as an instruction manual: different cells make different pages available to read.</p>
+<p>ATAC-seq measures this accessibility. <strong>nf-core/atacseq</strong> turns the resulting sequencing data into outputs for quality assessment, sample comparison, and downstream analysis.</p>
+<section id="turning-a-library-preparation-tool-into-a-chromatin-probe" class="level2">
+<h2 class="anchored" data-anchor-id="turning-a-library-preparation-tool-into-a-chromatin-probe">1. 2013: Turning a Library Preparation Tool into a Chromatin Probe</h2>
+<p>ATAC-seq was not the first method for studying accessible chromatin. DNase-seq and other approaches were already in use when Buenrostro and colleagues introduced ATAC-seq in <em>Nature Methods</em> in 2013, offering a simpler experimental approach.[2]</p>
+<p>Its key component is <strong>Tn5 transposase</strong>, which cuts DNA and inserts sequencing adapters. DNA packaging affects how easily Tn5 can reach it, so accessible regions are more readily tagged. Mapping the sequenced fragments back to the genome reveals where these regions are.[2] Experimental conditions and Tn5 sequence preferences also affect the signal, making quality control and statistical analysis essential.</p>
+<p>Whereas ChIP-seq uses antibodies to map DNA associated with a specific protein or histone modification, ATAC-seq and DNase-seq profile chromatin accessibility without target-specific antibodies. By combining DNA fragmentation and adapter insertion, ATAC-seq generally requires fewer cells and fewer library preparation steps than conventional DNase-seq, making it useful when material is limited.</p>
+</section>
+<section id="fragment-lengths-tell-a-story-too" class="level2">
+<h2 class="anchored" data-anchor-id="fragment-lengths-tell-a-story-too">2. Fragment Lengths Tell a Story Too</h2>
+<p>ATAC-seq provides information beyond where fragments map. DNA wraps around histones to form nucleosomes, and fragment lengths can reflect this organization. Short fragments are often associated with nucleosome-free regions, while longer fragments can reflect DNA spanning one or more nucleosomes.[2]</p>
+<p>The fragment length distribution therefore connects sequencing data to chromatin structure. In 2017, Corces and colleagues introduced <strong>Omni-ATAC</strong>, improving the signal-to-background ratio and extending the method to samples such as frozen tissues.[3] These developments have made chromatin accessibility profiling practical for a wider range of samples.</p>
+</section>
+<section id="an-unexpected-connection-to-cattle-research" class="level2">
+<h2 class="anchored" data-anchor-id="an-unexpected-connection-to-cattle-research">3. An Unexpected Connection to Cattle Research</h2>
+<p>The official credits identify <strong>Harshil Patel</strong> as the original developer. <strong>Björn Langer</strong> and <strong>Jose Espinosa-Carrasco</strong> later converted the pipeline to Nextflow DSL2 under the <strong>BovReg project</strong>.[1]</p>
+<p>BovReg studies functional regulation in the cattle genome, examining how genetic and epigenetic variation relates to traits across breeds.[4]</p>
+<p>Why study chromatin accessibility in cattle? DNA sequence alone cannot fully explain a trait. Understanding gene regulation also requires knowing which genomic regions are accessible in particular cells or conditions. ATAC-seq provides part of that information.</p>
+</section>
+<section id="workflow-from-fastq-to-chromatin-accessibility-profiles" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-from-fastq-to-chromatin-accessibility-profiles">4. Workflow: From FASTQ to Chromatin Accessibility Profiles</h2>
+<p>This article covers <strong>version 2.1.2</strong>. In the official workflow diagram below, green represents analysis after merging libraries within each biological replicate; blue represents optional analysis after merging biological replicates within each condition. Square nodes indicate required steps, and circular nodes indicate optional steps.[1]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="nf-core-atacseq_metro_map_grey.png" class="img-fluid figure-img"></p>
+<figcaption>nf-core/atacseq 2.1.2 workflow diagram</figcaption>
+</figure>
+</div>
+<p><em>Figure 1. nf-core/atacseq workflow overview (version 2.1.2). Source: nf-core/atacseq.[1]</em></p>
+<section id="read-processing-and-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="read-processing-and-alignment">4.1 Read Processing and Alignment</h3>
+<p><strong>FastQC</strong> assesses the raw FASTQ files. <strong>Trim Galore!</strong> uses Cutadapt to remove adapters and trim low-quality bases, followed by another quality check. Alignment options include <strong>BWA (default), Bowtie2, STAR, and Chromap</strong>. In version 2.1.2, paired-end data aligned with Chromap do not proceed beyond alignment.[1,5]</p>
+<p><strong>Picard</strong> marks duplicates and merges sequencing runs belonging to the same biological replicate. Duplicates are marked again before filtering. <strong>SAMtools, BEDTools, BAMTools, and Pysam</strong> remove mitochondrial reads, reads overlapping blacklisted regions, duplicates, and unreliable alignments, and check paired-end read consistency. These steps reduce technical noise before peak calling.[1]</p>
+</section>
+<section id="analysis-after-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-after-filtering">4.2 Analysis After Filtering</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Main tools</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alignment and library QC</td>
+<td>Picard, Preseq</td>
+<td>Assess alignment quality and library complexity; estimate the benefit of deeper sequencing</td>
+</tr>
+<tr class="even">
+<td>Signal tracks</td>
+<td>BEDTools, bedGraphToBigWig</td>
+<td>Generate bigWig tracks scaled to one million mapped reads</td>
+</tr>
+<tr class="odd">
+<td>Signal enrichment</td>
+<td>deepTools</td>
+<td>Examine signal around transcription start sites, across gene bodies, and genome-wide</td>
+</tr>
+<tr class="even">
+<td>Peak calling and annotation</td>
+<td>MACS2, HOMER</td>
+<td>Identify enriched regions and annotate their genomic context and nearby genes</td>
+</tr>
+<tr class="odd">
+<td>Consensus regions and counting</td>
+<td>BEDTools, featureCounts</td>
+<td>Combine peaks into shared regions and count reads in each sample</td>
+</tr>
+<tr class="even">
+<td>Sample comparison and reporting</td>
+<td>R/DESeq2, ataqv, MultiQC, IGV</td>
+<td>Normalize counts, generate PCA and clustering plots, summarize QC, and visualize tracks</td>
+</tr>
+</tbody>
+</table>
+<p>These tasks correspond to the alignment QC, enrichment, peak calling, and reporting branches in the official diagram.[1,5]</p>
+</section>
+<section id="three-details-to-keep-in-mind" class="level3">
+<h3 class="anchored" data-anchor-id="three-details-to-keep-in-mind">4.3 Three Details to Keep in Mind</h3>
+<p><strong>Library merging and biological replicate merging serve different purposes.</strong> Repeated sequencing runs of the same biological replicate use identical <code>sample</code> and <code>replicate</code> values in the samplesheet and are merged after alignment. Biological replicates within a condition share the same <code>sample</code> value but have different <code>replicate</code> values. The blue branch pools these replicates to increase coverage for peak calling. Read counting against the resulting consensus peaks still uses the separate replicate alignments, preserving differences between replicates.[5] See the <a href="https://nf-co.re/atacseq/2.1.2/docs/usage/">samplesheet documentation</a> for details.</p>
+<p><strong>Peak calling and consensus filtering have specific defaults.</strong> MACS2 calls broad peaks by default; <code>--narrow_peak</code> selects narrow peaks. The default consensus set is the union of peaks across samples, so a peak need not occur in every sample. Increasing <code>--min_reps_consensus</code> requires greater replicate support.[5]</p>
+<p><strong>PCA and clustering show how similar the samples are.</strong> The pipeline uses DESeq2 to generate these plots. Identifying significantly different accessibility between treatment and control requires a statistical comparison based on the experimental groups.[5]</p>
+</section>
+</section>
+<section id="what-does-nf-coreatacseq-produce" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-nf-coreatacseq-produce">5. What Does nf-core/atacseq Produce?</h2>
+<p>The experiment tags accessible DNA; the pipeline analyzes where those tags occur.</p>
+<p>Version 2.1.2 organizes read QC, adapter trimming, alignment, filtering, peak calling, and reporting into a Nextflow workflow, with containers managing software dependencies.[1]</p>
+<p>A <strong>peak</strong> is a genomic interval with significant enrichment of sequencing signal.</p>
+<p>Three questions provide a useful starting point for reading the results:[5]</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Relevant outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Is the data quality sufficient for further analysis?</td>
+<td>MultiQC, ataqv, and associated QC metrics</td>
+</tr>
+<tr class="even">
+<td>Where are the accessibility signals?</td>
+<td>MACS2 peaks and bigWig tracks</td>
+</tr>
+<tr class="odd">
+<td>Can samples be compared across the same regions?</td>
+<td>Consensus peaks, read count matrices, PCA, and clustering</td>
+</tr>
+</tbody>
+</table>
+<p>Consensus peaks combine the individual peak sets into shared genomic intervals for comparison.[5]</p>
+</section>
+<section id="what-comes-after-finding-accessible-regions" class="level2">
+<h2 class="anchored" data-anchor-id="what-comes-after-finding-accessible-regions">6. What Comes After Finding Accessible Regions?</h2>
+<p>ATAC-seq adds another perspective to genome analysis: how cells make DNA accessible and organize it into chromatin.</p>
+<p>nf-core/atacseq provides a reusable workflow for analyzing these signals. The next step is to connect accessible regions with gene expression and experimental conditions, developing biological explanations that can be tested.</p>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li><a href="https://nf-co.re/atacseq/2.1.2/">nf-core/atacseq 2.1.2: Introduction and credits</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/24097267/">Buenrostro et al., 2013: The original ATAC-seq study</a></li>
+<li><a href="https://www.nature.com/articles/nmeth.4396">Corces et al., 2017: Omni-ATAC</a></li>
+<li><a href="https://bovreg.eu/">BovReg: Project background</a></li>
+<li><a href="https://nf-co.re/atacseq/2.1.2/docs/output/">nf-core/atacseq 2.1.2: Output documentation</a></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+// Rebuilds the title-block metadata (date, reading time, view count,
+// categories) as a single plain-text line, matching the reference layout
+// at https://divingintogeneticsandgenomics.com. Quarto's own title
+// template renders these as separate elements (badge-style categories,
+// a "Published" block, and our own .reading-time div from
+// _reading-time.lua) that can't be reordered with CSS alone since they
+// aren't DOM siblings -- so this reads their text back out, builds one
+// line, and hides the originals.
+(function () {
+  var titleBlock = document.querySelector(".quarto-title");
+  if (!titleBlock) return;
+
+  var dateEl = document.querySelector(".quarto-title-meta-contents .date");
+  var readingEl = document.querySelector(".reading-time");
+  var catsEl = document.querySelector(".quarto-categories");
+
+  var dateText = dateEl ? dateEl.textContent.trim() : "";
+  var readingText = readingEl ? readingEl.textContent.trim() : "";
+  var cats = catsEl
+    ? Array.prototype.map.call(
+        catsEl.querySelectorAll(".quarto-category"),
+        function (c) {
+          return c.textContent.trim();
+        }
+      )
+    : [];
+
+  var meta = document.createElement("div");
+  meta.className = "post-meta-line";
+
+  function addPart(node) {
+    if (meta.childElementCount > 0) {
+      var dot = document.createElement("span");
+      dot.className = "post-meta-dot";
+      dot.textContent = "·";
+      meta.appendChild(dot);
+    }
+    meta.appendChild(node);
+  }
+
+  function textPart(text) {
+    var span = document.createElement("span");
+    span.textContent = text;
+    return span;
+  }
+
+  if (dateText) addPart(textPart("Last updated on " + dateText));
+  if (readingText) addPart(textPart(readingText));
+
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
+
+  if (cats.length) {
+    var catPart = document.createElement("span");
+    var icon = document.createElement("i");
+    icon.className = "bi bi-folder2 post-meta-folder-icon";
+    catPart.appendChild(icon);
+    catPart.appendChild(document.createTextNode(cats.join(", ")));
+    addPart(catPart);
+  }
+
+  titleBlock.insertAdjacentElement("afterend", meta);
+
+  // Share row -- the actual second line under the title, right below the
+  // metadata line. Built from the live page URL/title (works the same on
+  // localhost and the published site) rather than anything hand-typed.
+  var h1 = titleBlock.querySelector("h1.title");
+  var pageTitle = h1 ? h1.textContent.trim() : document.title;
+  var pageUrl = window.location.href;
+  var encodedUrl = encodeURIComponent(pageUrl);
+  var encodedTitle = encodeURIComponent(pageTitle);
+
+  var shareLinks = [
+    {
+      label: "Share on X",
+      icon: "bi-twitter",
+      href: "https://twitter.com/intent/tweet?url=" + encodedUrl + "&text=" + encodedTitle,
+    },
+    {
+      label: "Share on Facebook",
+      icon: "bi-facebook",
+      href: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+    },
+    {
+      label: "Share on LinkedIn",
+      icon: "bi-linkedin",
+      href: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+    },
+    {
+      label: "Share on Weibo",
+      icon: "bi-sina-weibo",
+      href: "https://service.weibo.com/share/share.php?url=" + encodedUrl + "&title=" + encodedTitle,
+    },
+    {
+      label: "Share by email",
+      icon: "bi-envelope-fill",
+      href: "mailto:?subject=" + encodedTitle + "&body=" + encodedUrl,
+    },
+  ];
+
+  var shareRow = document.createElement("div");
+  shareRow.className = "post-share-row";
+  shareLinks.forEach(function (link) {
+    var a = document.createElement("a");
+    a.className = "post-share-icon";
+    a.href = link.href;
+    a.setAttribute("aria-label", link.label);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var i = document.createElement("i");
+    i.className = "bi " + link.icon;
+    a.appendChild(i);
+    shareRow.appendChild(a);
+  });
+  // Copy-link is an action, not a navigation, so it's a real <button>
+  // rather than an <a> styled to look like one.
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "post-share-icon";
+  copyBtn.setAttribute("aria-label", "Copy link");
+  var copyIcon = document.createElement("i");
+  copyIcon.className = "bi bi-link-45deg";
+  copyBtn.appendChild(copyIcon);
+  copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(pageUrl).then(function () {
+      copyIcon.className = "bi bi-clipboard-check-fill";
+      copyBtn.classList.add("post-share-copied");
+      setTimeout(function () {
+        copyIcon.className = "bi bi-link-45deg";
+        copyBtn.classList.remove("post-share-copied");
+      }, 1500);
+    });
+  });
+  shareRow.appendChild(copyBtn);
+
+  meta.insertAdjacentElement("afterend", shareRow);
+
+  if (catsEl) catsEl.style.display = "none";
+  var titleMeta = document.querySelector(".quarto-title-meta");
+  if (titleMeta) titleMeta.style.display = "none";
+  if (readingEl) readingEl.style.display = "none";
+
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  //
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
+  var DISPLAYED_VIEWS_OFFSET = 10;
+  fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (data) {
+      var n = data && typeof data.count === "string"
+        ? parseInt(data.count.replace(/,/g, ""), 10)
+        : 0;
+      if (!isFinite(n)) n = 0;
+      n += DISPLAYED_VIEWS_OFFSET;
+      viewSpan.textContent = n + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yujuan-zhang\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

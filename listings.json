@@ -2,15 +2,16 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/261009sarek/index.html",
-      "/blog/261007scrnaseq/index.html",
-      "/blog/260930genome-plot-gallery/index.html",
-      "/blog/260930nextflow-aws/index.html",
-      "/blog/260930rnaseq-plot-gallery/index.html",
-      "/blog/260928nf-core-customize/index.html",
-      "/blog/260925nextflow-pipelines/index.html",
-      "/blog/260925workflow-management/index.html",
-      "/blog/260924my-story/index.html"
+      "/blog/2026-10-11atacseq/index.html",
+      "/blog/2026-10-09sarek/index.html",
+      "/blog/2026-10-07scrnaseq/index.html",
+      "/blog/2026-09-30genome-plot-gallery/index.html",
+      "/blog/2026-09-30nextflow-aws/index.html",
+      "/blog/2026-09-30rnaseq-plot-gallery/index.html",
+      "/blog/2026-09-28nf-core-customize/index.html",
+      "/blog/2026-09-25nextflow-pipelines/index.html",
+      "/blog/2026-09-25workflow-management/index.html",
+      "/blog/2026-09-24my-story/index.html"
     ]
   }
 ]
