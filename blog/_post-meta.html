@@ -169,15 +169,31 @@
   // traffic, which reads as an obvious bug rather than a real count.
   // Removing the item (and its preceding separator dot) is more honest.
   var DISPLAYED_VIEWS_OFFSET = 10;
-  fetch("https://yujuan-zhang.goatcounter.com/counter/" + window.location.pathname + ".json")
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      var n = data && typeof data.count === "string"
-        ? parseInt(data.count.replace(/,/g, ""), 10)
-        : 0;
-      if (!isFinite(n)) n = 0;
+  var path = window.location.pathname;
+  var paths = [path];
+  // Posts up to 2026-10-09 lived under /blog/YYMMDDslug/ before the
+  // folders were renamed to /blog/YYYY-MM-DDslug/ (old URLs now only
+  // redirect, so their counts are frozen). Add those old views in.
+  var m = path.match(/^\/blog\/20(\d\d)-(\d\d)-(\d\d)([^\/]+)\/(index(-chinese)?\.html)?$/);
+  if (m && m[1] + m[2] + m[3] <= "261009") {
+    var oldDir = "/blog/" + m[1] + m[2] + m[3] + m[4] + "/";
+    if (m[6]) paths.push(oldDir + "index-chinese.html");
+    else paths.push(oldDir, oldDir + "index.html");
+  }
+  Promise.all(paths.map(function (p) {
+    return fetch("https://yujuan-zhang.goatcounter.com/counter/" + p + ".json")
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        var c = data && typeof data.count === "string"
+          ? parseInt(data.count.replace(/,/g, ""), 10)
+          : 0;
+        return isFinite(c) ? c : 0;
+      });
+  }))
+    .then(function (counts) {
+      var n = counts.reduce(function (a, b) { return a + b; }, 0);
       n += DISPLAYED_VIEWS_OFFSET;
       viewSpan.textContent = n + (n === 1 ? " view" : " views");
     })
