@@ -3,8 +3,9 @@ title: "Blog"
 listing:
   contents:
     - blog
-    - "!blog/261007scrnaseq/index-chinese.md"
-    - "!blog/261009sarek/index-chinese.md"
+    - "!blog/2026-10-07scrnaseq/index-chinese.md"
+    - "!blog/2026-10-09sarek/index-chinese.md"
+    - "!blog/2026-10-11atacseq/index-chinese.md"
   sort: "date desc"
   type: default
   categories: true

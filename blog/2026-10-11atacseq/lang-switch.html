@@ -1,0 +1,19 @@
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // The posts carry no front matter, so build the English/Chinese link here
+  // and put it at the top right of the title block.
+  document.addEventListener("DOMContentLoaded", function () {
+    var zh = /index-chinese(\.html)?$/.test(window.location.pathname);
+    var s = document.createElement("div"), a = document.createElement("a");
+    s.className = "lang-switch";
+    a.href = zh ? "index.html" : "index-chinese.html";
+    a.textContent = zh ? "English" : "Chinese";
+    s.appendChild(a);
+    var h = document.getElementById("title-block-header") || document.querySelector("main");
+    if (h) h.insertBefore(s, h.firstChild);
+  });
+</script>

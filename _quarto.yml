@@ -5,13 +5,16 @@ project:
   # (not part of this migration) -- restrict rendering to just this site's
   # own pages so Quarto doesn't try to interpret their own (non-Quarto)
   # front matter. They're still copied through as static resources.
+  post-render: _redirects.py
   render:
     - "*.qmd"
     - "blog/**/*.qmd"
-    - "blog/261007scrnaseq/index.md"
-    - "blog/261007scrnaseq/index-chinese.md"
-    - "blog/261009sarek/index.md"
-    - "blog/261009sarek/index-chinese.md"
+    - "blog/2026-10-07scrnaseq/index.md"
+    - "blog/2026-10-07scrnaseq/index-chinese.md"
+    - "blog/2026-10-09sarek/index.md"
+    - "blog/2026-10-09sarek/index-chinese.md"
+    - "blog/2026-10-11atacseq/index.md"
+    - "blog/2026-10-11atacseq/index-chinese.md"
 
 website:
   title: "Yujuan Zhang, PhD"
