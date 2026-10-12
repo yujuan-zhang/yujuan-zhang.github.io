@@ -60,11 +60,11 @@ Most bioinformatics errors are not exotic. They are an index that starts at the 
 
 ## 5. Common Mistakes in Single-Cell Analysis
 
-**Treating cells as independent replicates in differential expression.** **When comparing conditions such as healthy and disease, each with several samples, a common approach is to pool all cells per condition and test at the cell level.** Cells from the same sample are not independent, and thousands of cells make p-values artificially small, producing many false positives. **Pseudobulk analysis is more reliable:** aggregate counts per sample, then compare samples.
+**Treating cells as independent replicates in differential expression.** When comparing conditions such as healthy and disease, each with several samples, a common approach is to pool all cells per condition and test at the cell level. Cells from the same sample are not independent, and thousands of cells make p-values artificially small, producing many false positives. **Pseudobulk analysis is more reliable:** aggregate counts per sample, then compare samples.
 
-**Over-interpreting UMAP.** **UMAP is a non-linear dimensionality reduction method; distances between points or clusters have no reliable quantitative meaning.** Use it to visualize structure, not to judge how similar cell populations are.
+**Over-interpreting UMAP.** UMAP is a non-linear dimensionality reduction method; distances between points or clusters have no reliable quantitative meaning. Use it to visualize structure, not to judge how similar cell populations are.
 
-**Assuming batch correction is safe.** **Batch correction and data integration rely on assumptions, and over-correction can remove genuine biological signal.** A benchmark of seven widely used methods found that many introduce measurable artifacts; only Harmony performed consistently well, and it was the only method the authors recommended for scRNA-seq batch correction.[Antonsson & Melsted, 2024](https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full)
+**Assuming batch correction is safe.** Batch correction and data integration rely on assumptions, and over-correction can remove genuine biological signal. A benchmark of seven widely used methods found that many introduce measurable artifacts; only Harmony performed consistently well, and it was the only method the authors recommended for scRNA-seq batch correction.[Antonsson & Melsted, 2024](https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full)
 
 > **Good practice:** Test differential expression at the sample level, treat UMAP as visualization only, and confirm that known biological differences survive batch correction.
 
