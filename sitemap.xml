@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yujuan-zhang.github.io/blog/2026-10-12bioinfo-mistakes/index-chinese.html</loc>
-    <lastmod>2026-10-12T23:21:34.012Z</lastmod>
+    <lastmod>2026-10-12T23:25:27.275Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/blog/2026-10-11atacseq/index-chinese.html</loc>
@@ -25,40 +25,52 @@
     <lastmod>2026-09-24T22:27:32.542Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-30nextflow-aws/index.html</loc>
-    <lastmod>2026-10-01T02:18:55.535Z</lastmod>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-12matrix-linear-algebra/index.html</loc>
+    <lastmod>2026-10-12T23:11:55.056Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-28nf-core-customize/index.html</loc>
-    <lastmod>2026-09-29T02:20:18.273Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-25nextflow-pipelines/index.html</loc>
-    <lastmod>2026-09-26T15:43:06.264Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yujuan-zhang.github.io/blog.html</loc>
-    <lastmod>2026-10-12T23:22:32.212Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yujuan-zhang.github.io/awards.html</loc>
-    <lastmod>2026-09-24T22:11:16.440Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-24my-story/index.html</loc>
-    <lastmod>2026-09-24T22:11:16.472Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-25workflow-management/index.html</loc>
-    <lastmod>2026-09-25T16:29:23.603Z</lastmod>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-30rnaseq-plot-gallery/index.html</loc>
+    <lastmod>2026-10-01T03:51:06.669Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/blog/2026-09-30genome-plot-gallery/index.html</loc>
     <lastmod>2026-10-01T03:58:56.992Z</lastmod>
   </url>
   <url>
-    <loc>https://yujuan-zhang.github.io/blog/2026-09-30rnaseq-plot-gallery/index.html</loc>
-    <lastmod>2026-10-01T03:51:06.669Z</lastmod>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-25workflow-management/index.html</loc>
+    <lastmod>2026-09-25T16:29:23.603Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-24my-story/index.html</loc>
+    <lastmod>2026-09-24T22:11:16.472Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/awards.html</loc>
+    <lastmod>2026-09-24T22:11:16.440Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog.html</loc>
+    <lastmod>2026-10-12T23:25:38.597Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-25nextflow-pipelines/index.html</loc>
+    <lastmod>2026-09-26T15:43:06.264Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-28nf-core-customize/index.html</loc>
+    <lastmod>2026-09-29T02:20:18.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-09-30nextflow-aws/index.html</loc>
+    <lastmod>2026-10-01T02:18:55.535Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-12machine-learning-mistakes/index.html</loc>
+    <lastmod>2026-10-12T14:30:45.045Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yujuan-zhang.github.io/blog/2026-10-12stupid-ml-mistakes/index.html</loc>
+    <lastmod>2026-10-12T22:29:17.931Z</lastmod>
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/projects.html</loc>
@@ -78,6 +90,6 @@
   </url>
   <url>
     <loc>https://yujuan-zhang.github.io/blog/2026-10-12bioinfo-mistakes/index.html</loc>
-    <lastmod>2026-10-12T23:22:22.170Z</lastmod>
+    <lastmod>2026-10-12T23:25:27.276Z</lastmod>
   </url>
 </urlset>

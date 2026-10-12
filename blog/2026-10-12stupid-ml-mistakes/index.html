@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-12">
+<meta name="description" content="Ten mistakes that survive a successful training run: lessons from researchers, engineers, and a few lines of arithmetic.">
+
+<title>The Stupidest Mistakes in Machine Learning – Yujuan Zhang, PhD</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cf06bf3c63dcc3f08f55f76a95a4da8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;color:#087e8b;box-shadow:0 2px 8px #0001}</style><script>document.addEventListener('DOMContentLoaded',function(){var zh=/index-chinese\.html$/.test(location.pathname);var a=document.createElement('a');a.className='ml-language';a.href=zh?'index.html':'index-chinese.html';a.textContent=zh?'English':'Chinese';a.setAttribute('aria-label',zh?'Read in English':'阅读中文版');document.body.appendChild(a);});</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yujuan Zhang, PhD</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../awards.html"> 
+<span class="menu-text">Awards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks_pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-lightning-charge-fill" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yujuan-zhang"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=CdA1HhMAAAAJ&amp;hl=en"> <i class="bi bi-mortarboard-fill" role="img" aria-label="Google Scholar">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:yujuan.zhang418@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#choosing-a-model-before-understanding-the-data" id="toc-choosing-a-model-before-understanding-the-data" class="nav-link active" data-scroll-target="#choosing-a-model-before-understanding-the-data">1. Choosing a model before understanding the data</a>
+  <ul class="collapse">
+  <li><a href="#correct-data-must-also-be-available-at-prediction-time" id="toc-correct-data-must-also-be-available-at-prediction-time" class="nav-link" data-scroll-target="#correct-data-must-also-be-available-at-prediction-time">Correct data must also be available at prediction time</a></li>
+  </ul></li>
+  <li><a href="#beating-a-baseline-you-never-allowed-to-compete" id="toc-beating-a-baseline-you-never-allowed-to-compete" class="nav-link" data-scroll-target="#beating-a-baseline-you-never-allowed-to-compete">2. Beating a baseline you never allowed to compete</a></li>
+  <li><a href="#scaling-up-before-fitting-a-tiny-training-batch" id="toc-scaling-up-before-fitting-a-tiny-training-batch" class="nav-link" data-scroll-target="#scaling-up-before-fitting-a-tiny-training-batch">3. Scaling up before fitting a tiny training batch</a></li>
+  <li><a href="#letting-broadcasting-rewrite-your-objective" id="toc-letting-broadcasting-rewrite-your-objective" class="nav-link" data-scroll-target="#letting-broadcasting-rewrite-your-objective">4. Letting broadcasting rewrite your objective</a></li>
+  <li><a href="#applying-softmax-because-classification-needs-probabilities" id="toc-applying-softmax-because-classification-needs-probabilities" class="nav-link" data-scroll-target="#applying-softmax-because-classification-needs-probabilities">5. Applying softmax because “classification needs probabilities”</a></li>
+  <li><a href="#confusing-evaluation-mode-with-disabled-gradients" id="toc-confusing-evaluation-mode-with-disabled-gradients" class="nav-link" data-scroll-target="#confusing-evaluation-mode-with-disabled-gradients">6. Confusing evaluation mode with disabled gradients</a></li>
+  <li><a href="#reporting-the-luckiest-seed-as-the-algorithm" id="toc-reporting-the-luckiest-seed-as-the-algorithm" class="nav-link" data-scroll-target="#reporting-the-luckiest-seed-as-the-algorithm">7. Reporting the luckiest seed as the algorithm</a></li>
+  <li><a href="#letting-the-average-hide-the-failure" id="toc-letting-the-average-hide-the-failure" class="nav-link" data-scroll-target="#letting-the-average-hide-the-failure">8. Letting the average hide the failure</a></li>
+  <li><a href="#treating-preprocessing-as-an-afterthought" id="toc-treating-preprocessing-as-an-afterthought" class="nav-link" data-scroll-target="#treating-preprocessing-as-an-afterthought">9. Treating preprocessing as an afterthought</a>
+  <ul class="collapse">
+  <li><a href="#use-the-same-processing-when-the-model-goes-live" id="toc-use-the-same-processing-when-the-model-goes-live" class="nav-link" data-scroll-target="#use-the-same-processing-when-the-model-goes-live">Use the same processing when the model goes live</a></li>
+  </ul></li>
+  <li><a href="#assuming-the-model-merely-observes-the-world" id="toc-assuming-the-model-merely-observes-the-world" class="nav-link" data-scroll-target="#assuming-the-model-merely-observes-the-world">10. Assuming the model merely observes the world</a></li>
+  <li><a href="#three-checks-you-can-run-without-a-gpu" id="toc-three-checks-you-can-run-without-a-gpu" class="nav-link" data-scroll-target="#three-checks-you-can-run-without-a-gpu">Three checks you can run without a GPU</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Stupidest Mistakes in Machine Learning</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine-learning</div>
+    <div class="quarto-category">deep-learning</div>
+    <div class="quarto-category">reproducibility</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Ten mistakes that survive a successful training run: lessons from researchers, engineers, and a few lines of arithmetic.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 12, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="reading-time">
+13 min read
+</div>
+<p>The program runs. The loss decreases. A checkpoint lands in your output directory.</p>
+<p>None of these tells you whether the experiment makes sense.</p>
+<p>Some machine learning mistakes produce an exception. The expensive ones produce a convincing chart. You can spend a week tuning a model that is solving the wrong problem, then spend another week explaining its success.</p>
+<p>This is a practical collection of ten mistakes, informed by researchers’ experience essays, original papers, and framework documentation. The scenarios and illustrations are original; they are not experiments reported by those authors. “Stupid” describes an avoidable mistake, not the person making it.</p>
+<section id="choosing-a-model-before-understanding-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-a-model-before-understanding-the-data">1. Choosing a model before understanding the data</h2>
+<p><strong>What you meant to do:</strong> Solve a prediction problem.</p>
+<p><strong>What you actually did:</strong> Choose a fashionable architecture before inspecting how examples and labels were produced.</p>
+<p>A folder named <code>clean_data</code> is not evidence of clean data. A missing value encoded as <code>-999</code> can become a strong feature. Two annotators may use different definitions of “positive.” A timestamp may record upload time rather than the event you want to forecast.</p>
+<p>Sambasivan and colleagues’ <a href="https://research.google/pubs/everyone-wants-to-do-the-model-work-not-the-data-work-data-cascades-in-high-stakes-ai/">Data Cascades study</a> documents how neglected data work causes compounding downstream problems. Its findings come from interviews with practitioners, not a universal statistical law.</p>
+<p><strong>Correction:</strong> Inspect examples from each label, source, and time period. Read the labeling instructions. Plot missingness and investigate duplicates. Write down what one row represents and what the target actually measures.</p>
+<p>When you see <code>-999</code>, establish whether it is a missing-value sentinel or a valid measurement before deciding how to handle it. Feeding an unchecked sentinel to a transformer can make the model learn an encoding convention you never intended it to use.</p>
+<section id="correct-data-must-also-be-available-at-prediction-time" class="level3">
+<h3 class="anchored" data-anchor-id="correct-data-must-also-be-available-at-prediction-time">Correct data must also be available at prediction time</h3>
+<p>Ask a second question of the same data: <strong>Was this feature actually available at prediction time?</strong> Random splits of dependent observations and features built from later records can make evaluation misrepresent the intended forecasting task.</p>
+<p>A “number of purchases in the next seven days” column might have an innocent name in a feature table. It is still unavailable at today’s prediction time. An event timestamp does not necessarily equal the time the system learned about that event.</p>
+<p><strong>Correction:</strong> Write down when the prediction is made and what data is available then. Build features using only records already available at that moment, and evaluate on later observations. If outcome windows overlap, check what the partitions share. Splitting by time cannot remove future information already baked into a feature.</p>
+<p><a href="https://developers.google.com/machine-learning/guides/rules-of-ml">Martin Zinkevich’s Rules of Machine Learning</a> recommends testing on data collected after the training period. The exact split should reflect your application and dependence structure.</p>
+</section>
+</section>
+<section id="beating-a-baseline-you-never-allowed-to-compete" class="level2">
+<h2 class="anchored" data-anchor-id="beating-a-baseline-you-never-allowed-to-compete">2. Beating a baseline you never allowed to compete</h2>
+<p><strong>What you meant to do:</strong> Show that a new model improves prediction.</p>
+<p><strong>What you actually did:</strong> Tune your proposed method extensively, compare it against a poorly configured baseline, and call the difference an architectural advance.</p>
+<p>In their <a href="https://arxiv.org/abs/1907.06902">2019 analysis of neural recommendation approaches</a>, Ferrari Dacrema, Cremonesi, and Jannach showed that adequately tuned simpler approaches could outperform several reproduced neural methods. That is evidence about the methods and benchmarks studied, not proof that neural networks never help.</p>
+<p><strong>Correction:</strong> Give baselines a defensible tuning budget, the same information, and the same evaluation protocol. Include a task-specific heuristic: predicting the last observed value for forecasting, for example. Report compute and latency alongside predictive quality.</p>
+<p>“Default settings” is not a fair handicap to impose only on the competitor.</p>
+</section>
+<section id="scaling-up-before-fitting-a-tiny-training-batch" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-up-before-fitting-a-tiny-training-batch">3. Scaling up before fitting a tiny training batch</h2>
+<p><strong>What you meant to do:</strong> Train a useful neural network.</p>
+<p><strong>What you actually did:</strong> Launch a large run before checking whether a few examples can be learned at all.</p>
+<p>Karpathy’s <a href="https://karpathy.github.io/2019/04/25/recipe/">training recipe</a> recommends inspecting the actual tensors and deliberately overfitting a small batch as a debugging step.</p>
+<p><strong>Correction:</strong> Remove augmentation, simplify the model, and train on a fixed handful of unambiguous examples. With enough capacity and compatible labels, fitting them should be possible. Failure is a reason to investigate labels, loss, gradients, and optimization—not a proof that your model needs another GPU.</p>
+<p>If the tiny batch will not fit, print the original records, transformed features, and labels. Check for identical inputs with conflicting targets. For a deterministic binary predictor given the same input once with each label, ordinary unweighted binary cross-entropy is minimized at a shared probability of 0.5, with mean loss <code>log(2)</code> rather than zero. This calculation does not cover every multilabel or context-dependent setup.</p>
+<p>Also inspect regularization, capacity, learning rate, and gradients. Failure to fit does not diagnose duplicate-label errors by itself. Successful memorization remains a debugging check, not evidence of generalization.</p>
+</section>
+<section id="letting-broadcasting-rewrite-your-objective" class="level2">
+<h2 class="anchored" data-anchor-id="letting-broadcasting-rewrite-your-objective">4. Letting broadcasting rewrite your objective</h2>
+<p><strong>What you meant to do:</strong> Compare each prediction with its corresponding target.</p>
+<p><strong>What you actually did:</strong> Subtract a prediction array shaped <code>(N, 1)</code> from targets shaped <code>(N,)</code>.</p>
+<p>Under <a href="https://docs.pytorch.org/docs/2.9/notes/broadcasting.html">PyTorch’s broadcasting rules</a>, this subtraction produces an <code>(N, N)</code> matrix. You are comparing every prediction with every target.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Both arrays describe one scalar per example, but shapes differ.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>], [<span class="fl">2.0</span>], [<span class="fl">3.0</span>]])  <span class="co"># (3, 1)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])      <span class="co"># (3,)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># 4/3, not zero</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> pred.squeeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pred.shape <span class="op">==</span> target.shape</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># zero</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is a PyTorch illustration; the companion <a href="examples/verify_examples.py">standard-library script</a> reproduces the arithmetic without PyTorch. It does not train a neural network.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/broadcast.svg" class="img-fluid figure-img"></p>
+<figcaption>Correct paired errors and unintended pairwise errors</figcaption>
+</figure>
+</div>
+<p><em>Figure 1. Calculated teaching example. Matching predictions <code>[1, 2, 3]</code> give zero paired error, but the broadcasted objective includes all nine pairwise errors and has mean 4/3.</em></p>
+<p><strong>Correction:</strong> Assert shapes before the loss. Use <code>squeeze(-1)</code> only when that axis is the intended singleton output dimension; plain <code>squeeze()</code> can also remove the batch dimension when batch size is one.</p>
+<p>The wrong loss can still decrease. For independently adjustable predictions, the all-pairs objective pulls every prediction toward the target mean. Convergence does not establish that the objective was right.</p>
+</section>
+<section id="applying-softmax-because-classification-needs-probabilities" class="level2">
+<h2 class="anchored" data-anchor-id="applying-softmax-because-classification-needs-probabilities">5. Applying softmax because “classification needs probabilities”</h2>
+<p><strong>What you meant to do:</strong> Train a multiclass classifier.</p>
+<p><strong>What you actually did:</strong> Apply softmax, then pass the resulting probabilities to <code>CrossEntropyLoss</code>.</p>
+<p>Distinguish the two arguments in <code>CrossEntropyLoss(input, target)</code>. The <a href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.CrossEntropyLoss.html">PyTorch documentation</a> specifies:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>Expected representation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>input</code>: model predictions</td>
+<td>Raw logits; do not apply softmax first</td>
+</tr>
+<tr class="even">
+<td><code>target</code>: supervision</td>
+<td>Integer class indices, or valid same-shaped class probabilities (soft labels)</td>
+</tr>
+</tbody>
+</table>
+<p>Soft-label support concerns <code>target</code>; it does not change the prediction-side contract. Passing <code>softmax(logits)</code> as <code>input</code> makes the loss treat those numbers as logits and apply log-softmax to them again. The code can run while computing a different objective.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification with one integer class label per example.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> model(x)                       <span class="co"># (batch, classes)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> criterion(logits, y)             <span class="co"># criterion = CrossEntropyLoss()</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> logits.softmax(dim<span class="op">=-</span><span class="dv">1</span>)  <span class="co"># for inspecting predictions</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Correction:</strong> Check shapes, dtypes, and values separately for predictions and targets. Class-index targets ordinarily use <code>long</code>; soft targets use floating point and should be nonnegative distributions summing to one across classes. The documentation warns that the framework does not fully validate probability targets. Apply softmax for inspecting predictions outside the loss calculation.</p>
+<p>For uniform predictions over <code>C</code> classes, ordinary unweighted cross-entropy is <code>log(C)</code>: about 0.693 for two classes and 2.303 for ten. This sanity check assumes the stated setup; class weights and custom reductions can change it.</p>
+</section>
+<section id="confusing-evaluation-mode-with-disabled-gradients" class="level2">
+<h2 class="anchored" data-anchor-id="confusing-evaluation-mode-with-disabled-gradients">6. Confusing evaluation mode with disabled gradients</h2>
+<p><strong>What you meant to do:</strong> Measure a trained model’s validation performance.</p>
+<p><strong>What you actually did:</strong> Wrap prediction in <code>no_grad()</code> and assume that also switches dropout and batch normalization into evaluation behavior.</p>
+<p>These controls do different jobs. <a href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.Module.html"><code>model.eval()</code></a> changes the behavior of relevant modules. <a href="https://docs.pytorch.org/docs/2.9/notes/autograd.html">Autograd modes</a> control gradient recording; they do not automatically select evaluation mode.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> model(x_valid)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    validation_loss <span class="op">=</span> criterion(logits, y_valid)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>model.train()  <span class="co"># restore training behavior before the next training phase</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Correction:</strong> Set both intentionally. With standard running-statistics batch normalization, validation in training mode can update those statistics. Some applications deliberately use stochastic inference; that needs an explicit protocol rather than an accidental mode setting.</p>
+</section>
+<section id="reporting-the-luckiest-seed-as-the-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="reporting-the-luckiest-seed-as-the-algorithm">7. Reporting the luckiest seed as the algorithm</h2>
+<p><strong>What you meant to do:</strong> Compare two learning methods.</p>
+<p><strong>What you actually did:</strong> Run each several times, select its best score, and omit the rest.</p>
+<p><a href="https://arxiv.org/abs/2103.03098">Bouthillier and colleagues</a> examine multiple sources of variation in benchmark results. <a href="https://arxiv.org/abs/2108.13264">Agarwal and colleagues</a> show why uncertainty matters particularly when deep reinforcement learning is evaluated with few runs. Their specific recommendations concern their experimental settings; they should not become a mechanical “five seeds is enough” rule.</p>
+<p><strong>Correction:</strong> Plan repetitions, preserve all runs, and distinguish initialization variability from sampling, splitting, and tuning variability. Use paired comparisons where the design supports them. Choose uncertainty estimates that match the unit of replication.</p>
+<p>A fixed seed aids debugging. It cannot guarantee identical outcomes across environments: the <a href="https://docs.pytorch.org/docs/2.9/notes/randomness.html">PyTorch reproducibility notes</a> explain the limitations.</p>
+</section>
+<section id="letting-the-average-hide-the-failure" class="level2">
+<h2 class="anchored" data-anchor-id="letting-the-average-hide-the-failure">8. Letting the average hide the failure</h2>
+<p><strong>What you meant to do:</strong> Improve the model for its intended users.</p>
+<p><strong>What you actually did:</strong> Celebrate one aggregate score without checking meaningful subgroups or conditions.</p>
+<p>Here is a constructed example with 900 easy cases and 100 difficult cases:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Evaluation slice</th>
+<th style="text-align: right;">Model A correct</th>
+<th style="text-align: right;">Model B correct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Easy cases, n = 900</td>
+<td style="text-align: right;">855 (95%)</td>
+<td style="text-align: right;">882 (98%)</td>
+</tr>
+<tr class="even">
+<td>Difficult cases, n = 100</td>
+<td style="text-align: right;">80 (80%)</td>
+<td style="text-align: right;">60 (60%)</td>
+</tr>
+<tr class="odd">
+<td>All cases, n = 1,000</td>
+<td style="text-align: right;">935 (93.5%)</td>
+<td style="text-align: right;">942 (94.2%)</td>
+</tr>
+</tbody>
+</table>
+<p>The aggregate improves by 0.7 percentage points while the difficult slice loses 20 points. This is <strong>subgroup performance degradation</strong>: an update reduces performance for a particular subgroup while the aggregate improves. Because easy cases account for 90% of observations, their gain outweighs the difficult group’s loss.</p>
+<p>This describes the observed behavior. The table alone cannot identify whether training representation, optimization preferences, or another factor caused the decline, and does not diagnose majority bias. The aggregate improvement is real, but the benefit is not shared by every group.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/slices.svg" class="img-fluid figure-img"></p>
+<figcaption>Aggregate improvement and deterioration on a smaller evaluation slice</figcaption>
+</figure>
+</div>
+<p><em>Figure 2. Constructed counts, not measured model performance. The shared vertical scale makes the subgroup decline visible.</em></p>
+<p><strong>Correction:</strong> Predefine important slices, report their sizes and uncertainty, and inspect error cases. Avoid selecting only favorable slices after seeing results. A small subgroup estimate may be unstable.</p>
+<p><a href="https://arxiv.org/abs/2011.03395">D’Amour and colleagues’ underspecification paper</a> supplies a related warning: similarly strong in-domain scores can coexist with different deployment behavior. One number cannot specify everything you need from a model.</p>
+</section>
+<section id="treating-preprocessing-as-an-afterthought" class="level2">
+<h2 class="anchored" data-anchor-id="treating-preprocessing-as-an-afterthought">9. Treating preprocessing as an afterthought</h2>
+<p><strong>What you meant to do:</strong> Prepare the inputs, then measure performance on unseen examples.</p>
+<p><strong>What you actually did:</strong> Fit a global <code>StandardScaler</code> or target encoder before splitting training and validation data. Alternatively, create augmented copies first, then randomly split those copies.</p>
+<p><strong>The symptom:</strong> Training runs smoothly and validation performance looks unusually good—perhaps even 99% accuracy. That number is a warning to investigate, not a diagnostic test for leakage.</p>
+<p>A globally fitted scaler uses validation feature means and variances. Target encoding can additionally use validation labels to define category values. Augmented versions of the same original can cross the split and make the validation examples partly familiar. These are different leakage routes, with different consequences. See the <a href="https://scikit-learn.org/stable/common_pitfalls.html">official preprocessing pitfalls guide</a>.</p>
+<p><strong>Correction:</strong> Split independent originals first. Fit learned preprocessing on training data, then apply it unchanged to validation data. Within cross-validation, repeat fitting inside every training fold. Keep related augmented copies in their original’s partition; training augmentation must preserve the task’s label semantics.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># WRONG: validation observations influence the scaler.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    X_scaled, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># RIGHT for independent observations: split before fitting.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    X, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>X_valid_scaled <span class="op">=</span> scaler.transform(X_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These are illustrative excerpts, not executed model results. Replace the random split when groups or time require another protocol. In cross-validation, put the scaler inside the pipeline rather than fitting it once before the folds.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/preprocessing.svg" class="img-fluid figure-img"></p>
+<figcaption>Preprocessing and augmentation must respect the split</figcaption>
+</figure>
+</div>
+<p><em>Figure 3. Original schematic. Training learns the transformation; validation only receives it. Augmented siblings stay with their original. No accuracy values are measured here.</em></p>
+<p><strong>Target encoding must not use a row’s own answer to encode that row.</strong> Even within the training set, a row’s own label can leak into its category statistic. <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.TargetEncoder.html">Scikit-learn’s TargetEncoder</a> uses internal cross-fitting in <code>fit_transform</code>; this is intentionally different from <code>fit(...).transform(...)</code>. Its <a href="https://scikit-learn.org/stable/auto_examples/preprocessing/plot_target_encoder_cross_val.html">worked example</a> illustrates why that distinction matters.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> TargetEncoder</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># X_cat_train / X_cat_valid contain categorical features only.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> TargetEncoder(target_type<span class="op">=</span><span class="st">"binary"</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>X_cat_train_encoded <span class="op">=</span> encoder.fit_transform(X_cat_train, y_train)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X_cat_valid_encoded <span class="op">=</span> encoder.transform(X_cat_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You still need independent validation even if the encoder uses internal cross-fitting. If people have repeated records or observations follow a time order, the internal splits must respect those constraints too.</p>
+<p>Leakage does not always produce 99% accuracy; its effect depends on the data and model. If a score looks suspicious, check the order of operations and rerun the evaluation with a clean workflow.</p>
+<section id="use-the-same-processing-when-the-model-goes-live" class="level3">
+<h3 class="anchored" data-anchor-id="use-the-same-processing-when-the-model-goes-live">Use the same processing when the model goes live</h3>
+<p>Avoiding leakage during training is only part of the job. Saving weights while forgetting the scaler, feature order, vocabulary, or missing-value rules can still break predictions in production.</p>
+<p>A feature called <code>duration</code> might mean seconds offline and milliseconds online. Both are numbers, so the program may not complain.</p>
+<p>Save preprocessing and feature definitions with the model. Use a few fixed inputs to compare offline and online predictions. <a href="https://research.google/pubs/hidden-technical-debt-in-machine-learning-systems/">Sculley and colleagues’ technical-debt paper</a> discusses these maintenance problems around the model.</p>
+</section>
+</section>
+<section id="assuming-the-model-merely-observes-the-world" class="level2">
+<h2 class="anchored" data-anchor-id="assuming-the-model-merely-observes-the-world">10. Assuming the model merely observes the world</h2>
+<p><strong>What you meant to do:</strong> Learn from historical behavior and improve future decisions.</p>
+<p><strong>What you actually did:</strong> Ignore that deploying the prediction system changes the data it later observes.</p>
+<p>A recommender shows an item; exposure makes a click possible; the next training set records those clicks. An unseen item receives no click, but that does not tell you whether a user would have liked it. Repeatedly retraining can reinforce the old exposure policy.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/feedback.svg" class="img-fluid figure-img"></p>
+<figcaption>Prediction, action, and newly observed data form a feedback loop</figcaption>
+</figure>
+</div>
+<p><em>Figure 4. Original conceptual diagram. The logged observations depend on both user response and what the system chose to expose.</em></p>
+<p><a href="https://arxiv.org/abs/2002.06673">Perdomo and colleagues’ Performative Prediction</a> studies how predictions change subsequent data. It offers a way to analyze that problem, rather than a ready-made fix for every exposure issue in recommendation.</p>
+<p><strong>Correction:</strong> Log what was shown and how it was selected, not just what was clicked. Where appropriate, use a controlled experiment to test whether a different recommendation policy helps. Clicks collected under the old policy may not tell you how the new one would perform.</p>
+</section>
+<section id="three-checks-you-can-run-without-a-gpu" class="level2">
+<h2 class="anchored" data-anchor-id="three-checks-you-can-run-without-a-gpu">Three checks you can run without a GPU</h2>
+<p>The companion <a href="examples/verify_examples.py">verification script</a> checks the broadcasted squared-error arithmetic, the uniform-prediction cross-entropy reference, and the subgroup table. It uses only Python’s standard library. Run it from this article’s directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> examples/verify_examples.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Those checks verify the constructed examples. They do not validate a model, and the PyTorch snippets above are illustrative excerpts rather than a complete training program.</p>
+<p>A practical debugging order is: inspect actual inputs and labels, establish a fair baseline, check the objective and modes, test a tiny training case, then evaluate the full workflow under realistic conditions. Record the intended question alongside every reported score.</p>
+<p>The mistake to fear is the one that produces exactly the result you hoped for, before you have checked why.</p>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<p>The sources linked throughout this article have different roles: Domingos and Karpathy offer practical perspectives; Zinkevich discusses engineering practice; the benchmark and deployment papers provide evidence within particular settings; PyTorch documentation defines API behavior. None is a universal recipe for every dataset.</p>
+<p><em>Sources checked October 12, 2026. PyTorch API links use version 2.9 for explicit contracts. All figures are original; numerical illustrations are constructed and checked by the included script.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+// Rebuilds the title-block metadata (date, reading time, view count,
+// categories) as a single plain-text line, matching the reference layout
+// at https://divingintogeneticsandgenomics.com. Quarto's own title
+// template renders these as separate elements (badge-style categories,
+// a "Published" block, and our own .reading-time div from
+// _reading-time.lua) that can't be reordered with CSS alone since they
+// aren't DOM siblings -- so this reads their text back out, builds one
+// line, and hides the originals.
+(function () {
+  var titleBlock = document.querySelector(".quarto-title");
+  if (!titleBlock) return;
+
+  var dateEl = document.querySelector(".quarto-title-meta-contents .date");
+  var readingEl = document.querySelector(".reading-time");
+  var catsEl = document.querySelector(".quarto-categories");
+
+  var dateText = dateEl ? dateEl.textContent.trim() : "";
+  var readingText = readingEl ? readingEl.textContent.trim() : "";
+  var cats = catsEl
+    ? Array.prototype.map.call(
+        catsEl.querySelectorAll(".quarto-category"),
+        function (c) {
+          return c.textContent.trim();
+        }
+      )
+    : [];
+
+  var meta = document.createElement("div");
+  meta.className = "post-meta-line";
+
+  function addPart(node) {
+    if (meta.childElementCount > 0) {
+      var dot = document.createElement("span");
+      dot.className = "post-meta-dot";
+      dot.textContent = "·";
+      meta.appendChild(dot);
+    }
+    meta.appendChild(node);
+  }
+
+  function textPart(text) {
+    var span = document.createElement("span");
+    span.textContent = text;
+    return span;
+  }
+
+  if (dateText) addPart(textPart("Last updated on " + dateText));
+  if (readingText) addPart(textPart(readingText));
+
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
+
+  if (cats.length) {
+    var catPart = document.createElement("span");
+    var icon = document.createElement("i");
+    icon.className = "bi bi-folder2 post-meta-folder-icon";
+    catPart.appendChild(icon);
+    catPart.appendChild(document.createTextNode(cats.join(", ")));
+    addPart(catPart);
+  }
+
+  titleBlock.insertAdjacentElement("afterend", meta);
+
+  // Share row -- the actual second line under the title, right below the
+  // metadata line. Built from the live page URL/title (works the same on
+  // localhost and the published site) rather than anything hand-typed.
+  var h1 = titleBlock.querySelector("h1.title");
+  var pageTitle = h1 ? h1.textContent.trim() : document.title;
+  var pageUrl = window.location.href;
+  var encodedUrl = encodeURIComponent(pageUrl);
+  var encodedTitle = encodeURIComponent(pageTitle);
+
+  var shareLinks = [
+    {
+      label: "Share on X",
+      icon: "bi-twitter",
+      href: "https://twitter.com/intent/tweet?url=" + encodedUrl + "&text=" + encodedTitle,
+    },
+    {
+      label: "Share on Facebook",
+      icon: "bi-facebook",
+      href: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+    },
+    {
+      label: "Share on LinkedIn",
+      icon: "bi-linkedin",
+      href: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+    },
+    {
+      label: "Share on Weibo",
+      icon: "bi-sina-weibo",
+      href: "https://service.weibo.com/share/share.php?url=" + encodedUrl + "&title=" + encodedTitle,
+    },
+    {
+      label: "Share by email",
+      icon: "bi-envelope-fill",
+      href: "mailto:?subject=" + encodedTitle + "&body=" + encodedUrl,
+    },
+  ];
+
+  var shareRow = document.createElement("div");
+  shareRow.className = "post-share-row";
+  shareLinks.forEach(function (link) {
+    var a = document.createElement("a");
+    a.className = "post-share-icon";
+    a.href = link.href;
+    a.setAttribute("aria-label", link.label);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var i = document.createElement("i");
+    i.className = "bi " + link.icon;
+    a.appendChild(i);
+    shareRow.appendChild(a);
+  });
+  // Copy-link is an action, not a navigation, so it's a real <button>
+  // rather than an <a> styled to look like one.
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "post-share-icon";
+  copyBtn.setAttribute("aria-label", "Copy link");
+  var copyIcon = document.createElement("i");
+  copyIcon.className = "bi bi-link-45deg";
+  copyBtn.appendChild(copyIcon);
+  copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(pageUrl).then(function () {
+      copyIcon.className = "bi bi-clipboard-check-fill";
+      copyBtn.classList.add("post-share-copied");
+      setTimeout(function () {
+        copyIcon.className = "bi bi-link-45deg";
+        copyBtn.classList.remove("post-share-copied");
+      }, 1500);
+    });
+  });
+  shareRow.appendChild(copyBtn);
+
+  meta.insertAdjacentElement("afterend", shareRow);
+
+  if (catsEl) catsEl.style.display = "none";
+  var titleMeta = document.querySelector(".quarto-title-meta");
+  if (titleMeta) titleMeta.style.display = "none";
+  if (readingEl) readingEl.style.display = "none";
+
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  //
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
+  var DISPLAYED_VIEWS_OFFSET = 10;
+  var path = window.location.pathname;
+  var paths = [path];
+  // Posts up to 2026-10-09 lived under /blog/YYMMDDslug/ before the
+  // folders were renamed to /blog/YYYY-MM-DDslug/ (old URLs now only
+  // redirect, so their counts are frozen). Add those old views in.
+  var m = path.match(/^\/blog\/20(\d\d)-(\d\d)-(\d\d)([^\/]+)\/(index(-chinese)?\.html)?$/);
+  if (m && m[1] + m[2] + m[3] <= "261009") {
+    var oldDir = "/blog/" + m[1] + m[2] + m[3] + m[4] + "/";
+    if (m[6]) paths.push(oldDir + "index-chinese.html");
+    else paths.push(oldDir, oldDir + "index.html");
+  }
+  Promise.all(paths.map(function (p) {
+    return fetch("https://yujuan-zhang.goatcounter.com/counter/" + p + ".json")
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        var c = data && typeof data.count === "string"
+          ? parseInt(data.count.replace(/,/g, ""), 10)
+          : 0;
+        return isFinite(c) ? c : 0;
+      });
+  }))
+    .then(function (counts) {
+      var n = counts.reduce(function (a, b) { return a + b; }, 0);
+      n += DISPLAYED_VIEWS_OFFSET;
+      viewSpan.textContent = n + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yujuan-zhang\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

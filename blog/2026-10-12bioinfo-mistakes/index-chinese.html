@@ -269,9 +269,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="单细胞分析中的常见错误" class="level2">
 <h2 class="anchored" data-anchor-id="单细胞分析中的常见错误">5. 单细胞分析中的常见错误</h2>
-<p><strong>把细胞当作独立样本做差异表达。</strong> <strong>比较健康与疾病两组、每组有多个样本时，常见做法是把每组所有细胞合在一起，在细胞水平做差异表达分析。</strong>但同一样本的细胞并不相互独立；成千上万个细胞会让 p 值被严重低估，产生大量假阳性。<strong>更稳妥的做法是伪批量（pseudobulk）分析</strong>：先把每个样本的细胞计数汇总，再以样本为单位比较。</p>
-<p><strong>过度解读 UMAP。</strong> <strong>UMAP 是非线性降维方法，图上点与点、簇与簇之间的距离并没有明确的定量含义。</strong>它适合用来直观展示数据结构，不宜据此判断细胞群之间的远近关系。</p>
-<p><strong>默认批次校正是安全的。</strong> <strong>批次校正和多数据集整合都建立在一定的假设之上，过度校正可能把真实的生物学差异一并抹去。</strong>一项比较了七种常用方法的研究发现，许多方法会在数据中引入可测量的人为改变，只有 Harmony 在所有测试中表现稳定，因此作者仅推荐 Harmony 用于 scRNA-seq 批次校正。<a href="https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full">Antonsson &amp; Melsted, 2024</a></p>
+<p><strong>把细胞当作独立样本做差异表达。</strong> 比较健康与疾病两组、每组有多个样本时，常见做法是把每组所有细胞合在一起，在细胞水平做差异表达分析。但同一样本的细胞并不相互独立；成千上万个细胞会让 p 值被严重低估，产生大量假阳性。<strong>更稳妥的做法是伪批量（pseudobulk）分析</strong>：先把每个样本的细胞计数汇总，再以样本为单位比较。</p>
+<p><strong>过度解读 UMAP。</strong> UMAP 是非线性降维方法，图上点与点、簇与簇之间的距离并没有明确的定量含义。它适合用来直观展示数据结构，不宜据此判断细胞群之间的远近关系。</p>
+<p><strong>默认批次校正是安全的。</strong> 批次校正和多数据集整合都建立在一定的假设之上，过度校正可能把真实的生物学差异一并抹去。一项比较了七种常用方法的研究发现，许多方法会在数据中引入可测量的人为改变，只有 Harmony 在所有测试中表现稳定，因此作者仅推荐 Harmony 用于 scRNA-seq 批次校正。<a href="https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full">Antonsson &amp; Melsted, 2024</a></p>
 <blockquote class="blockquote">
 <p><strong>好习惯：</strong>差异表达以样本为单位；UMAP 只作可视化；批次校正后，检查已知的生物学差异是否仍然存在。</p>
 </blockquote>
