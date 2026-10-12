@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-12">
+
+<title>小失误，大麻烦：读 Tommy Tang 的生信常见错误清单 – Yujuan Zhang, PhD</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cf06bf3c63dcc3f08f55f76a95a4da8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+  #title-block-header { position: relative; }
+  .lang-switch { text-align: right; font-size: 0.9rem; }
+  #title-block-header .lang-switch { position: absolute; top: 0; right: 0; }
+</style>
+<script>
+  // The posts carry no front matter, so build the English/Chinese link here
+  // and put it at the top right of the title block.
+  document.addEventListener("DOMContentLoaded", function () {
+    var zh = /index-chinese(\.html)?$/.test(window.location.pathname);
+    var s = document.createElement("div"), a = document.createElement("a");
+    s.className = "lang-switch";
+    a.href = zh ? "index.html" : "index-chinese.html";
+    a.textContent = zh ? "English" : "Chinese";
+    s.appendChild(a);
+    var h = document.getElementById("title-block-header") || document.querySelector("main");
+    if (h) h.insertBefore(s, h.firstChild);
+  });
+</script>
+<script data-goatcounter="https://yujuan-zhang.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yujuan Zhang, PhD</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../awards.html"> 
+<span class="menu-text">Awards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks_pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-lightning-charge-fill" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yujuan-zhang"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=CdA1HhMAAAAJ&amp;hl=en"> <i class="bi bi-mortarboard-fill" role="img" aria-label="Google Scholar">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:yujuan.zhang418@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#数数比想象中难" id="toc-数数比想象中难" class="nav-link active" data-scroll-target="#数数比想象中难">1. 数数，比想象中难</a></li>
+  <li><a href="#数据和你以为的不一样" id="toc-数据和你以为的不一样" class="nav-link" data-scroll-target="#数据和你以为的不一样">2. 数据和你以为的不一样</a></li>
+  <li><a href="#shell-错误" id="toc-shell-错误" class="nav-link" data-scroll-target="#shell-错误">3. Shell 错误</a></li>
+  <li><a href="#流程上的错误比代码错误影响更久" id="toc-流程上的错误比代码错误影响更久" class="nav-link" data-scroll-target="#流程上的错误比代码错误影响更久">4. 流程上的错误，比代码错误影响更久</a></li>
+  <li><a href="#一张简短的检查表" id="toc-一张简短的检查表" class="nav-link" data-scroll-target="#一张简短的检查表">一张简短的检查表</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">小失误，大麻烦：读 Tommy Tang 的生信常见错误清单</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">command-line</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 12, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="reading-time">
+2 min read
+</div>
+<p>生信分析里的错误，大多并不高深：索引从错误的数字开始，没人记下用的是哪个基因组版本，或者 shell 命令里多了一个空格。这些错误容易犯、不容易发现，而且常常“静悄悄”：流程顺利跑完，结果看起来也挺合理。</p>
+<section id="数数比想象中难" class="level2">
+<h2 class="anchored" data-anchor-id="数数比想象中难">1. 数数，比想象中难</h2>
+<p><strong>不同文件格式的坐标系不同。</strong> BED 是 0-based、左闭右开；GTF 和 GFF 是 1-based、两端闭合。染色体的第一个碱基，在 BED 里记为 <code>0</code>，在 GTF 里记为 <code>1</code>。格式转换时如果不调整起始位置，所有区域都会整体错开一个碱基，足以改变一个密码子，或错过剪接位点。</p>
+<p><strong>编程语言的计数起点不同。</strong> Python 从 0 开始数，R 从 1 开始数。代码从一种语言改写到另一种，可能不报任何错，却总是取到相邻的那个元素。</p>
+<p><strong>染色体名不能按字母排序。</strong> 普通文本排序会把 <code>chr10</code> 排在 <code>chr2</code> 前面。很多工具要求染色体顺序一致，应使用自然排序（如 <code>sort -V</code>），或直接采用参考基因组索引中的顺序。</p>
+<blockquote class="blockquote">
+<p><strong>好习惯：</strong>坐标每次跨越文件格式或编程语言时，先手动核对一个已知位置，比如某个熟悉基因的起点，再相信转换结果。</p>
+</blockquote>
+</section>
+<section id="数据和你以为的不一样" class="level2">
+<h2 class="anchored" data-anchor-id="数据和你以为的不一样">2. 数据和你以为的不一样</h2>
+<p><strong>基因组版本必须一致。</strong> 比对到 hg19 的 reads，如果套用 hg38 的注释来看，会落在外显子之外。参考序列、索引和注释文件都应来自同一个组装版本，最好也是同一个发布版本。</p>
+<p><strong>链方向很重要。</strong> 负链上的区域，提取序列前要先做反向互补。漏掉这一步，得到的序列格式完全正常，但内容是错的。</p>
+<p><strong>计数前，需要明确如何处理同时匹配多个基因的 reads。</strong> 基因之间可能相互重叠，甚至嵌套。统计 reads 前如果没想好共享区域怎么算，就可能漏掉某些特征，或把同一条 read 算两次。</p>
+<p><strong>换行符也有暗坑。</strong> Windows 保存的文件用 <code>\r\n</code> 换行，Unix 工具期望的是 <code>\n</code>。最后一行如果没有换行符，简单的循环也可能把它漏掉。<code>dos2unix</code> 和一次 <code>tail</code> 检查就能避免很多麻烦。</p>
+<blockquote class="blockquote">
+<p><strong>好习惯：</strong>把基因组版本和注释版本写进文件名，也写进项目的 README。</p>
+</blockquote>
+</section>
+<section id="shell-错误" class="level2">
+<h2 class="anchored" data-anchor-id="shell-错误">3. Shell 错误</h2>
+<p><strong>误删、误覆盖。</strong></p>
+<ul>
+<li>一个多余的空格，会把 <code>rm *.fasta</code> 变成 <code>rm * .fasta</code>，删掉整个文件夹里的文件。</li>
+<li><code>&gt;</code> 会覆盖文件内容，<code>&gt;&gt;</code> 才是追加。用 <code>&gt;</code> 往 <code>~/.bashrc</code> 里写东西，原来的配置就没了。</li>
+<li>在错误的目录里运行 <code>rm *</code>，删了就回不来。</li>
+</ul>
+<p><strong>本该交给程序的字符，被 shell 先处理了。</strong></p>
+<ul>
+<li><code>awk {print $2}</code> 会出错，因为 shell 先展开了 <code>$2</code> 和花括号；应写成 <code>awk '{print $2}'</code>。</li>
+<li><code>grep &gt; file.fasta</code> 不是在找序列标题，而是把输出重定向了；应写成 <code>grep '&gt;' file.fasta</code>。</li>
+<li><code>find . -name *.txt</code> 中的通配符可能在 <code>find</code> 看到之前就被展开；模式要加引号。</li>
+</ul>
+<p><strong>忘了默认设置。</strong></p>
+<ul>
+<li><code>cut</code> 默认按制表符切分，处理 CSV 需要加 <code>-d,</code>。</li>
+<li><code>mkdir</code> 要创建多层目录，需要加 <code>-p</code>。</li>
+<li><code>rm</code> 删除目录，需要加 <code>-r</code>。</li>
+<li>用 <code>cat</code> 打开几个 GB 的 FASTQ 会刷满整个终端，<code>head</code> 或 <code>less -S</code> 更合适。</li>
+<li><code>chmod 777</code> 给所有人完全权限，通常 <code>chmod u+x</code> 就够了。</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>好习惯：</strong>用通配符删除前，先用同样的模式跑一次 <code>ls</code>。在 Bash 中，<code>set -o noclobber</code> 可以防止 <code>&gt;</code> 覆盖已有文件。</p>
+</blockquote>
+</section>
+<section id="流程上的错误比代码错误影响更久" class="level2">
+<h2 class="anchored" data-anchor-id="流程上的错误比代码错误影响更久">4. 流程上的错误，比代码错误影响更久</h2>
+<p><strong>尽量使用现成工具，避免重复造轮子。</strong> 读取 FASTQ、GenBank 或 BLAST 输出时，优先使用 Biopython、pysam、Bioconductor 等经过测试的库，省去自己编写读取代码的工作，也能减少遗漏特殊情况导致的错误。分析单细胞 RNA-seq 数据时，优先使用 Scanpy 或 Seurat 完成质控、降维和聚类，把精力放在研究问题上，无需自己从头编写代码。</p>
+<p><strong>正则表达式要测试。</strong> 用“应该匹配”和“不应该匹配”的例子各试一遍。</p>
+<p><strong>数据和代码都要有版本管理。</strong> 分析悄悄用了旧版输入，结果就很难复现。Git、Git LFS 或工作流管理工具能让输入一目了然。</p>
+<p><strong>记录决策，用对统计方法。</strong> 说不清怎么得到的结果，或依赖不合适的检验、不充分的随机化，还不能算发现。</p>
+</section>
+<section id="一张简短的检查表" class="level2">
+<h2 class="anchored" data-anchor-id="一张简短的检查表">一张简短的检查表</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>在做这件事之前……</th>
+<th>检查</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>转换坐标</td>
+<td>0-based 还是 1-based？左闭右开还是两端闭合？</td>
+</tr>
+<tr class="even">
+<td>合并文件</td>
+<td>基因组和注释版本一致吗？染色体命名一致吗（<code>chr1</code> 还是 <code>1</code>）？</td>
+</tr>
+<tr class="odd">
+<td>提取序列</td>
+<td>哪条链？</td>
+</tr>
+<tr class="even">
+<td>运行 <code>rm</code>、<code>&gt;</code> 或 <code>mv</code></td>
+<td>目录对吗？模式先用 <code>ls</code> 确认过吗？</td>
+</tr>
+<tr class="odd">
+<td>把代码传给 <code>awk</code>、<code>grep</code> 或 <code>find</code></td>
+<td>加引号了吗？</td>
+</tr>
+<tr class="even">
+<td>分享结果</td>
+<td>输入、版本和参数都记录了吗？</td>
+</tr>
+</tbody>
+</table>
+<p>避免这些错误并不需要高深的知识，只需要多检查一下。这比重跑一遍分析便宜得多。</p>
+<hr>
+<p><em>本文是我阅读 Tommy Tang 博客 <a href="https://divingintogeneticsandgenomics.com/">Chatomics</a> 上的文章《<a href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">The Most Common Stupid Mistakes In Bioinformatics</a>》后整理的笔记。完整清单和更多资源请阅读原文。</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+// Rebuilds the title-block metadata (date, reading time, view count,
+// categories) as a single plain-text line, matching the reference layout
+// at https://divingintogeneticsandgenomics.com. Quarto's own title
+// template renders these as separate elements (badge-style categories,
+// a "Published" block, and our own .reading-time div from
+// _reading-time.lua) that can't be reordered with CSS alone since they
+// aren't DOM siblings -- so this reads their text back out, builds one
+// line, and hides the originals.
+(function () {
+  var titleBlock = document.querySelector(".quarto-title");
+  if (!titleBlock) return;
+
+  var dateEl = document.querySelector(".quarto-title-meta-contents .date");
+  var readingEl = document.querySelector(".reading-time");
+  var catsEl = document.querySelector(".quarto-categories");
+
+  var dateText = dateEl ? dateEl.textContent.trim() : "";
+  var readingText = readingEl ? readingEl.textContent.trim() : "";
+  var cats = catsEl
+    ? Array.prototype.map.call(
+        catsEl.querySelectorAll(".quarto-category"),
+        function (c) {
+          return c.textContent.trim();
+        }
+      )
+    : [];
+
+  var meta = document.createElement("div");
+  meta.className = "post-meta-line";
+
+  function addPart(node) {
+    if (meta.childElementCount > 0) {
+      var dot = document.createElement("span");
+      dot.className = "post-meta-dot";
+      dot.textContent = "·";
+      meta.appendChild(dot);
+    }
+    meta.appendChild(node);
+  }
+
+  function textPart(text) {
+    var span = document.createElement("span");
+    span.textContent = text;
+    return span;
+  }
+
+  if (dateText) addPart(textPart("Last updated on " + dateText));
+  if (readingText) addPart(textPart(readingText));
+
+  // Placeholder until the real count arrives from GoatCounter below --
+  // never a made-up number.
+  var viewSpan = textPart("… views");
+  viewSpan.id = "post-view-count";
+  addPart(viewSpan);
+
+  if (cats.length) {
+    var catPart = document.createElement("span");
+    var icon = document.createElement("i");
+    icon.className = "bi bi-folder2 post-meta-folder-icon";
+    catPart.appendChild(icon);
+    catPart.appendChild(document.createTextNode(cats.join(", ")));
+    addPart(catPart);
+  }
+
+  titleBlock.insertAdjacentElement("afterend", meta);
+
+  // Share row -- the actual second line under the title, right below the
+  // metadata line. Built from the live page URL/title (works the same on
+  // localhost and the published site) rather than anything hand-typed.
+  var h1 = titleBlock.querySelector("h1.title");
+  var pageTitle = h1 ? h1.textContent.trim() : document.title;
+  var pageUrl = window.location.href;
+  var encodedUrl = encodeURIComponent(pageUrl);
+  var encodedTitle = encodeURIComponent(pageTitle);
+
+  var shareLinks = [
+    {
+      label: "Share on X",
+      icon: "bi-twitter",
+      href: "https://twitter.com/intent/tweet?url=" + encodedUrl + "&text=" + encodedTitle,
+    },
+    {
+      label: "Share on Facebook",
+      icon: "bi-facebook",
+      href: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+    },
+    {
+      label: "Share on LinkedIn",
+      icon: "bi-linkedin",
+      href: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+    },
+    {
+      label: "Share on Weibo",
+      icon: "bi-sina-weibo",
+      href: "https://service.weibo.com/share/share.php?url=" + encodedUrl + "&title=" + encodedTitle,
+    },
+    {
+      label: "Share by email",
+      icon: "bi-envelope-fill",
+      href: "mailto:?subject=" + encodedTitle + "&body=" + encodedUrl,
+    },
+  ];
+
+  var shareRow = document.createElement("div");
+  shareRow.className = "post-share-row";
+  shareLinks.forEach(function (link) {
+    var a = document.createElement("a");
+    a.className = "post-share-icon";
+    a.href = link.href;
+    a.setAttribute("aria-label", link.label);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var i = document.createElement("i");
+    i.className = "bi " + link.icon;
+    a.appendChild(i);
+    shareRow.appendChild(a);
+  });
+  // Copy-link is an action, not a navigation, so it's a real <button>
+  // rather than an <a> styled to look like one.
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "post-share-icon";
+  copyBtn.setAttribute("aria-label", "Copy link");
+  var copyIcon = document.createElement("i");
+  copyIcon.className = "bi bi-link-45deg";
+  copyBtn.appendChild(copyIcon);
+  copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(pageUrl).then(function () {
+      copyIcon.className = "bi bi-clipboard-check-fill";
+      copyBtn.classList.add("post-share-copied");
+      setTimeout(function () {
+        copyIcon.className = "bi bi-link-45deg";
+        copyBtn.classList.remove("post-share-copied");
+      }, 1500);
+    });
+  });
+  shareRow.appendChild(copyBtn);
+
+  meta.insertAdjacentElement("afterend", shareRow);
+
+  if (catsEl) catsEl.style.display = "none";
+  var titleMeta = document.querySelector(".quarto-title-meta");
+  if (titleMeta) titleMeta.style.display = "none";
+  if (readingEl) readingEl.style.display = "none";
+
+  // GoatCounter exposes a public, unauthenticated JSON endpoint for the
+  // live count of a single path -- exactly for embedding on the page
+  // itself (requires "Allow adding visitor counts on your website" to be
+  // enabled in the GoatCounter site settings, otherwise it 403s without a
+  // CORS header and the fetch below fails silently into the catch).
+  // Doubled slash below is intentional: window.location.pathname already
+  // starts with "/", matching GoatCounter's own documented
+  // /counter/<path>.json example. A path with no recorded visits yet
+  // returns HTTP 404 but still has a valid {"count":"0"} body, so the
+  // JSON is read regardless of status rather than gated on res.ok.
+  //
+  // Displayed count is the real GoatCounter count plus a fixed
+  // DISPLAYED_VIEWS_OFFSET, so a freshly published or renamed post
+  // (real count reset to 0 by a URL change) starts at a round number
+  // instead of a bare "0 views" -- but, unlike a floor/max(), every
+  // real visit still moves the displayed number, it just starts
+  // DISPLAYED_VIEWS_OFFSET higher than the true count.
+  //
+  // On fetch failure (most commonly an ad-blocker/privacy extension
+  // blocking goatcounter.com -- the endpoint itself has no CORS or CSP
+  // issue, confirmed via curl), don't show a fallback number: every
+  // page would show the exact same fixed value regardless of its real
+  // traffic, which reads as an obvious bug rather than a real count.
+  // Removing the item (and its preceding separator dot) is more honest.
+  var DISPLAYED_VIEWS_OFFSET = 10;
+  var path = window.location.pathname;
+  var paths = [path];
+  // Posts up to 2026-10-09 lived under /blog/YYMMDDslug/ before the
+  // folders were renamed to /blog/YYYY-MM-DDslug/ (old URLs now only
+  // redirect, so their counts are frozen). Add those old views in.
+  var m = path.match(/^\/blog\/20(\d\d)-(\d\d)-(\d\d)([^\/]+)\/(index(-chinese)?\.html)?$/);
+  if (m && m[1] + m[2] + m[3] <= "261009") {
+    var oldDir = "/blog/" + m[1] + m[2] + m[3] + m[4] + "/";
+    if (m[6]) paths.push(oldDir + "index-chinese.html");
+    else paths.push(oldDir, oldDir + "index.html");
+  }
+  Promise.all(paths.map(function (p) {
+    return fetch("https://yujuan-zhang.goatcounter.com/counter/" + p + ".json")
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        var c = data && typeof data.count === "string"
+          ? parseInt(data.count.replace(/,/g, ""), 10)
+          : 0;
+        return isFinite(c) ? c : 0;
+      });
+  }))
+    .then(function (counts) {
+      var n = counts.reduce(function (a, b) { return a + b; }, 0);
+      n += DISPLAYED_VIEWS_OFFSET;
+      viewSpan.textContent = n + (n === 1 ? " view" : " views");
+    })
+    .catch(function () {
+      var dot = viewSpan.previousElementSibling;
+      if (dot && dot.classList.contains("post-meta-dot")) dot.remove();
+      viewSpan.remove();
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yujuan-zhang\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "yujuan-zhang/yujuan-zhang.github.io";
+    script.dataset.repoId = "R_kgDORF46Qw";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDORF46Q84DGVET";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
