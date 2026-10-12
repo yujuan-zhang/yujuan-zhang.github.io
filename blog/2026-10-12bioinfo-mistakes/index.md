@@ -1,4 +1,4 @@
-# Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes
+# Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics
 
 Most bioinformatics errors are not exotic. They are an index that starts at the wrong number, a genome build nobody wrote down, or a stray space in a shell command. They are easy to make, hard to spot, and often fail silently: the pipeline finishes and the output looks reasonable.
 
@@ -8,7 +8,7 @@ Most bioinformatics errors are not exotic. They are an index that starts at the 
 
 **Programming languages use different index origins.** Python counts from 0; R counts from 1. Code ported from one language to the other can run without errors and still return the neighbouring element.
 
-**Chromosome names do not sort alphabetically.** A plain text sort places `chr10` before `chr2`. Many tools expect chromosomes in a consistent order, so use a natural ("version") sort, such as `sort -V`, or the order defined by the reference index.
+**Chromosome names should not be sorted as plain text.** A plain text sort places `chr10` before `chr2`, breaking the usual numeric order. Use a natural sort to obtain `chr1`, `chr2`, …, `chr10`; for interval files such as BED, also sort by start coordinate within each chromosome.
 
 > **Good practice:** When a coordinate crosses a format or language boundary, check one known feature by hand, such as the start of a well-studied gene, before trusting the conversion.
 
@@ -58,6 +58,16 @@ Most bioinformatics errors are not exotic. They are an index that starts at the 
 
 **Document decisions and use appropriate statistics.** A result that cannot be explained, or that depends on an unsuitable test or poor randomization, is not yet a finding.
 
+## 5. Common Mistakes in Single-Cell Analysis
+
+**Treating cells as independent replicates in differential expression.** **When comparing conditions such as healthy and disease, each with several samples, a common approach is to pool all cells per condition and test at the cell level.** Cells from the same sample are not independent, and thousands of cells make p-values artificially small, producing many false positives. **Pseudobulk analysis is more reliable:** aggregate counts per sample, then compare samples.
+
+**Over-interpreting UMAP.** **UMAP is a non-linear dimensionality reduction method; distances between points or clusters have no reliable quantitative meaning.** Use it to visualize structure, not to judge how similar cell populations are.
+
+**Assuming batch correction is safe.** **Batch correction and data integration rely on assumptions, and over-correction can remove genuine biological signal.** A benchmark of seven widely used methods found that many introduce measurable artifacts; only Harmony performed consistently well, and it was the only method the authors recommended for scRNA-seq batch correction.[Antonsson & Melsted, 2024](https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full)
+
+> **Good practice:** Test differential expression at the sample level, treat UMAP as visualization only, and confirm that known biological differences survive batch correction.
+
 ## A Short Checklist
 
 | Before you... | Check |
@@ -67,10 +77,11 @@ Most bioinformatics errors are not exotic. They are an index that starts at the 
 | Extract sequences | Which strand? |
 | Run `rm`, `>` or `mv` | Correct directory? Pattern confirmed with `ls`? |
 | Pass code to `awk`, `grep` or `find` | Quoted? |
+| Compare conditions | Analysed at the sample level (pseudobulk)? |
 | Share results | Inputs, versions and parameters documented? |
 
 None of these mistakes requires advanced knowledge to avoid. They require a moment of checking, which is cheaper than rerunning an analysis.
 
 ---
 
-*This post contains my notes on Tommy Tang's article "[The Most Common Stupid Mistakes In Bioinformatics](https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/)" on his blog, [Chatomics](https://divingintogeneticsandgenomics.com/). Please read the original for his full list and additional resources.*
+*The main content of this post is based on my reading of Tommy Tang's article "[The Most Common Stupid Mistakes In Bioinformatics](https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/)" on his blog, [Chatomics](https://divingintogeneticsandgenomics.com/). Please read the original for his full list and additional resources.*
