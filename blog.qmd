@@ -6,6 +6,7 @@ listing:
     - "!blog/2026-10-07scrnaseq/index-chinese.md"
     - "!blog/2026-10-09sarek/index-chinese.md"
     - "!blog/2026-10-11atacseq/index-chinese.md"
+    - "!blog/2026-10-12bioinfo-mistakes/index-chinese.md"
   sort: "date desc"
   type: default
   categories: true
