@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-10-12">
 
-<title>Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes – Yujuan Zhang, PhD</title>
+<title>Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics – Yujuan Zhang, PhD</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -174,6 +174,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-data-do-not-match-what-you-think" id="toc-the-data-do-not-match-what-you-think" class="nav-link" data-scroll-target="#the-data-do-not-match-what-you-think">2. The Data Do Not Match What You Think</a></li>
   <li><a href="#shell-errors" id="toc-shell-errors" class="nav-link" data-scroll-target="#shell-errors">3. Shell Errors</a></li>
   <li><a href="#process-mistakes-outlast-code-mistakes" id="toc-process-mistakes-outlast-code-mistakes" class="nav-link" data-scroll-target="#process-mistakes-outlast-code-mistakes">4. Process Mistakes Outlast Code Mistakes</a></li>
+  <li><a href="#common-mistakes-in-single-cell-analysis" id="toc-common-mistakes-in-single-cell-analysis" class="nav-link" data-scroll-target="#common-mistakes-in-single-cell-analysis">5. Common Mistakes in Single-Cell Analysis</a></li>
   <li><a href="#a-short-checklist" id="toc-a-short-checklist" class="nav-link" data-scroll-target="#a-short-checklist">A Short Checklist</a></li>
   </ul>
 </nav>
@@ -183,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes</h1>
+<h1 class="title">Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics</h1>
   <div class="quarto-categories">
     <div class="quarto-category">bioinformatics</div>
     <div class="quarto-category">command-line</div>
@@ -211,14 +212,14 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="reading-time">
-5 min read
+6 min read
 </div>
 <p>Most bioinformatics errors are not exotic. They are an index that starts at the wrong number, a genome build nobody wrote down, or a stray space in a shell command. They are easy to make, hard to spot, and often fail silently: the pipeline finishes and the output looks reasonable.</p>
 <section id="counting-is-harder-than-it-looks" class="level2">
 <h2 class="anchored" data-anchor-id="counting-is-harder-than-it-looks">1. Counting Is Harder Than It Looks</h2>
 <p><strong>Coordinate systems differ between file formats.</strong> BED intervals are 0-based and half-open, while GTF and GFF are 1-based and closed. The first base of a chromosome is <code>0</code> in BED and <code>1</code> in GTF. Converting between them without adjusting the start position shifts every feature by one base, which is enough to change a codon or miss a splice site.</p>
 <p><strong>Programming languages use different index origins.</strong> Python counts from 0; R counts from 1. Code ported from one language to the other can run without errors and still return the neighbouring element.</p>
-<p><strong>Chromosome names do not sort alphabetically.</strong> A plain text sort places <code>chr10</code> before <code>chr2</code>. Many tools expect chromosomes in a consistent order, so use a natural (“version”) sort, such as <code>sort -V</code>, or the order defined by the reference index.</p>
+<p><strong>Chromosome names should not be sorted as plain text.</strong> A plain text sort places <code>chr10</code> before <code>chr2</code>, breaking the usual numeric order. Use a natural sort to obtain <code>chr1</code>, <code>chr2</code>, …, <code>chr10</code>; for interval files such as BED, also sort by start coordinate within each chromosome.</p>
 <blockquote class="blockquote">
 <p><strong>Good practice:</strong> When a coordinate crosses a format or language boundary, check one known feature by hand, such as the start of a well-studied gene, before trusting the conversion.</p>
 </blockquote>
@@ -266,6 +267,15 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Track versions of data and code.</strong> Analyses that silently use an outdated input are hard to reproduce. Git, Git LFS or a workflow manager makes the inputs explicit.</p>
 <p><strong>Document decisions and use appropriate statistics.</strong> A result that cannot be explained, or that depends on an unsuitable test or poor randomization, is not yet a finding.</p>
 </section>
+<section id="common-mistakes-in-single-cell-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="common-mistakes-in-single-cell-analysis">5. Common Mistakes in Single-Cell Analysis</h2>
+<p><strong>Treating cells as independent replicates in differential expression.</strong> <strong>When comparing conditions such as healthy and disease, each with several samples, a common approach is to pool all cells per condition and test at the cell level.</strong> Cells from the same sample are not independent, and thousands of cells make p-values artificially small, producing many false positives. <strong>Pseudobulk analysis is more reliable:</strong> aggregate counts per sample, then compare samples.</p>
+<p><strong>Over-interpreting UMAP.</strong> <strong>UMAP is a non-linear dimensionality reduction method; distances between points or clusters have no reliable quantitative meaning.</strong> Use it to visualize structure, not to judge how similar cell populations are.</p>
+<p><strong>Assuming batch correction is safe.</strong> <strong>Batch correction and data integration rely on assumptions, and over-correction can remove genuine biological signal.</strong> A benchmark of seven widely used methods found that many introduce measurable artifacts; only Harmony performed consistently well, and it was the only method the authors recommended for scRNA-seq batch correction.<a href="https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full">Antonsson &amp; Melsted, 2024</a></p>
+<blockquote class="blockquote">
+<p><strong>Good practice:</strong> Test differential expression at the sample level, treat UMAP as visualization only, and confirm that known biological differences survive batch correction.</p>
+</blockquote>
+</section>
 <section id="a-short-checklist" class="level2">
 <h2 class="anchored" data-anchor-id="a-short-checklist">A Short Checklist</h2>
 <table class="caption-top table">
@@ -301,6 +311,10 @@ ul.task-list li input[type="checkbox"] {
 <td>Quoted?</td>
 </tr>
 <tr class="even">
+<td>Compare conditions</td>
+<td>Analysed at the sample level (pseudobulk)?</td>
+</tr>
+<tr class="odd">
 <td>Share results</td>
 <td>Inputs, versions and parameters documented?</td>
 </tr>
@@ -308,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>None of these mistakes requires advanced knowledge to avoid. They require a moment of checking, which is cheaper than rerunning an analysis.</p>
 <hr>
-<p><em>This post contains my notes on Tommy Tang’s article “<a href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">The Most Common Stupid Mistakes In Bioinformatics</a>” on his blog, <a href="https://divingintogeneticsandgenomics.com/">Chatomics</a>. Please read the original for his full list and additional resources.</em></p>
+<p><em>The main content of this post is based on my reading of Tommy Tang’s article “<a href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">The Most Common Stupid Mistakes In Bioinformatics</a>” on his blog, <a href="https://divingintogeneticsandgenomics.com/">Chatomics</a>. Please read the original for his full list and additional resources.</em></p>
 
 
 </section>

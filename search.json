@@ -11,7 +11,7 @@
     "href": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#数数比想象中难",
     "title": "小失误，大麻烦：读 Tommy Tang 的生信常见错误清单",
     "section": "1. 数数，比想象中难",
-    "text": "1. 数数，比想象中难\n不同文件格式的坐标系不同。 BED 是 0-based、左闭右开；GTF 和 GFF 是 1-based、两端闭合。染色体的第一个碱基，在 BED 里记为 0，在 GTF 里记为 1。格式转换时如果不调整起始位置，所有区域都会整体错开一个碱基，足以改变一个密码子，或错过剪接位点。\n编程语言的计数起点不同。 Python 从 0 开始数，R 从 1 开始数。代码从一种语言改写到另一种，可能不报任何错，却总是取到相邻的那个元素。\n染色体名不能按字母排序。 普通文本排序会把 chr10 排在 chr2 前面。很多工具要求染色体顺序一致，应使用自然排序（如 sort -V），或直接采用参考基因组索引中的顺序。\n\n好习惯：坐标每次跨越文件格式或编程语言时，先手动核对一个已知位置，比如某个熟悉基因的起点，再相信转换结果。"
+    "text": "1. 数数，比想象中难\n不同文件格式的坐标系不同。 BED 是 0-based、左闭右开；GTF 和 GFF 是 1-based、两端闭合。染色体的第一个碱基，在 BED 里记为 0，在 GTF 里记为 1。格式转换时如果不调整起始位置，所有区域都会整体错开一个碱基，足以改变一个密码子，或错过剪接位点。\n编程语言的计数起点不同。 Python 从 0 开始数，R 从 1 开始数。代码从一种语言改写到另一种，可能不报任何错，却总是取到相邻的那个元素。\n染色体名不宜直接按普通文本排序。 普通文本排序会把 chr10 排在 chr2 前面，不符合通常按染色体编号排列的习惯。若要得到 chr1、chr2、…、chr10 的顺序，应使用自然排序；对于 BED 等区间文件，还需在每条染色体内按起始坐标排序。\n\n好习惯：坐标每次跨越文件格式或编程语言时，先手动核对一个已知位置，比如某个熟悉基因的起点，再相信转换结果。"
   },
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#数据和你以为的不一样",
@@ -35,11 +35,18 @@
     "text": "4. 流程上的错误，比代码错误影响更久\n尽量使用现成工具，避免重复造轮子。 读取 FASTQ、GenBank 或 BLAST 输出时，优先使用 Biopython、pysam、Bioconductor 等经过测试的库，省去自己编写读取代码的工作，也能减少遗漏特殊情况导致的错误。分析单细胞 RNA-seq 数据时，优先使用 Scanpy 或 Seurat 完成质控、降维和聚类，把精力放在研究问题上，无需自己从头编写代码。\n正则表达式要测试。 用“应该匹配”和“不应该匹配”的例子各试一遍。\n数据和代码都要有版本管理。 分析悄悄用了旧版输入，结果就很难复现。Git、Git LFS 或工作流管理工具能让输入一目了然。\n记录决策，用对统计方法。 说不清怎么得到的结果，或依赖不合适的检验、不充分的随机化，还不能算发现。"
   },
   {
+    "objectID": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#单细胞分析中的常见错误",
+    "href": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#单细胞分析中的常见错误",
+    "title": "小失误，大麻烦：读 Tommy Tang 的生信常见错误清单",
+    "section": "5. 单细胞分析中的常见错误",
+    "text": "5. 单细胞分析中的常见错误\n把细胞当作独立样本做差异表达。 比较健康与疾病两组、每组有多个样本时，常见做法是把每组所有细胞合在一起，在细胞水平做差异表达分析。但同一样本的细胞并不相互独立；成千上万个细胞会让 p 值被严重低估，产生大量假阳性。更稳妥的做法是伪批量（pseudobulk）分析：先把每个样本的细胞计数汇总，再以样本为单位比较。\n过度解读 UMAP。 UMAP 是非线性降维方法，图上点与点、簇与簇之间的距离并没有明确的定量含义。它适合用来直观展示数据结构，不宜据此判断细胞群之间的远近关系。\n默认批次校正是安全的。 批次校正和多数据集整合都建立在一定的假设之上，过度校正可能把真实的生物学差异一并抹去。一项比较了七种常用方法的研究发现，许多方法会在数据中引入可测量的人为改变，只有 Harmony 在所有测试中表现稳定，因此作者仅推荐 Harmony 用于 scRNA-seq 批次校正。Antonsson & Melsted, 2024\n\n好习惯：差异表达以样本为单位；UMAP 只作可视化；批次校正后，检查已知的生物学差异是否仍然存在。"
+  },
+  {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#一张简短的检查表",
     "href": "blog/2026-10-12bioinfo-mistakes/index-chinese.html#一张简短的检查表",
     "title": "小失误，大麻烦：读 Tommy Tang 的生信常见错误清单",
     "section": "一张简短的检查表",
-    "text": "一张简短的检查表\n\n\n\n\n\n\n\n在做这件事之前……\n检查\n\n\n\n\n转换坐标\n0-based 还是 1-based？左闭右开还是两端闭合？\n\n\n合并文件\n基因组和注释版本一致吗？染色体命名一致吗（chr1 还是 1）？\n\n\n提取序列\n哪条链？\n\n\n运行 rm、&gt; 或 mv\n目录对吗？模式先用 ls 确认过吗？\n\n\n把代码传给 awk、grep 或 find\n加引号了吗？\n\n\n分享结果\n输入、版本和参数都记录了吗？\n\n\n\n避免这些错误并不需要高深的知识，只需要多检查一下。这比重跑一遍分析便宜得多。\n\n本文是我阅读 Tommy Tang 博客 Chatomics 上的文章《The Most Common Stupid Mistakes In Bioinformatics》后整理的笔记。完整清单和更多资源请阅读原文。"
+    "text": "一张简短的检查表\n\n\n\n\n\n\n\n在做这件事之前……\n检查\n\n\n\n\n转换坐标\n0-based 还是 1-based？左闭右开还是两端闭合？\n\n\n合并文件\n基因组和注释版本一致吗？染色体命名一致吗（chr1 还是 1）？\n\n\n提取序列\n哪条链？\n\n\n运行 rm、&gt; 或 mv\n目录对吗？模式先用 ls 确认过吗？\n\n\n把代码传给 awk、grep 或 find\n加引号了吗？\n\n\n比较不同条件的表达\n以样本为单位（pseudobulk）分析了吗？\n\n\n分享结果\n输入、版本和参数都记录了吗？\n\n\n\n避免这些错误并不需要高深的知识，只需要多检查一下。这比重跑一遍分析便宜得多。\n\n本文主要内容来自阅读 Tommy Tang 博客 Chatomics 上的文章《The Most Common Stupid Mistakes In Bioinformatics》。完整清单和更多资源请阅读原文。"
   },
   {
     "objectID": "blog/2026-10-11atacseq/index-chinese.html",
@@ -382,7 +389,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes\n\n\n\nbioinformatics\n\ncommand-line\n\n\n\n\n\n\n\n\n\nOct 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nnf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”\n\n\n\nbioinformatics\n\nnextflow\n\natac-seq\n\n\n\n\n\n\n\n\n\nOct 11, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nnf-core/sarek: From DNA Reads to Variant Discovery\n\n\n\nbioinformatics\n\nnextflow\n\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nscRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics\n\n\n\nbioinformatics\n\ncommand-line\n\n\n\n\n\n\n\n\n\nOct 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nnf-core/atacseq: Mapping Accessible Chromatin with “Molecular Scissors”\n\n\n\nbioinformatics\n\nnextflow\n\natac-seq\n\n\n\n\n\n\n\n\n\nOct 11, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nnf-core/sarek: From DNA Reads to Variant Discovery\n\n\n\nbioinformatics\n\nnextflow\n\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nscRNA-seq: Tracing the Barcode Disagreement Between Cell Ranger and Simpleaf\n\n\n\nbioinformatics\n\nscrna-seq\n\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGenome plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Local Server, Cluster, or Cloud computation?\n\n\n\nbioinformatics\n\ncloud\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nRNA-seq plots by R\n\n\n\nbioinformatics\n\nr\n\n\n\n\n\n\n\n\n\nSep 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhat If You want Customize an nf-core Pipeline?\n\n\n\nbioinformatics\n\nnextflow\n\nnf-core\n\n\n\n\n\n\n\n\n\nSep 28, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNextflow: Reproducible Bioinformatics at Scale\n\n\n\nbioinformatics\n\nworkflow\n\nnextflow\n\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWorkflow Management in Bioinformatics and Deep Learning\n\n\n\nbioinformatics\n\ndeep-learning\n\nworkflow\n\n\n\nBioinformatics stitches together a dozen independent tools per sample; deep learning trains end-to-end in one script. Why the two fields standardize so differently – and what that says about a good workflow framework.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Story\n\n\n\nreflections\n\ncareer\n\n\n\nFrom a village shop counter to bioinformatics to AI – three hurdles, and why curiosity is the one thing age doesn’t have to take.\n\n\n\n\n\nSep 24, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "awards.html",
@@ -681,43 +688,50 @@
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "",
-    "text": "5 min read\nMost bioinformatics errors are not exotic. They are an index that starts at the wrong number, a genome build nobody wrote down, or a stray space in a shell command. They are easy to make, hard to spot, and often fail silently: the pipeline finishes and the output looks reasonable."
+    "text": "6 min read\nMost bioinformatics errors are not exotic. They are an index that starts at the wrong number, a genome build nobody wrote down, or a stray space in a shell command. They are easy to make, hard to spot, and often fail silently: the pipeline finishes and the output looks reasonable."
   },
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#counting-is-harder-than-it-looks",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html#counting-is-harder-than-it-looks",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "1. Counting Is Harder Than It Looks",
-    "text": "1. Counting Is Harder Than It Looks\nCoordinate systems differ between file formats. BED intervals are 0-based and half-open, while GTF and GFF are 1-based and closed. The first base of a chromosome is 0 in BED and 1 in GTF. Converting between them without adjusting the start position shifts every feature by one base, which is enough to change a codon or miss a splice site.\nProgramming languages use different index origins. Python counts from 0; R counts from 1. Code ported from one language to the other can run without errors and still return the neighbouring element.\nChromosome names do not sort alphabetically. A plain text sort places chr10 before chr2. Many tools expect chromosomes in a consistent order, so use a natural (“version”) sort, such as sort -V, or the order defined by the reference index.\n\nGood practice: When a coordinate crosses a format or language boundary, check one known feature by hand, such as the start of a well-studied gene, before trusting the conversion."
+    "text": "1. Counting Is Harder Than It Looks\nCoordinate systems differ between file formats. BED intervals are 0-based and half-open, while GTF and GFF are 1-based and closed. The first base of a chromosome is 0 in BED and 1 in GTF. Converting between them without adjusting the start position shifts every feature by one base, which is enough to change a codon or miss a splice site.\nProgramming languages use different index origins. Python counts from 0; R counts from 1. Code ported from one language to the other can run without errors and still return the neighbouring element.\nChromosome names should not be sorted as plain text. A plain text sort places chr10 before chr2, breaking the usual numeric order. Use a natural sort to obtain chr1, chr2, …, chr10; for interval files such as BED, also sort by start coordinate within each chromosome.\n\nGood practice: When a coordinate crosses a format or language boundary, check one known feature by hand, such as the start of a well-studied gene, before trusting the conversion."
   },
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#the-data-do-not-match-what-you-think",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html#the-data-do-not-match-what-you-think",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "2. The Data Do Not Match What You Think",
     "text": "2. The Data Do Not Match What You Think\nGenome builds must stay consistent. Reads aligned to hg19 but viewed against hg38 annotation appear to fall outside exons. Every reference file, index and annotation must come from the same assembly and, ideally, the same release.\nStrand matters. A feature on the minus strand must be reverse-complemented before its sequence is used. Forgetting this produces a valid-looking but wrong sequence.\nDefine how to handle reads that match multiple genes before counting. Genes can overlap or be nested. Without a rule for shared regions, features may be missed or reads counted twice.\nLine endings are a hidden trap. Files saved on Windows end lines with \\r\\n; Unix tools expect \\n. A missing newline at the end of the last line can also cause a simple loop to skip it. dos2unix and a quick tail check help.\n\nGood practice: Record the genome build and annotation version in file names and in a project README."
   },
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#shell-errors",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html#shell-errors",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "3. Shell Errors",
     "text": "3. Shell Errors\nDeleting or overwriting by accident.\n\nA stray space turns rm *.fasta into rm * .fasta, which deletes everything in the folder.\n&gt; replaces a file’s contents, while &gt;&gt; appends. Redirecting with &gt; into ~/.bashrc erases the existing configuration.\nrm * in the wrong directory is not reversible.\n\nLetting the shell interpret characters meant for a program.\n\nawk {print $2} fails because the shell expands $2 and the braces; write awk '{print $2}'.\ngrep &gt; file.fasta redirects output instead of searching for headers; write grep '&gt;' file.fasta.\nfind . -name *.txt may expand the wildcard before find sees it; quote the pattern.\n\nForgetting a default.\n\ncut splits on tabs unless told otherwise; a CSV needs -d,.\nmkdir needs -p to create nested directories.\nrm needs -r for directories.\ncat on a multi-gigabyte FASTQ floods the terminal; head or less -S is safer.\nchmod 777 grants everyone full access; chmod u+x is usually all that is needed.\n\n\nGood practice: Before deleting with a wildcard, run ls with the same pattern first. In Bash, set -o noclobber stops &gt; from overwriting an existing file."
   },
   {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#process-mistakes-outlast-code-mistakes",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html#process-mistakes-outlast-code-mistakes",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "4. Process Mistakes Outlast Code Mistakes",
     "text": "4. Process Mistakes Outlast Code Mistakes\nUse established tools rather than reinventing the wheel. To read FASTQ, GenBank or BLAST output, prefer tested libraries such as Biopython, pysam or Bioconductor packages: they save effort and handle edge cases that custom parsers often miss. For single-cell RNA-seq, use Scanpy or Seurat for quality control, dimensionality reduction and clustering, and spend the time saved on the research question.\nTest regular expressions against examples you know should and should not match.\nTrack versions of data and code. Analyses that silently use an outdated input are hard to reproduce. Git, Git LFS or a workflow manager makes the inputs explicit.\nDocument decisions and use appropriate statistics. A result that cannot be explained, or that depends on an unsuitable test or poor randomization, is not yet a finding."
   },
   {
+    "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#common-mistakes-in-single-cell-analysis",
+    "href": "blog/2026-10-12bioinfo-mistakes/index.html#common-mistakes-in-single-cell-analysis",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
+    "section": "5. Common Mistakes in Single-Cell Analysis",
+    "text": "5. Common Mistakes in Single-Cell Analysis\nTreating cells as independent replicates in differential expression. When comparing conditions such as healthy and disease, each with several samples, a common approach is to pool all cells per condition and test at the cell level. Cells from the same sample are not independent, and thousands of cells make p-values artificially small, producing many false positives. Pseudobulk analysis is more reliable: aggregate counts per sample, then compare samples.\nOver-interpreting UMAP. UMAP is a non-linear dimensionality reduction method; distances between points or clusters have no reliable quantitative meaning. Use it to visualize structure, not to judge how similar cell populations are.\nAssuming batch correction is safe. Batch correction and data integration rely on assumptions, and over-correction can remove genuine biological signal. A benchmark of seven widely used methods found that many introduce measurable artifacts; only Harmony performed consistently well, and it was the only method the authors recommended for scRNA-seq batch correction.Antonsson & Melsted, 2024\n\nGood practice: Test differential expression at the sample level, treat UMAP as visualization only, and confirm that known biological differences survive batch correction."
+  },
+  {
     "objectID": "blog/2026-10-12bioinfo-mistakes/index.html#a-short-checklist",
     "href": "blog/2026-10-12bioinfo-mistakes/index.html#a-short-checklist",
-    "title": "Small Slips, Big Consequences: Notes on Common Bioinformatics Mistakes",
+    "title": "Small Mistakes, Big Consequences: Notes on Common Errors in Bioinformatics",
     "section": "A Short Checklist",
-    "text": "A Short Checklist\n\n\n\n\n\n\n\nBefore you…\nCheck\n\n\n\n\nConvert coordinates\n0-based or 1-based? Half-open or closed?\n\n\nCombine files\nSame genome build and annotation release? Same chromosome naming (chr1 vs 1)?\n\n\nExtract sequences\nWhich strand?\n\n\nRun rm, &gt; or mv\nCorrect directory? Pattern confirmed with ls?\n\n\nPass code to awk, grep or find\nQuoted?\n\n\nShare results\nInputs, versions and parameters documented?\n\n\n\nNone of these mistakes requires advanced knowledge to avoid. They require a moment of checking, which is cheaper than rerunning an analysis.\n\nThis post contains my notes on Tommy Tang’s article “The Most Common Stupid Mistakes In Bioinformatics” on his blog, Chatomics. Please read the original for his full list and additional resources."
+    "text": "A Short Checklist\n\n\n\n\n\n\n\nBefore you…\nCheck\n\n\n\n\nConvert coordinates\n0-based or 1-based? Half-open or closed?\n\n\nCombine files\nSame genome build and annotation release? Same chromosome naming (chr1 vs 1)?\n\n\nExtract sequences\nWhich strand?\n\n\nRun rm, &gt; or mv\nCorrect directory? Pattern confirmed with ls?\n\n\nPass code to awk, grep or find\nQuoted?\n\n\nCompare conditions\nAnalysed at the sample level (pseudobulk)?\n\n\nShare results\nInputs, versions and parameters documented?\n\n\n\nNone of these mistakes requires advanced knowledge to avoid. They require a moment of checking, which is cheaper than rerunning an analysis.\n\nThe main content of this post is based on my reading of Tommy Tang’s article “The Most Common Stupid Mistakes In Bioinformatics” on his blog, Chatomics. Please read the original for his full list and additional resources."
   }
 ]

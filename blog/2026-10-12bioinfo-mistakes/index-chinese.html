@@ -174,6 +174,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#数据和你以为的不一样" id="toc-数据和你以为的不一样" class="nav-link" data-scroll-target="#数据和你以为的不一样">2. 数据和你以为的不一样</a></li>
   <li><a href="#shell-错误" id="toc-shell-错误" class="nav-link" data-scroll-target="#shell-错误">3. Shell 错误</a></li>
   <li><a href="#流程上的错误比代码错误影响更久" id="toc-流程上的错误比代码错误影响更久" class="nav-link" data-scroll-target="#流程上的错误比代码错误影响更久">4. 流程上的错误，比代码错误影响更久</a></li>
+  <li><a href="#单细胞分析中的常见错误" id="toc-单细胞分析中的常见错误" class="nav-link" data-scroll-target="#单细胞分析中的常见错误">5. 单细胞分析中的常见错误</a></li>
   <li><a href="#一张简短的检查表" id="toc-一张简短的检查表" class="nav-link" data-scroll-target="#一张简短的检查表">一张简短的检查表</a></li>
   </ul>
 </nav>
@@ -218,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="数数比想象中难">1. 数数，比想象中难</h2>
 <p><strong>不同文件格式的坐标系不同。</strong> BED 是 0-based、左闭右开；GTF 和 GFF 是 1-based、两端闭合。染色体的第一个碱基，在 BED 里记为 <code>0</code>，在 GTF 里记为 <code>1</code>。格式转换时如果不调整起始位置，所有区域都会整体错开一个碱基，足以改变一个密码子，或错过剪接位点。</p>
 <p><strong>编程语言的计数起点不同。</strong> Python 从 0 开始数，R 从 1 开始数。代码从一种语言改写到另一种，可能不报任何错，却总是取到相邻的那个元素。</p>
-<p><strong>染色体名不能按字母排序。</strong> 普通文本排序会把 <code>chr10</code> 排在 <code>chr2</code> 前面。很多工具要求染色体顺序一致，应使用自然排序（如 <code>sort -V</code>），或直接采用参考基因组索引中的顺序。</p>
+<p><strong>染色体名不宜直接按普通文本排序。</strong> 普通文本排序会把 <code>chr10</code> 排在 <code>chr2</code> 前面，不符合通常按染色体编号排列的习惯。若要得到 <code>chr1</code>、<code>chr2</code>、…、<code>chr10</code> 的顺序，应使用自然排序；对于 BED 等区间文件，还需在每条染色体内按起始坐标排序。</p>
 <blockquote class="blockquote">
 <p><strong>好习惯：</strong>坐标每次跨越文件格式或编程语言时，先手动核对一个已知位置，比如某个熟悉基因的起点，再相信转换结果。</p>
 </blockquote>
@@ -266,6 +267,15 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>数据和代码都要有版本管理。</strong> 分析悄悄用了旧版输入，结果就很难复现。Git、Git LFS 或工作流管理工具能让输入一目了然。</p>
 <p><strong>记录决策，用对统计方法。</strong> 说不清怎么得到的结果，或依赖不合适的检验、不充分的随机化，还不能算发现。</p>
 </section>
+<section id="单细胞分析中的常见错误" class="level2">
+<h2 class="anchored" data-anchor-id="单细胞分析中的常见错误">5. 单细胞分析中的常见错误</h2>
+<p><strong>把细胞当作独立样本做差异表达。</strong> <strong>比较健康与疾病两组、每组有多个样本时，常见做法是把每组所有细胞合在一起，在细胞水平做差异表达分析。</strong>但同一样本的细胞并不相互独立；成千上万个细胞会让 p 值被严重低估，产生大量假阳性。<strong>更稳妥的做法是伪批量（pseudobulk）分析</strong>：先把每个样本的细胞计数汇总，再以样本为单位比较。</p>
+<p><strong>过度解读 UMAP。</strong> <strong>UMAP 是非线性降维方法，图上点与点、簇与簇之间的距离并没有明确的定量含义。</strong>它适合用来直观展示数据结构，不宜据此判断细胞群之间的远近关系。</p>
+<p><strong>默认批次校正是安全的。</strong> <strong>批次校正和多数据集整合都建立在一定的假设之上，过度校正可能把真实的生物学差异一并抹去。</strong>一项比较了七种常用方法的研究发现，许多方法会在数据中引入可测量的人为改变，只有 Harmony 在所有测试中表现稳定，因此作者仅推荐 Harmony 用于 scRNA-seq 批次校正。<a href="https://www.biorxiv.org/content/10.1101/2024.03.19.585562v1.full">Antonsson &amp; Melsted, 2024</a></p>
+<blockquote class="blockquote">
+<p><strong>好习惯：</strong>差异表达以样本为单位；UMAP 只作可视化；批次校正后，检查已知的生物学差异是否仍然存在。</p>
+</blockquote>
+</section>
 <section id="一张简短的检查表" class="level2">
 <h2 class="anchored" data-anchor-id="一张简短的检查表">一张简短的检查表</h2>
 <table class="caption-top table">
@@ -301,6 +311,10 @@ ul.task-list li input[type="checkbox"] {
 <td>加引号了吗？</td>
 </tr>
 <tr class="even">
+<td>比较不同条件的表达</td>
+<td>以样本为单位（pseudobulk）分析了吗？</td>
+</tr>
+<tr class="odd">
 <td>分享结果</td>
 <td>输入、版本和参数都记录了吗？</td>
 </tr>
@@ -308,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>避免这些错误并不需要高深的知识，只需要多检查一下。这比重跑一遍分析便宜得多。</p>
 <hr>
-<p><em>本文是我阅读 Tommy Tang 博客 <a href="https://divingintogeneticsandgenomics.com/">Chatomics</a> 上的文章《<a href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">The Most Common Stupid Mistakes In Bioinformatics</a>》后整理的笔记。完整清单和更多资源请阅读原文。</em></p>
+<p><em>本文主要内容来自阅读 Tommy Tang 博客 <a href="https://divingintogeneticsandgenomics.com/">Chatomics</a> 上的文章《<a href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">The Most Common Stupid Mistakes In Bioinformatics</a>》。完整清单和更多资源请阅读原文。</em></p>
 
 
 </section>
