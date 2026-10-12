@@ -213,6 +213,16 @@ ul.task-list li input[type="checkbox"] {
 
 
 </main> <!-- /main -->
+<style>
+/* Body text is grey Georgia, and Chinese falls back to a serif (Songti)
+   whose bold barely differs from regular. Render bold in posts with a
+   sans-serif bold in the darker heading colour so it stands out. */
+#quarto-document-content strong {
+  font-family: "Source Sans Pro", -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+</style>
 <script>
 // Rebuilds the title-block metadata (date, reading time, view count,
 // categories) as a single plain-text line, matching the reference layout
