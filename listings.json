@@ -2,9 +2,6 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/2026-10-12machine-learning-mistakes/index.html",
-      "/blog/2026-10-12matrix-linear-algebra/index.html",
-      "/blog/2026-10-12stupid-ml-mistakes/index.html",
       "/blog/2026-10-12bioinfo-mistakes/index.html",
       "/blog/2026-10-11atacseq/index.html",
       "/blog/2026-10-09sarek/index.html",
