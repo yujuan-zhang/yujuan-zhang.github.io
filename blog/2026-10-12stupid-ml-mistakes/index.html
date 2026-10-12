@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-10-12" />
+  <meta name="description" content="Ten mistakes that survive a successful training run: lessons from researchers, engineers, and a few lines of arithmetic." />
+  <title>The Stupidest Mistakes in Machine Learning</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>body{font-family:system-ui,-apple-system,sans-serif;color:#243447;line-height:1.8;max-width:930px;margin:52px auto;padding:0 26px}h1{font-size:2.5rem;line-height:1.2;max-width:800px}h2{margin-top:2.5rem;color:#15354d}a{color:#087f83}img{width:100%;height:auto}pre{overflow:auto;padding:20px;background:#f1f5f9;border-radius:10px;font-size:14px;line-height:1.55}table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{padding:10px 14px;border-bottom:1px solid #d9e2eb;text-align:left}th{background:#eaf2f5}p:has(em){color:#61758a;font-size:.9rem}nav#TOC{background:#f5f8fc;border-radius:12px;padding:16px 25px;margin:25px 0}nav#TOC ul{list-style:none;padding-left:0}nav#TOC li{margin:2px 0}nav#TOC a{text-decoration:none;font-size:.9rem}.date{color:#61758a}@media(max-width:650px){body{margin-top:85px}h1{font-size:2rem}table{font-size:.8rem}td,th{padding:7px}}</style><style>.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;color:#087e8b;box-shadow:0 2px 8px #0001}</style><script>document.addEventListener('DOMContentLoaded',function(){var zh=/index-chinese\.html$/.test(location.pathname);var a=document.createElement('a');a.className='ml-language';a.href=zh?'index.html':'index-chinese.html';a.textContent=zh?'English':'Chinese';a.setAttribute('aria-label',zh?'Read in English':'阅读中文版');document.body.appendChild(a);});</script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">The Stupidest Mistakes in Machine Learning</h1>
+<p class="date">2026-10-12</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#choosing-a-model-before-understanding-the-data"
+id="toc-choosing-a-model-before-understanding-the-data">1. Choosing a
+model before understanding the data</a>
+<ul>
+<li><a href="#correct-data-must-also-be-available-at-prediction-time"
+id="toc-correct-data-must-also-be-available-at-prediction-time">Correct
+data must also be available at prediction time</a></li>
+</ul></li>
+<li><a href="#beating-a-baseline-you-never-allowed-to-compete"
+id="toc-beating-a-baseline-you-never-allowed-to-compete">2. Beating a
+baseline you never allowed to compete</a></li>
+<li><a href="#scaling-up-before-fitting-a-tiny-training-batch"
+id="toc-scaling-up-before-fitting-a-tiny-training-batch">3. Scaling up
+before fitting a tiny training batch</a></li>
+<li><a href="#letting-broadcasting-rewrite-your-objective"
+id="toc-letting-broadcasting-rewrite-your-objective">4. Letting
+broadcasting rewrite your objective</a></li>
+<li><a
+href="#applying-softmax-because-classification-needs-probabilities"
+id="toc-applying-softmax-because-classification-needs-probabilities">5.
+Applying softmax because “classification needs probabilities”</a></li>
+<li><a href="#confusing-evaluation-mode-with-disabled-gradients"
+id="toc-confusing-evaluation-mode-with-disabled-gradients">6. Confusing
+evaluation mode with disabled gradients</a></li>
+<li><a href="#reporting-the-luckiest-seed-as-the-algorithm"
+id="toc-reporting-the-luckiest-seed-as-the-algorithm">7. Reporting the
+luckiest seed as the algorithm</a></li>
+<li><a href="#letting-the-average-hide-the-failure"
+id="toc-letting-the-average-hide-the-failure">8. Letting the average
+hide the failure</a></li>
+<li><a href="#treating-preprocessing-as-an-afterthought"
+id="toc-treating-preprocessing-as-an-afterthought">9. Treating
+preprocessing as an afterthought</a>
+<ul>
+<li><a href="#use-the-same-processing-when-the-model-goes-live"
+id="toc-use-the-same-processing-when-the-model-goes-live">Use the same
+processing when the model goes live</a></li>
+</ul></li>
+<li><a href="#assuming-the-model-merely-observes-the-world"
+id="toc-assuming-the-model-merely-observes-the-world">10. Assuming the
+model merely observes the world</a></li>
+<li><a href="#three-checks-you-can-run-without-a-gpu"
+id="toc-three-checks-you-can-run-without-a-gpu">Three checks you can run
+without a GPU</a></li>
+<li><a href="#further-reading" id="toc-further-reading">Further
+reading</a></li>
+</ul>
+</nav>
+<p>The program runs. The loss decreases. A checkpoint lands in your
+output directory.</p>
+<p>None of these tells you whether the experiment makes sense.</p>
+<p>Some machine learning mistakes produce an exception. The expensive
+ones produce a convincing chart. You can spend a week tuning a model
+that is solving the wrong problem, then spend another week explaining
+its success.</p>
+<p>This is a practical collection of ten mistakes, informed by
+researchers’ experience essays, original papers, and framework
+documentation. The scenarios and illustrations are original; they are
+not experiments reported by those authors. “Stupid” describes an
+avoidable mistake, not the person making it.</p>
+<h2 id="choosing-a-model-before-understanding-the-data">1. Choosing a
+model before understanding the data</h2>
+<p><strong>What you meant to do:</strong> Solve a prediction
+problem.</p>
+<p><strong>What you actually did:</strong> Choose a fashionable
+architecture before inspecting how examples and labels were
+produced.</p>
+<p>A folder named <code>clean_data</code> is not evidence of clean data.
+A missing value encoded as <code>-999</code> can become a strong
+feature. Two annotators may use different definitions of “positive.” A
+timestamp may record upload time rather than the event you want to
+forecast.</p>
+<p>Sambasivan and colleagues’ <a
+href="https://research.google/pubs/everyone-wants-to-do-the-model-work-not-the-data-work-data-cascades-in-high-stakes-ai/">Data
+Cascades study</a> documents how neglected data work causes compounding
+downstream problems. Its findings come from interviews with
+practitioners, not a universal statistical law.</p>
+<p><strong>Correction:</strong> Inspect examples from each label,
+source, and time period. Read the labeling instructions. Plot
+missingness and investigate duplicates. Write down what one row
+represents and what the target actually measures.</p>
+<p>When you see <code>-999</code>, establish whether it is a
+missing-value sentinel or a valid measurement before deciding how to
+handle it. Feeding an unchecked sentinel to a transformer can make the
+model learn an encoding convention you never intended it to use.</p>
+<h3 id="correct-data-must-also-be-available-at-prediction-time">Correct
+data must also be available at prediction time</h3>
+<p>Ask a second question of the same data: <strong>Was this feature
+actually available at prediction time?</strong> Random splits of
+dependent observations and features built from later records can make
+evaluation misrepresent the intended forecasting task.</p>
+<p>A “number of purchases in the next seven days” column might have an
+innocent name in a feature table. It is still unavailable at today’s
+prediction time. An event timestamp does not necessarily equal the time
+the system learned about that event.</p>
+<p><strong>Correction:</strong> Write down when the prediction is made
+and what data is available then. Build features using only records
+already available at that moment, and evaluate on later observations. If
+outcome windows overlap, check what the partitions share. Splitting by
+time cannot remove future information already baked into a feature.</p>
+<p><a
+href="https://developers.google.com/machine-learning/guides/rules-of-ml">Martin
+Zinkevich’s Rules of Machine Learning</a> recommends testing on data
+collected after the training period. The exact split should reflect your
+application and dependence structure.</p>
+<h2 id="beating-a-baseline-you-never-allowed-to-compete">2. Beating a
+baseline you never allowed to compete</h2>
+<p><strong>What you meant to do:</strong> Show that a new model improves
+prediction.</p>
+<p><strong>What you actually did:</strong> Tune your proposed method
+extensively, compare it against a poorly configured baseline, and call
+the difference an architectural advance.</p>
+<p>In their <a href="https://arxiv.org/abs/1907.06902">2019 analysis of
+neural recommendation approaches</a>, Ferrari Dacrema, Cremonesi, and
+Jannach showed that adequately tuned simpler approaches could outperform
+several reproduced neural methods. That is evidence about the methods
+and benchmarks studied, not proof that neural networks never help.</p>
+<p><strong>Correction:</strong> Give baselines a defensible tuning
+budget, the same information, and the same evaluation protocol. Include
+a task-specific heuristic: predicting the last observed value for
+forecasting, for example. Report compute and latency alongside
+predictive quality.</p>
+<p>“Default settings” is not a fair handicap to impose only on the
+competitor.</p>
+<h2 id="scaling-up-before-fitting-a-tiny-training-batch">3. Scaling up
+before fitting a tiny training batch</h2>
+<p><strong>What you meant to do:</strong> Train a useful neural
+network.</p>
+<p><strong>What you actually did:</strong> Launch a large run before
+checking whether a few examples can be learned at all.</p>
+<p>Karpathy’s <a
+href="https://karpathy.github.io/2019/04/25/recipe/">training recipe</a>
+recommends inspecting the actual tensors and deliberately overfitting a
+small batch as a debugging step.</p>
+<p><strong>Correction:</strong> Remove augmentation, simplify the model,
+and train on a fixed handful of unambiguous examples. With enough
+capacity and compatible labels, fitting them should be possible. Failure
+is a reason to investigate labels, loss, gradients, and optimization—not
+a proof that your model needs another GPU.</p>
+<p>If the tiny batch will not fit, print the original records,
+transformed features, and labels. Check for identical inputs with
+conflicting targets. For a deterministic binary predictor given the same
+input once with each label, ordinary unweighted binary cross-entropy is
+minimized at a shared probability of 0.5, with mean loss
+<code>log(2)</code> rather than zero. This calculation does not cover
+every multilabel or context-dependent setup.</p>
+<p>Also inspect regularization, capacity, learning rate, and gradients.
+Failure to fit does not diagnose duplicate-label errors by itself.
+Successful memorization remains a debugging check, not evidence of
+generalization.</p>
+<h2 id="letting-broadcasting-rewrite-your-objective">4. Letting
+broadcasting rewrite your objective</h2>
+<p><strong>What you meant to do:</strong> Compare each prediction with
+its corresponding target.</p>
+<p><strong>What you actually did:</strong> Subtract a prediction array
+shaped <code>(N, 1)</code> from targets shaped <code>(N,)</code>.</p>
+<p>Under <a
+href="https://docs.pytorch.org/docs/2.9/notes/broadcasting.html">PyTorch’s
+broadcasting rules</a>, this subtraction produces an <code>(N, N)</code>
+matrix. You are comparing every prediction with every target.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Both arrays describe one scalar per example, but shapes differ.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>], [<span class="fl">2.0</span>], [<span class="fl">3.0</span>]])  <span class="co"># (3, 1)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])      <span class="co"># (3,)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># 4/3, not zero</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pred.ndim <span class="op">==</span> <span class="dv">2</span> <span class="kw">and</span> pred.shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> target.ndim <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> pred.shape[<span class="dv">0</span>] <span class="op">==</span> target.shape[<span class="dv">0</span>]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> pred.squeeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pred.shape <span class="op">==</span> target.shape</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># zero</span></span></code></pre></div>
+<p>This is a PyTorch illustration; the companion <a
+href="examples/verify_examples.py">standard-library script</a>
+reproduces the arithmetic without PyTorch. It does not train a neural
+network.</p>
+<figure>
+<img src="figures/broadcast.svg"
+alt="Correct paired errors and unintended pairwise errors" />
+<figcaption aria-hidden="true">Correct paired errors and unintended
+pairwise errors</figcaption>
+</figure>
+<p><em>Figure 1. Calculated teaching example. Matching predictions
+<code>[1, 2, 3]</code> give zero paired error, but the broadcasted
+objective includes all nine pairwise errors and has mean 4/3.</em></p>
+<p><strong>Correction:</strong> Check that each example has exactly one
+output before adjusting the shape. Even for a single example,
+<code>(1, 1).squeeze(-1)</code> becomes <code>(1,)</code>, preserving
+the batch axis. Unconditional <code>flatten()</code> can hide a
+multi-output mistake by flattening everything. If other code needs the
+two-dimensional predictions, keep the adjusted result in a separate
+variable.</p>
+<p>The wrong loss can still decrease. For independently adjustable
+predictions, the all-pairs objective pulls every prediction toward the
+target mean. Convergence does not establish that the objective was
+right.</p>
+<h2 id="applying-softmax-because-classification-needs-probabilities">5.
+Applying softmax because “classification needs probabilities”</h2>
+<p><strong>What you meant to do:</strong> Train a multiclass
+classifier.</p>
+<p><strong>What you actually did:</strong> Apply softmax, then pass the
+resulting probabilities to <code>CrossEntropyLoss</code>.</p>
+<p>Distinguish the two arguments in
+<code>CrossEntropyLoss(input, target)</code>. The <a
+href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.CrossEntropyLoss.html">PyTorch
+documentation</a> specifies:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Expected representation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code>: model predictions</td>
+<td>Raw logits; do not apply softmax first</td>
+</tr>
+<tr>
+<td><code>target</code>: supervision</td>
+<td>Integer class indices, or valid same-shaped class probabilities
+(soft labels)</td>
+</tr>
+</tbody>
+</table>
+<p>Soft-label support concerns <code>target</code>; it does not change
+the prediction-side contract. Passing <code>softmax(logits)</code> as
+<code>input</code> makes the loss treat those numbers as logits and
+apply log-softmax to them again. The code can run while computing a
+different objective.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification with one integer class label per example.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> model(x)                       <span class="co"># (batch, classes)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> criterion(logits, y)             <span class="co"># criterion = CrossEntropyLoss()</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> logits.softmax(dim<span class="op">=-</span><span class="dv">1</span>)  <span class="co"># for inspecting predictions</span></span></code></pre></div>
+<p><strong>Correction:</strong> Check shapes, dtypes, and values
+separately for predictions and targets. Class-index targets ordinarily
+use <code>long</code>; soft targets use floating point and should be
+nonnegative distributions summing to one across classes. The
+documentation warns that the framework does not fully validate
+probability targets. Apply softmax for inspecting predictions outside
+the loss calculation.</p>
+<p>For uniform predictions over <code>C</code> classes, ordinary
+unweighted cross-entropy is <code>log(C)</code>: about 0.693 for two
+classes and 2.303 for ten. The result also holds for valid soft targets,
+including uniform targets: their probabilities sum to one, so
+<code>-sum(q * log(1/C)) = log(C)</code>. This assumes no class
+weighting and a mean of the per-example losses.</p>
+<h2 id="confusing-evaluation-mode-with-disabled-gradients">6. Confusing
+evaluation mode with disabled gradients</h2>
+<p><strong>What you meant to do:</strong> Measure a trained model’s
+validation performance.</p>
+<p><strong>What you actually did:</strong> Wrap prediction in
+<code>no_grad()</code> and assume that also switches dropout and batch
+normalization into evaluation behavior.</p>
+<p>These controls do different jobs. <a
+href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.Module.html"><code>model.eval()</code></a>
+changes the behavior of relevant modules. <a
+href="https://docs.pytorch.org/docs/2.9/notes/autograd.html">Autograd
+modes</a> control gradient recording; they do not automatically select
+evaluation mode.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> model(x_valid)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    validation_loss <span class="op">=</span> criterion(logits, y_valid)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>model.train()  <span class="co"># restore training behavior before the next training phase</span></span></code></pre></div>
+<p><strong>Correction:</strong> Set both intentionally. With standard
+running-statistics batch normalization, validation in training mode can
+update those statistics. Some applications deliberately use stochastic
+inference; that needs an explicit protocol rather than an accidental
+mode setting.</p>
+<h2 id="reporting-the-luckiest-seed-as-the-algorithm">7. Reporting the
+luckiest seed as the algorithm</h2>
+<p><strong>What you meant to do:</strong> Compare two learning
+methods.</p>
+<p><strong>What you actually did:</strong> Run each several times,
+select its best score, and omit the rest.</p>
+<p><a href="https://arxiv.org/abs/2103.03098">Bouthillier and
+colleagues</a> examine multiple sources of variation in benchmark
+results. <a href="https://arxiv.org/abs/2108.13264">Agarwal and
+colleagues</a> show why uncertainty matters particularly when deep
+reinforcement learning is evaluated with few runs. Their specific
+recommendations concern their experimental settings; they should not
+become a mechanical “five seeds is enough” rule.</p>
+<p><strong>Correction:</strong> Plan repetitions, preserve all runs, and
+distinguish initialization variability from sampling, splitting, and
+tuning variability. Use paired comparisons where the design supports
+them. Choose uncertainty estimates that match the unit of
+replication.</p>
+<p>A fixed seed aids debugging. It cannot guarantee identical outcomes
+across environments: the <a
+href="https://docs.pytorch.org/docs/2.9/notes/randomness.html">PyTorch
+reproducibility notes</a> explain the limitations.</p>
+<h2 id="letting-the-average-hide-the-failure">8. Letting the average
+hide the failure</h2>
+<p><strong>What you meant to do:</strong> Improve the model for its
+intended users.</p>
+<p><strong>What you actually did:</strong> Celebrate one aggregate score
+without checking meaningful subgroups or conditions.</p>
+<p>Here is a constructed example with 900 easy cases and 100 difficult
+cases:</p>
+<table>
+<thead>
+<tr>
+<th>Evaluation slice</th>
+<th style="text-align: right;">Model A correct</th>
+<th style="text-align: right;">Model B correct</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Easy cases, n = 900</td>
+<td style="text-align: right;">855 (95%)</td>
+<td style="text-align: right;">882 (98%)</td>
+</tr>
+<tr>
+<td>Difficult cases, n = 100</td>
+<td style="text-align: right;">80 (80%)</td>
+<td style="text-align: right;">60 (60%)</td>
+</tr>
+<tr>
+<td>All cases, n = 1,000</td>
+<td style="text-align: right;">935 (93.5%)</td>
+<td style="text-align: right;">942 (94.2%)</td>
+</tr>
+</tbody>
+</table>
+<p>The aggregate improves by 0.7 percentage points while the difficult
+slice loses 20 points. This is <strong>subgroup performance
+degradation</strong>: an update reduces performance for a particular
+subgroup while the aggregate improves. Because easy cases account for
+90% of observations, their gain outweighs the difficult group’s
+loss.</p>
+<p>This describes the observed behavior. The table alone cannot identify
+whether training representation, optimization preferences, or another
+factor caused the decline, and does not diagnose majority bias. The
+aggregate improvement is real, but the benefit is not shared by every
+group.</p>
+<figure>
+<img src="figures/slices.svg"
+alt="Aggregate improvement and deterioration on a smaller evaluation slice" />
+<figcaption aria-hidden="true">Aggregate improvement and deterioration
+on a smaller evaluation slice</figcaption>
+</figure>
+<p><em>Figure 2. Constructed counts, not measured model performance. The
+shared vertical scale makes the subgroup decline visible.</em></p>
+<p><strong>Correction:</strong> Predefine important slices, report their
+sizes and uncertainty, and inspect error cases. Avoid selecting only
+favorable slices after seeing results. A small subgroup estimate may be
+unstable.</p>
+<p><a href="https://arxiv.org/abs/2011.03395">D’Amour and colleagues’
+underspecification paper</a> supplies a related warning: similarly
+strong in-domain scores can coexist with different deployment behavior.
+One number cannot specify everything you need from a model.</p>
+<h2 id="treating-preprocessing-as-an-afterthought">9. Treating
+preprocessing as an afterthought</h2>
+<p><strong>What you meant to do:</strong> Prepare the inputs, then
+measure performance on unseen examples.</p>
+<p><strong>What you actually did:</strong> Fit a global
+<code>StandardScaler</code> or target encoder before splitting training
+and validation data. Alternatively, create augmented copies first, then
+randomly split those copies.</p>
+<p><strong>The symptom:</strong> Training runs smoothly and validation
+performance looks unusually good—perhaps even 99% accuracy. That number
+is a warning to investigate, not a diagnostic test for leakage.</p>
+<p>A globally fitted scaler uses validation feature means and variances.
+Target encoding can additionally use validation labels to define
+category values. Augmented versions of the same original can cross the
+split and make the validation examples partly familiar. These are
+different leakage routes, with different consequences. See the <a
+href="https://scikit-learn.org/stable/common_pitfalls.html">official
+preprocessing pitfalls guide</a>.</p>
+<p><strong>Correction:</strong> Split independent originals first. Fit
+learned preprocessing on training data, then apply it unchanged to
+validation data. Within cross-validation, repeat fitting inside every
+training fold. Keep related augmented copies in their original’s
+partition; training augmentation must preserve the task’s label
+semantics.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># WRONG: validation observations influence the scaler.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    X_scaled, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># RIGHT for independent observations: split before fitting.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    X, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>X_valid_scaled <span class="op">=</span> scaler.transform(X_valid)</span></code></pre></div>
+<p>These are illustrative excerpts, not executed model results. Replace
+the random split when groups or time require another protocol. In
+cross-validation, put the scaler inside the pipeline rather than fitting
+it once before the folds.</p>
+<figure>
+<img src="figures/preprocessing.svg"
+alt="Preprocessing and augmentation must respect the split" />
+<figcaption aria-hidden="true">Preprocessing and augmentation must
+respect the split</figcaption>
+</figure>
+<p><em>Figure 3. Original schematic. Training learns the transformation;
+validation only receives it. Augmented siblings stay with their
+original. No accuracy values are measured here.</em></p>
+<p><strong>Target encoding must not use a row’s own answer to encode
+that row.</strong> Even within the training set, a row’s own label can
+leak into its category statistic. <a
+href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.TargetEncoder.html">Scikit-learn’s
+TargetEncoder</a> uses internal cross-fitting in
+<code>fit_transform</code>; this is intentionally different from
+<code>fit(...).transform(...)</code>. Its <a
+href="https://scikit-learn.org/stable/auto_examples/preprocessing/plot_target_encoder_cross_val.html">worked
+example</a> illustrates why that distinction matters.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> TargetEncoder</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># X_cat_train / X_cat_valid contain categorical features only.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> TargetEncoder(target_type<span class="op">=</span><span class="st">&quot;binary&quot;</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Training: cross-fit internally so a row does not encode its own label.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X_cat_train_encoded <span class="op">=</span> encoder.fit_transform(X_cat_train, y_train)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Independent validation: apply the mapping learned from all training data;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># validation labels are never used.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>X_cat_valid_encoded <span class="op">=</span> encoder.transform(X_cat_valid)</span></code></pre></div>
+<p>You still need independent validation even if the encoder uses
+internal cross-fitting. If people have repeated records or observations
+follow a time order, the internal splits must respect those constraints
+too.</p>
+<p>Leakage does not always produce 99% accuracy; its effect depends on
+the data and model. If a score looks suspicious, check the order of
+operations and rerun the evaluation with a clean workflow.</p>
+<h3 id="use-the-same-processing-when-the-model-goes-live">Use the same
+processing when the model goes live</h3>
+<p>Avoiding leakage during training is only part of the job. Saving
+weights while forgetting the scaler, feature order, vocabulary, or
+missing-value rules can still break predictions in production.</p>
+<p>A feature called <code>duration</code> might mean seconds offline and
+milliseconds online. Both are numbers, so the program may not
+complain.</p>
+<p>Save preprocessing and feature definitions with the model. Use a few
+fixed inputs to compare offline and online predictions. <a
+href="https://research.google/pubs/hidden-technical-debt-in-machine-learning-systems/">Sculley
+and colleagues’ technical-debt paper</a> discusses these maintenance
+problems around the model.</p>
+<h2 id="assuming-the-model-merely-observes-the-world">10. Assuming the
+model merely observes the world</h2>
+<p><strong>What you meant to do:</strong> Learn from historical behavior
+and improve future decisions.</p>
+<p><strong>What you actually did:</strong> Ignore that deploying the
+prediction system changes the data it later observes.</p>
+<p>A recommender shows an item; exposure makes a click possible; the
+next training set records those clicks. An unseen item receives no
+click, but that does not tell you whether a user would have liked it.
+Repeatedly retraining can reinforce the old exposure policy.</p>
+<figure>
+<img src="figures/feedback.svg"
+alt="Prediction, action, and newly observed data form a feedback loop" />
+<figcaption aria-hidden="true">Prediction, action, and newly observed
+data form a feedback loop</figcaption>
+</figure>
+<p><em>Figure 4. Original conceptual diagram. The logged observations
+depend on both user response and what the system chose to
+expose.</em></p>
+<p><a href="https://arxiv.org/abs/2002.06673">Perdomo and colleagues’
+Performative Prediction</a> studies how predictions change subsequent
+data. It offers a way to analyze that problem, rather than a ready-made
+fix for every exposure issue in recommendation.</p>
+<p><strong>Correction:</strong> Log what was shown and how it was
+selected, not just what was clicked. Where appropriate, use a controlled
+experiment to test whether a different recommendation policy helps.
+Clicks collected under the old policy may not tell you how the new one
+would perform.</p>
+<h2 id="three-checks-you-can-run-without-a-gpu">Three checks you can run
+without a GPU</h2>
+<p>The companion <a href="examples/verify_examples.py">verification
+script</a> checks the broadcasted squared-error arithmetic, the
+uniform-prediction cross-entropy reference, and the subgroup table. It
+uses only Python’s standard library. Run it from this article’s
+directory:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> examples/verify_examples.py</span></code></pre></div>
+<p>Those checks verify the constructed examples. They do not validate a
+model, and the PyTorch snippets above are illustrative excerpts rather
+than a complete training program.</p>
+<p>A practical debugging order is: inspect actual inputs and labels,
+establish a fair baseline, check the objective and modes, test a tiny
+training case, then evaluate the full workflow under realistic
+conditions. Record the intended question alongside every reported
+score.</p>
+<p>The mistake to fear is the one that produces exactly the result you
+hoped for, before you have checked why.</p>
+<h2 id="further-reading">Further reading</h2>
+<p>The sources linked throughout this article have different roles:
+Domingos and Karpathy offer practical perspectives; Zinkevich discusses
+engineering practice; the benchmark and deployment papers provide
+evidence within particular settings; PyTorch documentation defines API
+behavior. None is a universal recipe for every dataset.</p>
+<p><em>Sources checked October 12, 2026. PyTorch API links use version
+2.9 for explicit contracts. All figures are original; numerical
+illustrations are constructed and checked by the included
+script.</em></p>
+</body>
+</html>

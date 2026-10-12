@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-10-12" />
+  <title>Machine Learning Mistakes</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>body{font-family:system-ui,-apple-system,sans-serif;color:#243447;line-height:1.8;max-width:920px;margin:48px auto;padding:0 24px;background:#fff}h1{font-size:2.4rem;line-height:1.2}h2{margin-top:2.3rem;color:#173b59}a{color:#087e8b}img{max-width:100%;height:auto}pre{overflow:auto;padding:20px;background:#f3f6fa;border-radius:10px;line-height:1.5;font-size:14px}p:has(em){color:#536475}.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;box-shadow:0 2px 8px #0001}@media(max-width:650px){body{margin-top:80px}h1{font-size:1.8rem}}</style><style>.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;color:#087e8b;box-shadow:0 2px 8px #0001}</style><script>document.addEventListener('DOMContentLoaded',function(){var zh=/index-chinese\.html$/.test(location.pathname);var a=document.createElement('a');a.className='ml-language';a.href=zh?'index.html':'index-chinese.html';a.textContent=zh?'English':'Chinese';a.setAttribute('aria-label',zh?'Read in English':'阅读中文版');document.body.appendChild(a);});</script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">生物信息学里，机器学习最愚蠢的错误</h1>
+<p class="date">2026-10-12</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#先筛基因再做交叉验证" id="toc-先筛基因再做交叉验证">1.
+先筛基因，再做交叉验证</a></li>
+<li><a href="#应该拆患者却拆了数据行" id="toc-应该拆患者却拆了数据行">2.
+应该拆患者，却拆了数据行</a></li>
+<li><a href="#用整个队列学习预处理" id="toc-用整个队列学习预处理">3.
+用整个队列“学习”预处理</a></li>
+<li><a href="#先-smote再拆数据" id="toc-先-smote再拆数据">4. 先
+SMOTE，再拆数据</a></li>
+<li><a href="#调参直到测试集满意为止" id="toc-调参直到测试集满意为止">5.
+调参，直到测试集满意为止</a></li>
+<li><a href="#准确率-99一个阳性都没找到"
+id="toc-准确率-99一个阳性都没找到">6. 准确率
+99%，一个阳性都没找到</a></li>
+<li><a href="#把-0.5-当成科学阈值" id="toc-把-0.5-当成科学阈值">7. 把
+0.5 当成科学阈值</a></li>
+<li><a href="#训练了批次识别器却叫它疾病模型"
+id="toc-训练了批次识别器却叫它疾病模型">8.
+训练了批次识别器，却叫它疾病模型</a></li>
+<li><a href="#把特征重要性写成生物学机制"
+id="toc-把特征重要性写成生物学机制">9.
+把特征重要性写成生物学机制</a></li>
+<li><a href="#数组形状正确患者身份全错"
+id="toc-数组形状正确患者身份全错">10.
+数组形状正确，患者身份全错</a></li>
+<li><a href="#一个值得留下来的小模板"
+id="toc-一个值得留下来的小模板">一个值得留下来的小模板</a></li>
+<li><a href="#下次看到漂亮分数时"
+id="toc-下次看到漂亮分数时">下次看到漂亮分数时</a></li>
+</ul>
+</nav>
+<p>模型的 AUROC 是
+0.98。热图很好看，排名靠前的基因也有说得通的生物学功能。</p>
+<p>换一个队列，模型却失灵了。</p>
+<p>先别急着把逻辑回归换成
+Transformer。值得检查的，可能是模型周围的整个实验设计。复杂的算法，也能学会一个非常简单的错误。</p>
+<p>本文参考 <a
+href="https://divingintogeneticsandgenomics.com/post/stupid-mistakes-for-bioinformatics/">Chatomics
+的生物信息常见错误文章</a>中“想做什么—实际做错什么—如何修正”的实用结构。下面的场景是原创教学案例，不是我实际运行过的实验。“愚蠢”指容易预防的流程错误，而不是犯错的人。</p>
+<h2 id="先筛基因再做交叉验证">1. 先筛基因，再做交叉验证</h2>
+<p><strong>你原本想做：</strong>
+找到一组能预测新患者疾病状态的表达特征。</p>
+<p><strong>你实际做了：</strong>
+先用全部患者的疾病标签筛差异基因，再拿这组基因做分类器交叉验证。</p>
+<p>验证患者已经参与决定输入特征。只对最后的分类器做交叉验证，无法撤销前面泄露的信息。<a
+href="https://pubmed.ncbi.nlm.nih.gov/11983868/">Ambroise 与 McLachlan
+在 2002 年</a>就讨论过微阵列分类中的这个问题。</p>
+<p><strong>修正：</strong>
+每个训练折内部重新进行有监督基因筛选。如果基因列表来自完全独立的研究，那是另一种情况，但需要记录来源。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 错误：验证集标签参与了基因筛选。</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X_selected <span class="op">=</span> SelectKBest(f_classif, k<span class="op">=</span><span class="dv">100</span>).fit_transform(X, y)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cross_val_score(classifier, X_selected, y, cv<span class="op">=</span>cv, groups<span class="op">=</span>patient_id)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 改进：每一折只用训练数据拟合特征选择器。</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    SelectKBest(f_classif, k<span class="op">=</span><span class="dv">100</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    StandardScaler(),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cross_val_score(model, X, y, cv<span class="op">=</span>cv, groups<span class="op">=</span>patient_id)</span></code></pre></div>
+<p>这是流程片段，完整导入和分组方式见文末。Pipeline
+只能保护放在里面的操作，不能修复外部已经泄露信息的基因列表。</p>
+<figure>
+<img src="figures/leakage.svg" alt="交叉验证内外的特征筛选" />
+<figcaption aria-hidden="true">交叉验证内外的特征筛选</figcaption>
+</figure>
+<p><em>图 1.
+原创示意图。上方流程让验证集标签参与选基因；下方流程在每个训练折内学习选择器和标准化参数。图中没有实测性能值。</em></p>
+<h2 id="应该拆患者却拆了数据行">2. 应该拆患者，却拆了数据行</h2>
+<p><strong>你原本想做：</strong> 预测一个从未见过的患者。</p>
+<p><strong>你实际做了：</strong>
+随机拆细胞、病理切片小块或重复随访。同一个患者的观测同时出现在训练集和测试集。</p>
+<p>模型可能利用患者特有的表达、染色或采集特征。这个分数回答的其实是另一个问题：能否预测部分已经熟悉的患者的其他观测？</p>
+<p><strong>修正：</strong>
+按任务对应的独立单位分组。预测新患者就按患者分组；部署到新中心还要考虑留出中心。蛋白质预测则需要检查跨集合的同源序列是否削弱了你想证明的泛化能力。</p>
+<p><a
+href="https://scikit-learn.org/stable/modules/cross_validation.html">scikit-learn
+的交叉验证文档</a>介绍了分组和时间顺序拆分。按类别分层，不等于按患者隔离。</p>
+<figure>
+<img src="figures/groups.svg" alt="按行拆分与按患者拆分" />
+<figcaption aria-hidden="true">按行拆分与按患者拆分</figcaption>
+</figure>
+<p><em>图 2. 原创示意图，字母 A–D
+代表患者。同一患者的观测保持在同一侧，可以避免直接的患者重叠，但不能保证没有中心或批次混杂。</em></p>
+<h2 id="用整个队列学习预处理">3. 用整个队列“学习”预处理</h2>
+<p><strong>你原本想做：</strong> 让特征在训练前具有可比性。</p>
+<p><strong>你实际做了：</strong> 在全队列上拟合缺失值填补、标准化、PCA
+或数据驱动的批次调整，再评价留出的样本。</p>
+<p>没有使用疾病标签，也不代表没有使用验证集信息。对于预测未见样本的常规任务，学习转换参数应依靠训练数据。<a
+href="https://scikit-learn.org/stable/common_pitfalls.html">官方常见陷阱文档</a>明确讨论了这些预处理操作的泄露风险。</p>
+<p><strong>修正：</strong>
+在训练折内拟合，向验证样本应用已拟合的转换。需要区分只处理单个样本、不估计其他样本参数的固定变换，例如固定的对数变换。</p>
+<p>训练和测试队列联合整合，可以服务于明确的传导式学习任务；但它不能证明模型能处理拟合时尚不存在的未来样本。一个真正的新样本，怎样独立经过保存好的流程？这是值得回答的问题。</p>
+<h2 id="先-smote再拆数据">4. 先 SMOTE，再拆数据</h2>
+<p><strong>你原本想做：</strong> 让模型学会识别少数阳性样本。</p>
+<p><strong>你实际做了：</strong>
+对完整数据做过采样后再交叉验证。合成样本可能依赖后来进入验证集的观测，评估集也不再保持原来的类别比例。</p>
+<p><strong>修正：</strong>
+每折只对训练部分重采样，验证集和测试集保持原样。<code>imblearn.pipeline.Pipeline</code>
+可以在拟合阶段管理采样器。<a
+href="https://imbalanced-learn.org/stable/common_pitfalls.html">imbalanced-learn
+的官方示例</a>展示了全数据重采样的问题。</p>
+<p>在样本少、维度高的组学数据里，SMOTE
+也不是天然正确。在两个患者之间插出来的点，未必对应一个生物学合理的患者。先与类别权重和简单基线比较。</p>
+<h2 id="调参直到测试集满意为止">5. 调参，直到测试集满意为止</h2>
+<p><strong>你原本想做：</strong> 得到诚实的最终性能估计。</p>
+<p><strong>你实际做了：</strong> 试 30
+套基因面板、五种算法和多个随机种子；每次都看测试分数，最后报告冠军。</p>
+<p>测试集已经成了模型选择工具。<a
+href="https://www.jmlr.org/beta/papers/v11/cawley10a.html">Cawley 与
+Talbot（2010）</a>解释了为什么模型选择本身也会对有噪声的评价标准过拟合。</p>
+<p><strong>修正：</strong>
+用开发数据调参，冻结流程后再评估最终测试队列。样本有限时可采用嵌套交叉验证：内层选模型，外层评估整个选择过程。参见<a
+href="https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html">官方嵌套交叉验证示例</a>。</p>
+<p>挑最好的随机种子也是选择。预先确定种子，或报告事先规划的一组运行的分布。最高分不是可重复性策略。</p>
+<h2 id="准确率-99一个阳性都没找到">6. 准确率 99%，一个阳性都没找到</h2>
+<p><strong>你原本想做：</strong> 检出罕见结局。</p>
+<p><strong>你实际做了：</strong> 只报告 accuracy，没有看混淆矩阵。</p>
+<p>1,000 个样本里有 10 个阳性。全部预测阴性，准确率就是 99%，召回率却是
+0%。这是算术例子，不是模拟性能实验。</p>
+<figure>
+<img src="figures/accuracy.svg" alt="准确率陷阱的混淆矩阵" />
+<figcaption aria-hidden="true">准确率陷阱的混淆矩阵</figcaption>
+</figure>
+<p><em>图 3. 人工构造的例子，不是患者数据。模型 A 全部预测阴性；模型 B
+找到 10 个阳性中的 8 个，同时产生 40 个假阳性。B
+的准确率更低；这种取舍是否合适，取决于用途。</em></p>
+<p><strong>修正：</strong>
+说明阳性比例，展示混淆矩阵，选择符合任务的指标。阳性罕见时，precision-recall
+汇总指标可能有帮助，但其基线和解读依赖阳性比例。AUROC
+衡量排序能力，不等于特定阈值下的表现。<a
+href="https://scikit-learn.org/stable/modules/model_evaluation.html">官方指标文档</a>给出了这些量的定义。</p>
+<p>再与 <a
+href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">DummyClassifier</a>
+比较。没有基线，很容易把自己说服。</p>
+<h2 id="把-0.5-当成科学阈值">7. 把 0.5 当成科学阈值</h2>
+<p><strong>你原本想做：</strong> 把风险分数变成可执行的决策。</p>
+<p><strong>你实际做了：</strong> 接受默认阈值，并把 0.9 的输出当成可信的
+90% 概率。</p>
+<p>排序、校准和决策是不同的性质。排序表现好的模型，概率估计也可能很差。检查可靠性图；<a
+href="https://scikit-learn.org/stable/modules/calibration.html">概率校准文档</a>解释了这种区别。Brier
+score 有用，但它不只反映校准。</p>
+<p><strong>修正：</strong>
+根据明确的目标，在开发数据上选阈值，再在留出数据上评价固定阈值。不要用最终测试集优化它。<a
+href="https://scikit-learn.org/1.9/modules/classification_threshold.html">阈值调整文档</a>展示了：分数不变，改变阈值仍会改变决策。</p>
+<p>校准也需要与模型拟合、最终评估合理分离。队列构成或阳性比例变化后，还需要重新检查。</p>
+<h2 id="训练了批次识别器却叫它疾病模型">8.
+训练了批次识别器，却叫它疾病模型</h2>
+<p><strong>你原本想做：</strong> 学到与疾病有关的生物学信号。</p>
+<p><strong>你实际做了：</strong> 病例全部来自实验室
+A，对照全部来自实验室 B，再随机拆分混合数据。</p>
+<p>训练和测试两侧保留了同样的技术捷径。高分可能反映实验室、处理日期或测定平台。</p>
+<p>这不是纯粹的想象。<a
+href="https://journals.plos.org/plosmedicine/article?id=10.1371%2Fjournal.pmed.1002683">Zech
+等人（2018）</a>发现肺炎影像模型能够利用医院信息，跨医院泛化也不稳定。把这个教训用于组学是类比，不是该影像论文的组学结论。</p>
+<p><strong>修正：</strong>
+检查结局与批次的交叉表，比较仅使用元数据的基线，并在相关外部队列评估。如果批次与疾病完全混杂，一个批次校正按钮无法证明哪些信号来自生物学。需要能把两者区分开的研究设计。</p>
+<p>同样，预后模型只能使用约定预测时点已经可得的信息。结局发生后的测量，会让不可能的预测看起来很容易。</p>
+<h2 id="把特征重要性写成生物学机制">9. 把特征重要性写成生物学机制</h2>
+<p><strong>你原本想做：</strong> 理解模型为什么能预测。</p>
+<p><strong>你实际做了：</strong> 把排名第一的基因称为疾病驱动基因。</p>
+<p>特征重要性描述模型在某种解释方法下的行为，本身不识别因果机制。共表达基因还会相互替代：只打乱其中一个，预测可能几乎不变。</p>
+<p><strong>修正：</strong>
+在留出数据上评估重要性，检查相关特征组，考察跨折和跨队列稳定性。<a
+href="https://scikit-learn.org/stable/modules/permutation_importance.html">置换重要性文档</a>及<a
+href="https://scikit-learn.org/stable/auto_examples/inspection/plot_permutation_importance_multicollinear.html">相关特征示例</a>解释了为什么有用的特征也可能得到很低的置换重要性。</p>
+<p>把重要基因当作后续验证候选，并说明机制结论还需要哪些证据。</p>
+<h2 id="数组形状正确患者身份全错">10. 数组形状正确，患者身份全错</h2>
+<p><strong>你原本想做：</strong> 把表达谱与正确的标签匹配。</p>
+<p><strong>你实际做了：</strong>
+排序表达矩阵，没同步排序元数据；两边转成 NumPy，开始训练。</p>
+<p>维度都对。患者都错。</p>
+<p><strong>修正：</strong> 用明确的标识符连接，拒绝重复
+ID，在丢弃标签前断言顺序一致。模型也应保存特征名称和顺序。</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># X_df：样本 × 基因；metadata：每个 sample_id 一行。</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> X_df.index.is_unique</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> metadata[<span class="st">&quot;sample_id&quot;</span>].is_unique</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> metadata.set_index(<span class="st">&quot;sample_id&quot;</span>).loc[X_df.index]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> X_df.index.equals(meta.index)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> meta[<span class="st">&quot;outcome&quot;</span>].notna().<span class="bu">all</span>()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> meta[<span class="st">&quot;outcome&quot;</span>].to_numpy()</span></code></pre></div>
+<p>纵向数据应使用唯一的观测 ID 对齐，再使用单独的患者 ID
+分组。不要把多次随访强行套进“每个患者一行”的假设。</p>
+<h2 id="一个值得留下来的小模板">一个值得留下来的小模板</h2>
+<p>下面用于<strong>按患者分组的二分类</strong>，不是完整组学流程，也不是性能基准。<code>X</code>
+应已正确对齐、为数值且无缺失；<code>y</code>
+是二分类标签，<code>patient_id</code>
+是患者分组。每折必须有足够的患者和类别覆盖，<code>k</code>
+应适配实际特征数。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectKBest, f_classif</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedGroupKFold, cross_validate</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedGroupKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> train, valid <span class="kw">in</span> cv.split(X, y, groups<span class="op">=</span>patient_id):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> (<span class="bu">set</span>(patient_id[train]) <span class="op">&amp;</span> <span class="bu">set</span>(patient_id[valid]))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(np.unique(y[train])) <span class="op">==</span> <span class="bu">len</span>(np.unique(y[valid])) <span class="op">==</span> <span class="dv">2</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    SelectKBest(f_classif, k<span class="op">=</span><span class="dv">100</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    StandardScaler(),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_validate(</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    model, X, y, groups<span class="op">=</span>patient_id, cv<span class="op">=</span>cv,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span>{<span class="st">&quot;auroc&quot;</span>: <span class="st">&quot;roc_auc&quot;</span>, <span class="st">&quot;ap&quot;</span>: <span class="st">&quot;average_precision&quot;</span>},</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores[<span class="st">&quot;test_auroc&quot;</span>])</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores[<span class="st">&quot;test_ap&quot;</span>])</span></code></pre></div>
+<p>它评估固定流程。如果根据这些分数选择
+<code>k</code>、正则化强度或算法，就需要内层选择、外层评估。五个相关的折分数不是五次独立实验，也不能自动解释为置信区间。代码只做了语法检查，没有在生物数据集上运行。</p>
+<h2 id="下次看到漂亮分数时">下次看到漂亮分数时</h2>
+<p>先问四件事：<strong>留出了谁？什么信息越过了边界？这个指标支持什么决策？有没有更简单的解释？</strong></p>
+<p>保存拆分
+ID、特征结构、预处理对象、环境版本和选择历史。固定种子有助于复现流程，却不能让错误流程变正确。</p>
+<p>最昂贵的错误，往往会生成一张漂亮的图，而且不报任何错。</p>
+<p><em>资料核查日期：2026 年 10 月 12
+日。文档随版本变化，真实分析应固定环境版本。三幅图均为原创教学图解。</em></p>
+</body>
+</html>
