@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xml:lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-10-12" />
+  <title>机器学习中最愚蠢的错误</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>body{font-family:system-ui,-apple-system,sans-serif;color:#243447;line-height:1.8;max-width:930px;margin:52px auto;padding:0 26px}h1{font-size:2.5rem;line-height:1.2;max-width:800px}h2{margin-top:2.5rem;color:#15354d}a{color:#087f83}img{width:100%;height:auto}pre{overflow:auto;padding:20px;background:#f1f5f9;border-radius:10px;font-size:14px;line-height:1.55}table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{padding:10px 14px;border-bottom:1px solid #d9e2eb;text-align:left}th{background:#eaf2f5}p:has(em){color:#61758a;font-size:.9rem}nav#TOC{background:#f5f8fc;border-radius:12px;padding:16px 25px;margin:25px 0}nav#TOC ul{list-style:none;padding-left:0}nav#TOC li{margin:2px 0}nav#TOC a{text-decoration:none;font-size:.9rem}.date{color:#61758a}@media(max-width:650px){body{margin-top:85px}h1{font-size:2rem}table{font-size:.8rem}td,th{padding:7px}}</style><style>.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;color:#087e8b;box-shadow:0 2px 8px #0001}</style><script>document.addEventListener('DOMContentLoaded',function(){var zh=/index-chinese\.html$/.test(location.pathname);var a=document.createElement('a');a.className='ml-language';a.href=zh?'index.html':'index-chinese.html';a.textContent=zh?'English':'Chinese';a.setAttribute('aria-label',zh?'Read in English':'阅读中文版');document.body.appendChild(a);});</script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">机器学习中最愚蠢的错误</h1>
+<p class="date">2026-10-12</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#没看清数据就先选模型" id="toc-没看清数据就先选模型">1.
+没看清数据，就先选模型</a>
+<ul>
+<li><a href="#数据正确还要在预测时可得"
+id="toc-数据正确还要在预测时可得">数据正确，还要在预测时可得</a></li>
+</ul></li>
+<li><a href="#打败一个没有认真参赛的基线"
+id="toc-打败一个没有认真参赛的基线">2.
+打败一个没有认真参赛的基线</a></li>
+<li><a href="#连一个小训练批次都没拟合就开始扩规模"
+id="toc-连一个小训练批次都没拟合就开始扩规模">3.
+连一个小训练批次都没拟合，就开始扩规模</a></li>
+<li><a href="#让-broadcasting-偷换了优化目标"
+id="toc-让-broadcasting-偷换了优化目标">4. 让 broadcasting
+偷换了优化目标</a></li>
+<li><a href="#因为分类需要概率先做一次-softmax"
+id="toc-因为分类需要概率先做一次-softmax">5.
+因为“分类需要概率”，先做一次 softmax</a></li>
+<li><a href="#把关闭梯度当成进入评估模式"
+id="toc-把关闭梯度当成进入评估模式">6.
+把关闭梯度当成进入评估模式</a></li>
+<li><a href="#把最幸运的随机种子写成算法表现"
+id="toc-把最幸运的随机种子写成算法表现">7.
+把最幸运的随机种子写成算法表现</a></li>
+<li><a href="#让平均分遮住失败" id="toc-让平均分遮住失败">8.
+让平均分遮住失败</a></li>
+<li><a href="#把预处理当成随手做的小事"
+id="toc-把预处理当成随手做的小事">9. 把预处理当成随手做的小事</a>
+<ul>
+<li><a href="#上线时也要用同一套处理"
+id="toc-上线时也要用同一套处理">上线时，也要用同一套处理</a></li>
+</ul></li>
+<li><a href="#以为模型只是观察世界" id="toc-以为模型只是观察世界">10.
+以为模型只是观察世界</a></li>
+<li><a href="#不用-gpu-就能做的三个检查"
+id="toc-不用-gpu-就能做的三个检查">不用 GPU 就能做的三个检查</a></li>
+<li><a href="#延伸阅读" id="toc-延伸阅读">延伸阅读</a></li>
+</ul>
+</nav>
+<p>程序跑起来了。损失在下降。输出目录里也有了 checkpoint。</p>
+<p>这三件事，都不能证明实验有意义。</p>
+<p>有些机器学习错误会抛异常。更昂贵的错误，会生成一张很有说服力的图。你可能花一周调模型，让它更擅长解决一个错误的问题；再花一周解释为什么它表现这么好。</p>
+<p>这篇文章整理十个具体陷阱，参考学者的经验文章、原始论文和框架文档。下面的场景与图解均为原创，不能视为那些作者实际运行过的实验。“愚蠢”指可以预防的错误，而不是犯错的人。</p>
+<h2 id="没看清数据就先选模型">1. 没看清数据，就先选模型</h2>
+<p><strong>你原本想做：</strong> 解决一个预测问题。</p>
+<p><strong>你实际做了：</strong>
+还没弄清数据和标签从哪里来，就选好了热门网络。</p>
+<p>文件夹叫 <code>clean_data</code>，不代表数据干净。缺失值被编码成
+<code>-999</code>，可能变成强特征。两个标注者可能对“阳性”有不同定义。时间戳可能记录上传时间，而不是你想预测的事件时间。</p>
+<p>Sambasivan 等人的 <a
+href="https://research.google/pubs/everyone-wants-to-do-the-model-work-not-the-data-work-data-cascades-in-high-stakes-ai/">Data
+Cascades
+研究</a>讨论了忽视数据工作怎样造成层层累积的问题。它来自实践者访谈，不是适用于所有项目的统计定律。</p>
+<p><strong>修正：</strong>
+按标签、来源和时间段查看真实样本。阅读标注规则，画缺失值分布，检查重复数据。写清楚“一行代表什么”和“标签到底测量什么”。</p>
+<p>看到
+<code>-999</code>，先确认它是缺失值占位符还是合法取值，再决定如何处理。未经检查就把占位符当作数值喂给
+Transformer，模型可能认真学习你根本不想让它学习的编码规则。</p>
+<h3 id="数据正确还要在预测时可得">数据正确，还要在预测时可得</h3>
+<p>同一份数据还要回答另一个问题：<strong>预测发生的那一刻，这个特征真的已经可得了吗？</strong>
+随机拆有时间依赖的观测，或使用预测时点之后才拿到的记录，都可能让评估偏离真实预测任务。</p>
+<p>“未来七天购买次数”在特征表里可能有个普通名字，但今天做预测时仍然不可得。一条记录的发生时间，也未必是系统拿到它的时间。</p>
+<p><strong>修正：</strong>
+写清楚什么时候做预测，以及那一刻能拿到哪些数据。计算特征时只用当时已经可得的记录，再用较晚的数据评估。有重叠的预测窗口时，也要检查两边是否共享了不该共享的信息。光按时间拆分，不能去掉特征里已经混入的未来数据。</p>
+<p><a
+href="https://developers.google.com/machine-learning/guides/rules-of-ml">Martin
+Zinkevich
+的机器学习规则</a>建议用训练期之后采集的数据评估。具体划分仍需符合应用与依赖结构。</p>
+<h2 id="打败一个没有认真参赛的基线">2. 打败一个没有认真参赛的基线</h2>
+<p><strong>你原本想做：</strong> 证明新模型提高了预测能力。</p>
+<p><strong>你实际做了：</strong>
+给自己的方法反复调参，却只给基线一个不合适的配置，然后把差距归功于新结构。</p>
+<p>Ferrari Dacrema、Cremonesi 和 Jannach 在 <a
+href="https://arxiv.org/abs/1907.06902">2019
+年推荐算法研究</a>中发现，认真调参的简单方法可以超过他们复现的多种神经方法。这是关于所研究方法与基准的证据，不能外推成“神经网络永远没用”。</p>
+<p><strong>修正：</strong>
+给基线合理的调参资源、相同的信息和评估协议。加入符合任务的简单规则，例如时间序列预测中的“下一个值等于最近一个值”。同时报告计算开销和延迟。</p>
+<p>不能只让竞争对手背着“默认参数”的包袱比赛。</p>
+<h2 id="连一个小训练批次都没拟合就开始扩规模">3.
+连一个小训练批次都没拟合，就开始扩规模</h2>
+<p><strong>你原本想做：</strong> 训练一个有用的神经网络。</p>
+<p><strong>你实际做了：</strong>
+还没验证几个样本能不能学会，就启动大规模训练。</p>
+<p>Karpathy 的<a
+href="https://karpathy.github.io/2019/04/25/recipe/">神经网络训练经验文章</a>建议查看实际输入张量，并把刻意拟合一个小批次作为调试步骤。</p>
+<p><strong>修正：</strong>
+关闭数据增强，简化模型，用固定的少量、标签清楚的样本训练。在容量足够、标签不矛盾时，应当能拟合这些样本。如果失败，先检查标签、损失、梯度和优化，而不是先加
+GPU。</p>
+<p>小批次拟合失败时，打印这几个样本的原始记录、预处理后特征和标签，检查是否有相同输入却有不同标签。例如，同一个输入出现两次，一次标正、一次标负；模型对相同输入给出相同预测时，不加权二元交叉熵的最优共同预测是
+0.5，平均损失为
+<code>log(2)</code>，无法归零。多标签任务或带额外上下文的输入，需要另行分析。</p>
+<p>同时检查正则化、模型容量、学习率和梯度。不能仅凭拟合失败，就断定原因是重复脏数据。成功记忆小批次仍然只是一项调试检查，不证明泛化能力。</p>
+<h2 id="让-broadcasting-偷换了优化目标">4. 让 broadcasting
+偷换了优化目标</h2>
+<p><strong>你原本想做：</strong> 把每个预测与它对应的目标比较。</p>
+<p><strong>你实际做了：</strong> 用形状 <code>(N, 1)</code>
+的预测减去形状 <code>(N,)</code> 的标签。</p>
+<p>根据 <a
+href="https://docs.pytorch.org/docs/2.9/notes/broadcasting.html">PyTorch
+的广播规则</a>，结果是 <code>(N, N)</code>
+的矩阵。每个预测都在与每个标签比较。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 每个样本一个预测，但两边形状不同。</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>], [<span class="fl">2.0</span>], [<span class="fl">3.0</span>]])  <span class="co"># (3, 1)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])      <span class="co"># (3,)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># 4/3，不是零</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pred.ndim <span class="op">==</span> <span class="dv">2</span> <span class="kw">and</span> pred.shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> target.ndim <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> pred.shape[<span class="dv">0</span>] <span class="op">==</span> target.shape[<span class="dv">0</span>]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> pred.squeeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pred.shape <span class="op">==</span> target.shape</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> ((pred <span class="op">-</span> target) <span class="op">**</span> <span class="dv">2</span>).mean()      <span class="co"># 零</span></span></code></pre></div>
+<p>这是 PyTorch 示意片段。配套的<a
+href="examples/verify_examples.py">标准库脚本</a>不用 PyTorch
+就能复现算术过程，不训练神经网络。</p>
+<figure>
+<img src="figures/broadcast.svg" alt="逐样本误差与错误的两两比较" />
+<figcaption aria-hidden="true">逐样本误差与错误的两两比较</figcaption>
+</figure>
+<p><em>图 1. 已核算的教学例子。预测与标签都是
+<code>[1, 2, 3]</code>，正确的逐样本误差为零；广播后的目标却包含九个两两误差，均值为
+4/3。</em></p>
+<p><strong>修正：</strong>
+先确认这里每个样本只有一个输出，再调整形状。即使只有一个样本，<code>(1, 1).squeeze(-1)</code>
+也会得到 <code>(1,)</code>，保留批次维。不要换成无条件
+<code>flatten()</code>，否则可能把多输出也摊平，藏住另一种错误。其他地方如果还需要二维预测，可以把调整后的结果放在单独变量里。</p>
+<p>错误的损失也可以下降。当预测值可以独立调整时，全部两两比较的目标会把每个预测推向标签均值。收敛，不等于目标正确。</p>
+<h2 id="因为分类需要概率先做一次-softmax">5.
+因为“分类需要概率”，先做一次 softmax</h2>
+<p><strong>你原本想做：</strong> 训练多分类模型。</p>
+<p><strong>你实际做了：</strong> 先算 softmax，再把概率送进
+<code>CrossEntropyLoss</code>。</p>
+<p>这里必须区分 <code>CrossEntropyLoss(input, target)</code>
+的两个参数。<a
+href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.CrossEntropyLoss.html">PyTorch
+文档</a>规定：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>参数</th>
+<th>应传入什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code>：模型预测端</td>
+<td>原始 logits；不要先对模型输出做 softmax</td>
+</tr>
+<tr>
+<td><code>target</code>：监督目标端</td>
+<td>整数类别索引，或与预测同形状的合法概率分布（软标签）</td>
+</tr>
+</tbody>
+</table>
+<p>软标签支持属于 <code>target</code>，不会改变预测端的接口约定。如果把
+<code>softmax(logits)</code> 传给
+<code>input</code>，内部会把这些数再次当作 logits 做
+log-softmax，计算出不同的损失。代码可能仍然运行，但不再是原本打算优化的交叉熵。</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 每个样本对应一个整数类别标签。</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> model(x)                       <span class="co"># (batch, classes)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> criterion(logits, y)             <span class="co"># criterion = CrossEntropyLoss()</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> logits.softmax(dim<span class="op">=-</span><span class="dv">1</span>)  <span class="co"># 用于查看预测</span></span></code></pre></div>
+<p><strong>修正：</strong>
+分别检查预测端和目标端的形状、数据类型与取值。整数类别目标通常使用
+<code>long</code>；软标签使用浮点数，并应满足非负、各类别概率和为一等约束。文档提醒：框架不会替你完整验证概率目标是否合法。用于展示预测的
+softmax 可以放在损失计算之外。</p>
+<p>对于 <code>C</code> 类均匀预测，普通、不加权的交叉熵是
+<code>log(C)</code>：二分类约 0.693，十分类约
+2.303。这个结果也适用于合法软标签，包括均匀软标签：因为目标概率之和为一，<code>-sum(q * log(1/C)) = log(C)</code>。这里假设没有类别加权，并按每个样本的损失取平均。</p>
+<h2 id="把关闭梯度当成进入评估模式">6. 把关闭梯度当成进入评估模式</h2>
+<p><strong>你原本想做：</strong> 测量训练后模型的验证性能。</p>
+<p><strong>你实际做了：</strong> 用 <code>no_grad()</code>
+包住预测，以为 dropout 和 batch normalization 也切换成评估行为。</p>
+<p>两者职责不同。<a
+href="https://docs.pytorch.org/docs/2.9/generated/torch.nn.Module.html"><code>model.eval()</code></a>改变相关模块的行为；<a
+href="https://docs.pytorch.org/docs/2.9/notes/autograd.html">自动求导模式</a>控制梯度记录，不会自动选择评估模式。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> model(x_valid)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    validation_loss <span class="op">=</span> criterion(logits, y_valid)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>model.train()  <span class="co"># 下一个训练阶段前恢复训练行为</span></span></code></pre></div>
+<p><strong>修正：</strong> 明确设置两者。对于默认跟踪运行统计量的 batch
+normalization，训练模式下验证可能更新这些统计量。有些应用刻意使用随机推断，但应该有明确协议，而不是误设模式。</p>
+<h2 id="把最幸运的随机种子写成算法表现">7.
+把最幸运的随机种子写成算法表现</h2>
+<p><strong>你原本想做：</strong> 比较两种学习方法。</p>
+<p><strong>你实际做了：</strong>
+各跑几次，挑最好的一次，其余不报告。</p>
+<p><a href="https://arxiv.org/abs/2103.03098">Bouthillier
+等人</a>研究了基准结果的多种变异来源；<a
+href="https://arxiv.org/abs/2108.13264">Agarwal
+等人</a>则讨论了少量运行下深度强化学习评价的不确定性。他们的具体建议有实验背景，不能变成机械的“五个种子就够了”。</p>
+<p><strong>修正：</strong>
+事先安排重复运行，保留全部结果，区分初始化、采样、数据划分与调参带来的变异。设计允许时做配对比较，不确定性估计应匹配重复单位。</p>
+<p>固定种子帮助调试，但不能保证跨环境完全一致。<a
+href="https://docs.pytorch.org/docs/2.9/notes/randomness.html">PyTorch
+可重复性文档</a>解释了这些限制。</p>
+<h2 id="让平均分遮住失败">8. 让平均分遮住失败</h2>
+<p><strong>你原本想做：</strong> 改善模型对目标用户的表现。</p>
+<p><strong>你实际做了：</strong>
+只庆祝汇总指标，没有检查重要子群或条件。</p>
+<p>下面是人工构造的例子：900 个容易样本，100 个困难样本。</p>
+<table>
+<thead>
+<tr>
+<th>评估切片</th>
+<th style="text-align: right;">模型 A 正确数</th>
+<th style="text-align: right;">模型 B 正确数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容易样本，n = 900</td>
+<td style="text-align: right;">855（95%）</td>
+<td style="text-align: right;">882（98%）</td>
+</tr>
+<tr>
+<td>困难样本，n = 100</td>
+<td style="text-align: right;">80（80%）</td>
+<td style="text-align: right;">60（60%）</td>
+</tr>
+<tr>
+<td>全部样本，n = 1,000</td>
+<td style="text-align: right;">935（93.5%）</td>
+<td style="text-align: right;">942（94.2%）</td>
+</tr>
+</tbody>
+</table>
+<p>总体提高 0.7 个百分点，困难组却下降 20
+个百分点。这里出现了<strong>子群表现退化（subgroup performance
+degradation）</strong>：模型更新后，某个子群的指标降低，而总体指标仍然提高。由于容易组占
+90%，它的收益足以抵消困难组的损失。</p>
+<p>这是对可观察现象的描述；仅凭这张表，不能判断退步来自训练数据不足、优化偏好还是其他原因，也不能据此诊断“多数群体偏见”。总体提升是真实的，但不是所有群体都受益。</p>
+<figure>
+<img src="figures/slices.svg" alt="总体提高与小样本切片的退步" />
+<figcaption aria-hidden="true">总体提高与小样本切片的退步</figcaption>
+</figure>
+<p><em>图 2.
+人工构造并核算的计数，不是实测性能。统一纵轴帮助看清困难组的下降。</em></p>
+<p><strong>修正：</strong>
+预先定义重要切片，报告样本数与不确定性，检查错误案例。不要看完结果才挑有利切片，小群体估计也可能很不稳定。</p>
+<p><a href="https://arxiv.org/abs/2011.03395">D’Amour
+等人的欠规定性研究</a>提供了相关提醒：域内分数相近的模型，部署表现仍可能不同。一个数字无法描述你对模型的全部要求。</p>
+<h2 id="把预处理当成随手做的小事">9. 把预处理当成随手做的小事</h2>
+<p><strong>你原本想做：</strong>
+整理输入，再评估模型对未见样本的表现。</p>
+<p><strong>你实际做了：</strong> 在划分训练集和验证集之前，拟合全局
+<code>StandardScaler</code>
+或目标编码器；或者先生成增强副本，再随机拆这些副本。</p>
+<p><strong>现象：</strong> 程序运行顺利，验证表现好得异常，甚至可能出现
+99% 准确率。但这个数字只是值得检查的信号，不能据此诊断泄露。</p>
+<p>全局标准化会使用验证集特征的均值与方差；目标编码还可能用验证集标签计算类别数值；增强副本跨集合，则让模型提前熟悉验证样本的原型。这是不同的信息泄露路径，后果也不同。参见<a
+href="https://scikit-learn.org/stable/common_pitfalls.html">官方预处理陷阱文档</a>。</p>
+<p><strong>修正：</strong>
+先拆独立的原始样本，在训练数据上学习预处理，再原样应用到验证数据。交叉验证时，每个训练折内重新拟合。同一原始样本的增强副本留在同一集合；训练增强也必须符合任务的标签语义。</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 错误：验证观测参与估计标准化参数。</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    X_scaled, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 适用于独立观测的正确顺序：先拆分，再拟合。</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    X, y, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>X_valid_scaled <span class="op">=</span> scaler.transform(X_valid)</span></code></pre></div>
+<p>这是说明片段，没有运行模型结果。存在分组或时间依赖时，应替换随机拆分协议。交叉验证中，把
+scaler 放入 Pipeline，不要在进入各折之前统一拟合。</p>
+<figure>
+<img src="figures/preprocessing.svg"
+alt="预处理和增强必须遵守数据划分边界" />
+<figcaption
+aria-hidden="true">预处理和增强必须遵守数据划分边界</figcaption>
+</figure>
+<p><em>图 3.
+原创示意图。训练集学习转换，验证集只接受已拟合的转换；增强副本与原样本保持在同一侧。这里没有实测准确率。</em></p>
+<p><strong>目标编码还要防止“用自己的答案编码自己”。</strong>
+即使只在训练集内计算，某一行自己的标签也可能进入它的类别统计。<a
+href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.TargetEncoder.html">scikit-learn
+的 TargetEncoder</a>在 <code>fit_transform</code>
+中使用内部交叉拟合，因此它有意不同于
+<code>fit(...).transform(...)</code>。<a
+href="https://scikit-learn.org/stable/auto_examples/preprocessing/plot_target_encoder_cross_val.html">官方示例</a>展示了这一区别的意义。</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> TargetEncoder</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># X_cat_train / X_cat_valid 只包含类别特征。</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> TargetEncoder(target_type<span class="op">=</span><span class="st">&quot;binary&quot;</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练集：内部交叉拟合，避免用一行自己的标签编码自己。</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X_cat_train_encoded <span class="op">=</span> encoder.fit_transform(X_cat_train, y_train)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 独立验证集：应用全部训练数据学到的映射，不使用验证标签。</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>X_cat_valid_encoded <span class="op">=</span> encoder.transform(X_cat_valid)</span></code></pre></div>
+<p>编码器内部做了交叉拟合，仍然需要独立的验证集。如果同一个人有多条记录，或数据有时间先后，编码器内部的拆分也要遵守这些限制。</p>
+<p>泄露不会总让准确率达到
+99%，影响有多大要看具体数据和模型。怀疑结果虚高时，检查处理顺序，按正确流程重新评估。</p>
+<h3 id="上线时也要用同一套处理">上线时，也要用同一套处理</h3>
+<p>训练时没有泄露，还不够。只保存模型权重，却遗漏标准化参数、特征顺序、词表或缺失值规则，上线后仍可能出错。</p>
+<p>同一个
+<code>duration</code>，离线是秒，线上是毫秒。两边都是数字，程序不一定报错。</p>
+<p>保存模型时，把预处理和特征说明一起保存。再拿几条固定输入，检查离线和线上是否给出相同预测。<a
+href="https://research.google/pubs/hidden-technical-debt-in-machine-learning-systems/">Sculley
+等人的技术债论文</a>讨论了这类模型之外的维护问题。</p>
+<h2 id="以为模型只是观察世界">10. 以为模型只是观察世界</h2>
+<p><strong>你原本想做：</strong> 从历史行为学习，改善未来决策。</p>
+<p><strong>你实际做了：</strong>
+忽视预测系统部署后会改变它随后看到的数据。</p>
+<p>推荐器展示商品，曝光使点击成为可能，下一轮训练记录这些点击。没被展示的商品没有点击，却不能证明用户不会喜欢。不断重训，可能不断强化原来的曝光策略。</p>
+<figure>
+<img src="figures/feedback.svg"
+alt="预测、行动与新观测数据的反馈循环" />
+<figcaption
+aria-hidden="true">预测、行动与新观测数据的反馈循环</figcaption>
+</figure>
+<p><em>图 4.
+原创概念图。日志观测同时取决于用户反应和系统选择展示的内容。</em></p>
+<p><a href="https://arxiv.org/abs/2002.06673">Perdomo 等人的
+Performative
+Prediction</a>研究的就是预测如何改变后续数据。这篇论文提供了分析思路，但不能直接解决推荐系统里的所有曝光问题。</p>
+<p><strong>修正：</strong>
+不只记录点击，还要记录展示了什么、怎样决定展示。想知道换一种推荐方式是否更好，可以在条件允许时做对照实验。仅靠旧策略留下的点击记录，未必能判断新策略的效果。</p>
+<h2 id="不用-gpu-就能做的三个检查">不用 GPU 就能做的三个检查</h2>
+<p>配套<a
+href="examples/verify_examples.py">验证脚本</a>核对了广播平方误差、均匀预测交叉熵参考值和切片表格，只依赖
+Python 标准库。在本文目录运行：</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> examples/verify_examples.py</span></code></pre></div>
+<p>这些检查验证的是构造例子，不验证模型。前面的代码展示关键步骤，没有在真实模型上运行。</p>
+<p>一个实用的调试顺序是：看真实输入与标签，建立公平基线，检查目标和模式，拟合小训练案例，再按真实条件评估完整流程。每个分数旁边，都写清它想回答的问题。</p>
+<p>值得警惕的错误，是你还没有检查原因，它就已经给出了你最希望看到的结果。</p>
+<h2 id="延伸阅读">延伸阅读</h2>
+<p>正文链接的资料承担不同角色：Domingos 和 Karpathy
+提供实践视角，Zinkevich
+讨论工程经验，基准与部署论文提供特定场景下的证据，PyTorch 文档定义 API
+行为。没有哪一篇能成为所有数据集的通用配方。</p>
+<p><em>资料核查日期：2026 年 10 月 12 日。PyTorch API 链接使用 2.9
+版以明确接口约定。全部图解为原创，数值例子均为构造并由附带脚本核对。</em></p>
+</body>
+</html>

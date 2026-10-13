@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xml:lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-10-12" />
+  <title>矩阵运算和线性代数</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>body{font-family:system-ui,-apple-system,sans-serif;color:#243447;line-height:1.8;max-width:930px;margin:52px auto;padding:0 26px}h1{font-size:2.5rem;line-height:1.2;max-width:800px}h2{margin-top:2.5rem;color:#15354d}a{color:#087f83}img{width:100%;height:auto}pre{overflow:auto;padding:20px;background:#f1f5f9;border-radius:10px;font-size:14px;line-height:1.55}table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{padding:10px 14px;border-bottom:1px solid #d9e2eb;text-align:left}th{background:#eaf2f5}p:has(em){color:#61758a;font-size:.9rem}nav#TOC{background:#f5f8fc;border-radius:12px;padding:16px 25px;margin:25px 0}nav#TOC ul{list-style:none;padding-left:0}nav#TOC li{margin:2px 0}nav#TOC a{text-decoration:none;font-size:.9rem}.date{color:#61758a}@media(max-width:650px){body{margin-top:85px}h1{font-size:2rem}table{font-size:.8rem}td,th{padding:7px}}</style><style>.ml-language{position:fixed;right:24px;top:20px;z-index:1000;border:1px solid #087e8b;border-radius:7px;background:white;padding:7px 16px;text-decoration:none;color:#087e8b;box-shadow:0 2px 8px #0001}</style><script>document.addEventListener('DOMContentLoaded',function(){var zh=/index-chinese\.html$/.test(location.pathname);var a=document.createElement('a');a.className='ml-language';a.href=zh?'index.html':'index-chinese.html';a.textContent=zh?'English':'Chinese';a.setAttribute('aria-label',zh?'Read in English':'阅读中文版');document.body.appendChild(a);});</script>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">矩阵运算和线性代数</h1>
+<p class="date">2026-10-12</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一张量这个名字很有趣矩阵也很-fashion"
+id="toc-一张量这个名字很有趣矩阵也很-fashion">一、张量这个名字很有趣，矩阵也很
+fashion</a></li>
+<li><a href="#二生物信息学里的数据往往就是矩阵"
+id="toc-二生物信息学里的数据往往就是矩阵">二、生物信息学里的数据，往往就是矩阵</a>
+<ul>
+<li><a href="#转置换个方向看数据" id="toc-转置换个方向看数据">2.1
+转置：换个方向看数据</a></li>
+<li><a href="#矩阵乘法一行与一列对齐相乘相加"
+id="toc-矩阵乘法一行与一列对齐相乘相加">2.2
+矩阵乘法：一行与一列，对齐、相乘、相加</a></li>
+<li><a href="#和-看起来差不多做的事完全不同"
+id="toc-和-看起来差不多做的事完全不同">2.3 <code>*</code> 和
+<code>@</code>，看起来差不多，做的事完全不同</a></li>
+<li><a href="#pca换一组方向看看主要差异在哪里"
+id="toc-pca换一组方向看看主要差异在哪里">2.4
+PCA：换一组方向，看看主要差异在哪里</a></li>
+</ul></li>
+<li><a href="#三深度学习也在做矩阵运算"
+id="toc-三深度学习也在做矩阵运算">三、深度学习也在做矩阵运算</a></li>
+<li><a href="#四拆开-transformer看看注意力里的两次乘法"
+id="toc-四拆开-transformer看看注意力里的两次乘法">四、拆开
+Transformer，看看注意力里的两次乘法</a></li>
+</ul>
+</nav>
+<h2
+id="一张量这个名字很有趣矩阵也很-fashion">一、张量这个名字很有趣，矩阵也很
+fashion</h2>
+<p>第一次认真看“张量”这个词，我忍不住想：它怎么也姓张？要不要干脆把名字改成“张量”？以后介绍自己，就可以说：我和深度学习的关系，从名字就开始了。</p>
+<p>当然，这只是一个姓张的人开的玩笑。</p>
+<p>矩阵的名字也很有科技感。听到“矩阵科技”这样的名字，或者带着数学意味的“幻方”，很容易联想到整齐的数字、复杂的算法和机房里的计算。幻方本身就是一种有趣的数字方阵：各行、各列和两条主对角线上的数之和相同。</p>
+<p>不过，矩阵不只是一个适合公司起名的词。打开一份表达数据，你可能每天都在用它。</p>
+<p>先把几个名字放在一起：</p>
+<table>
+<thead>
+<tr>
+<th>名字</th>
+<th>日常理解</th>
+<th>数据例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标量</td>
+<td>一个数</td>
+<td>一个样本的测序深度</td>
+</tr>
+<tr>
+<td>向量</td>
+<td>一串数</td>
+<td>一个基因在多个样本中的表达</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>数排成行和列</td>
+<td>基因 × 样本的表达表</td>
+</tr>
+<tr>
+<td>张量</td>
+<td>可以有更多轴的数值数组</td>
+<td>批次 × 序列位置 × 特征</td>
+</tr>
+</tbody>
+</table>
+<p>在深度学习代码里，我们常把这样的多维数组叫作张量。数学里的张量还有更严格的定义，这里先从数据的形状理解就够了。注意，“有几个轴”和“矩阵的秩”是两回事，不能混用。</p>
+<h2
+id="二生物信息学里的数据往往就是矩阵">二、生物信息学里的数据，往往就是矩阵</h2>
+<p>生物信息学中，很多看上去不同的数据，都可以整理成一张数值表：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>数据</th>
+<th>常见行 × 列</th>
+<th>一个元素表示什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bulk RNA-seq</td>
+<td>基因 × 样本</td>
+<td>分配给某个基因的 reads 或片段计数；也可能是估计计数</td>
+</tr>
+<tr>
+<td>单细胞 RNA-seq</td>
+<td>基因 × 细胞</td>
+<td>常见液滴式 UMI 数据中，是去重后的 UMI 计数</td>
+</tr>
+<tr>
+<td>ChIP-seq</td>
+<td>peak × 样本</td>
+<td>落在某个峰区域内的 reads 或片段数</td>
+</tr>
+<tr>
+<td>药物反应</td>
+<td>药物 × 样本</td>
+<td>例如 IC50，或其他药物敏感性指标</td>
+</tr>
+</tbody>
+</table>
+<p>单细胞矩阵里的数不一定是原始 reads 数。例如 <a
+href="https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/outputs/cr-outputs-mex-matrices">Cell
+Ranger 的基因表达矩阵</a>记录的是 UMI 计数：多条 reads
+可能对应同一个被计数的分子。</p>
+<p>行列方向也不是统一规定。某些软件使用“细胞 ×
+基因”。所以拿到矩阵，第一件事不是计算，而是确认：<strong>每一行、每一列、每一个数，分别代表什么？</strong></p>
+<p>IC50 还要留意单位、缺失值和测量范围。在可比的实验条件下，较小的 IC50
+通常表示达到半数抑制所需浓度更低；不能把不同条件下的数直接混在一起比较。</p>
+<figure>
+<img src="figures/counts.svg" alt="基因样本矩阵与分组求和" />
+<figcaption aria-hidden="true">基因样本矩阵与分组求和</figcaption>
+</figure>
+<p><em>图 1. 人工构造的四个基因、三个样本。矩阵乘法把 S1、S2 合并到组
+A，把 S3 放到组 B。</em></p>
+<h3 id="转置换个方向看数据">2.1 转置：换个方向看数据</h3>
+<p>假设 <code>C</code> 有四行、三列，行是基因，列是样本：</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> np.array([</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>],</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    [ <span class="dv">0</span>,  <span class="dv">5</span>, <span class="dv">10</span>],</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    [ <span class="dv">3</span>,  <span class="dv">6</span>,  <span class="dv">9</span>],</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    [ <span class="dv">8</span>,  <span class="dv">4</span>,  <span class="dv">0</span>],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(C.shape)    <span class="co"># (4, 3)：基因 × 样本</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(C.T.shape)  <span class="co"># (3, 4)：样本 × 基因</span></span></code></pre></div>
+<p>转置没有改变表达值，只是交换了行列。机器学习工具常要求“样本在行、特征在列”，这时转置就很有用。</p>
+<h3 id="矩阵乘法一行与一列对齐相乘相加">2.2
+矩阵乘法：一行与一列，对齐、相乘、相加</h3>
+<p>如果 <code>A</code> 是 <code>m × k</code>，<code>B</code> 是
+<code>k × n</code>，那么：</p>
+<p><span class="math display">\[
+(AB)_{ij}=\sum_{r=1}^{k}A_{ir}B_{rj},\qquad AB\text{ 的形状是 }m\times
+n.
+\]</span></p>
+<p>不用急着记公式。先理解一个输出值怎样产生：拿左边的一行、右边的一列，对应位置相乘，再把结果加起来。</p>
+<p>比如，把 S1、S2 的计数相加，得到组 A；S3 单独作为组 B：</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array([</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>],  <span class="co"># S1 → A</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>],  <span class="co"># S2 → A</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">0</span>, <span class="dv">1</span>],  <span class="co"># S3 → B</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>group_counts <span class="op">=</span> C <span class="op">@</span> P</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(group_counts)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># [[30 30]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#  [ 5 10]</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  [ 9  9]</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  [12  0]]</span></span></code></pre></div>
+<p>这里 <code>(4, 3) @ (3, 2)</code> 得到
+<code>(4, 2)</code>。中间的三个样本被汇总，留下四个基因和两个组。</p>
+<p>这只是演示求和，不是组间差异分析。生物学重复不应为了方便而随意合并，测序深度和每组样本数也会影响总计数。单细胞
+pseudobulk 通常按“生物学样本 × 细胞类型”分别汇总，以保留重复信息。</p>
+<h3 id="和-看起来差不多做的事完全不同">2.3 <code>*</code> 和
+<code>@</code>，看起来差不多，做的事完全不同</h3>
+<p>在 NumPy 中，<code>*</code> 是逐元素相乘；<code>@</code>
+是矩阵乘法。<a
+href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html">官方文档</a>说明了后者的形状规则。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> np.array([[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A <span class="op">*</span> B)  <span class="co"># [[ 5, 12], [21, 32]]</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A <span class="op">@</span> B)  <span class="co"># [[19, 22], [43, 50]]</span></span></code></pre></div>
+<p>两段代码都能运行，结果却不是同一回事。读代码时，这个小符号值得多看一眼。</p>
+<h3 id="pca换一组方向看看主要差异在哪里">2.4
+PCA：换一组方向，看看主要差异在哪里</h3>
+<p>矩阵也可以表示“沿哪些方向观察数据”。PCA
+就是熟悉的例子：从许多特征里找出变化较大的方向，把样本投影过去。</p>
+<p>下面用 SVD（奇异值分解）计算一个小例子的主成分坐标：</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> np.log1p(C.T.astype(<span class="bu">float</span>))       <span class="co"># 样本 × 基因</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>E_centered <span class="op">=</span> E <span class="op">-</span> E.mean(axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>U, s, Vt <span class="op">=</span> np.linalg.svd(E_centered, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> E_centered <span class="op">@</span> Vt[:<span class="dv">2</span>].T</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.shape)                 <span class="co"># (3, 2)</span></span></code></pre></div>
+<p><code>Vt[:2].T</code> 给出两个方向，<code>scores</code>
+是三个样本在这两个方向上的坐标。<a
+href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html">NumPy
+SVD 文档</a>提供了分解与重建的关系。</p>
+<p>这里直接 <code>log1p</code> 只是教学例子。真实 RNA-seq 做
+PCA，需要先考虑测序深度、合适的数据变换，以及是否对各基因缩放。PCA
+找到的是方差较大的方向，它不会自动判断这些差异来自疾病还是批次。</p>
+<h2 id="三深度学习也在做矩阵运算">三、深度学习也在做矩阵运算</h2>
+<p>神经网络中的一个全连接层，可以写成：</p>
+<p><span class="math display">\[H=f(XW+b).\]</span></p>
+<p><code>X</code> 放输入，<code>W</code> 放学到的权重，<code>b</code>
+是偏置，<code>f</code>
+是激活函数。每个输出特征，本质上先对输入特征做一次加权求和。</p>
+<figure>
+<img src="figures/layer.svg" alt="全连接层的矩阵形状" />
+<figcaption aria-hidden="true">全连接层的矩阵形状</figcaption>
+</figure>
+<p><em>图 2. 五个样本，每个四个特征，经过 <code>4 × 3</code>
+的权重矩阵，变成每个样本三个输出特征。偏置按行加入。</em></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.ones((<span class="dv">5</span>, <span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> np.ones((<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> np.maximum(<span class="dv">0</span>, X <span class="op">@</span> W <span class="op">+</span> b)  <span class="co"># ReLU</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(H.shape)               <span class="co"># (5, 3)</span></span></code></pre></div>
+<p>如果只有矩阵乘法和偏置，没有非线性激活，多个这样的层仍可以合成一个仿射变换。层数多，并不自动带来更复杂的表达能力。</p>
+<p>批量处理序列时，输入还可能是
+<code>batch × tokens × features</code>。数组变成三维，但最后两维仍常常在做矩阵乘法。名字变成张量，熟悉的运算并没有消失。</p>
+<h2 id="四拆开-transformer看看注意力里的两次乘法">四、拆开
+Transformer，看看注意力里的两次乘法</h2>
+<p>Transformer 里的注意力，听起来很复杂，但可以先抓住两个问题：</p>
+<ol type="1">
+<li>每个位置应该从其他位置取多少信息？</li>
+<li>按这些权重，怎样把信息合起来？</li>
+</ol>
+<p><a href="https://arxiv.org/abs/1706.03762">Transformer
+原始论文</a>中的缩放点积注意力写作：</p>
+<p><span
+class="math display">\[\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V.\]</span></p>
+<p>这里，输入经过不同权重得到 <code>Q</code>、<code>K</code> 和
+<code>V</code>。<code>Q @ K.T</code> 计算各位置之间的分数；softmax
+将每一行变成和为一的权重；再用这些权重对 <code>V</code> 加权求和。</p>
+<p>下面是一个单头、无掩码的小例子，权重随机生成，没有训练：</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">4</span>))    <span class="co"># 三个位置，每个四个特征</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Wq <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">2</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Wk <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">2</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Wv <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">2</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Q, K, V <span class="op">=</span> X <span class="op">@</span> Wq, X <span class="op">@</span> Wk, X <span class="op">@</span> Wv</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>scores_attention <span class="op">=</span> Q <span class="op">@</span> K.T <span class="op">/</span> np.sqrt(Q.shape[<span class="dv">1</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> scores_attention <span class="op">-</span> scores_attention.<span class="bu">max</span>(axis<span class="op">=-</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.exp(z)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>A <span class="op">/=</span> A.<span class="bu">sum</span>(axis<span class="op">=-</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> A <span class="op">@</span> V</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A.shape, Y.shape)       <span class="co"># (3, 3) (3, 2)</span></span></code></pre></div>
+<p>减去每行最大值，是为了让指数计算更稳定，不会改变 softmax
+的结果。<code>A</code> 的一行说明某个位置如何分配权重，<code>Y</code>
+则是汇总后的表示。</p>
+<figure>
+<img src="figures/attention.svg" alt="运行示例得到的注意力权重" />
+<figcaption aria-hidden="true">运行示例得到的注意力权重</figcaption>
+</figure>
+<p><em>图 3.
+运行上面固定种子的例子得到的注意力矩阵，每行之和为一。这是随机权重的演示，不是语言模型训练结果。</em></p>
+<p>完整 Transformer
+还包括多头、位置相关信息、残差连接、归一化和前馈网络。生成文本时通常还需要因果掩码，防止当前位置读取未来位置。上面的代码只展示一块核心运算。</p>
+<p>从表达矩阵的分组求和，到 PCA
+的投影，再到注意力的信息汇总，矩阵乘法一直在帮我们把一组数变成另一组数。真正需要想清楚的，是行列代表什么、权重从哪里来，以及输出要回答什么问题。</p>
+<p>完整例子保存在 <a
+href="examples/matrix_demo.py">matrix_demo.py</a>，需要 NumPy：</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> examples/matrix_demo.py</span></code></pre></div>
+<p><em>本文例子已在 NumPy 2.3.5 下运行，检查了分组结果、SVD
+重建和注意力权重的行和。全部数据为教学构造，不是真实测序数据。</em></p>
+</body>
+</html>
